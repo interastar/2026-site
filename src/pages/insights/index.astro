@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import InsightsList from '../../components/InsightsList.astro';
+import { getPostCards } from '../../lib/posts';
+const posts = await getPostCards('es');
+---
+<BaseLayout
+  lang="es"
+  current="insights"
+  title="Insights · Interastar"
+  description="Tendencias, guías y casos sobre ERP en la nube, experiencia de cliente (CX) e IA aplicada al negocio."
+>
+  <InsightsList lang="es" posts={posts} />
+</BaseLayout>

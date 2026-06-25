@@ -1,0 +1,37 @@
+---
+import Icon from './Icon.astro';
+import { path, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; title?: string; text?: string }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const def = lang === 'es'
+  ? {
+      title: '¿Listo para unificar tu operación de extremo a extremo?',
+      text: 'No solo implementamos: te acompañamos con soporte continuo y orientación estratégica para mejorar tu experiencia de cliente y tu eficiencia operativa.',
+    }
+  : {
+      title: 'Ready to unify your operation end to end?',
+      text: 'We don\'t just implement: we support you with ongoing service and strategic guidance to improve your customer experience and operational efficiency.',
+    };
+const title = Astro.props.title ?? def.title;
+const text = Astro.props.text ?? def.text;
+---
+<section class="cta-wrap">
+  <div class="wrap">
+    <div class="cta-block reveal">
+      <div class="inner">
+        <h2 set:html={title}></h2>
+        <p>{text}</p>
+        <div class="actions">
+          <a class="btn cta-green" href={path('contact', lang)}>
+            {t('cta.primary')}
+            <Icon name="arrow-right" size={18} />
+          </a>
+          <a class="btn on-dark" href={path('solutions', lang)}>{t('cta.explore')}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

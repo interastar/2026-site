@@ -1,0 +1,92 @@
+---
+import Icon from '../Icon.astro';
+import CtaBand from '../CtaBand.astro';
+import { path, type Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const c = {
+  es: {
+    eyebrow: 'Soluciones',
+    h1: 'Soluciones que conectan tu operación de extremo a extremo',
+    lede: 'Implementamos e integramos las plataformas líderes del mercado y las operamos por ti. Elige por plataforma o por necesidad de negocio.',
+    platTitle: 'Por plataforma',
+    platforms: [
+      { ic: 'database', icc: '', name: 'Acumatica ERP', tag: 'Cloud ERP', text: 'ERP en la nube para finanzas, operaciones, inventario y cadena de suministro. Escalable y sin costos ocultos.', href: path('acumatica', lang), cta: 'Ver Acumatica' },
+      { ic: 'headset', icc: 'green', name: 'Genesys Cloud CX', tag: 'Contact Center', text: 'Experiencia de cliente omnicanal con enrutamiento inteligente, IA y analítica en tiempo real.', href: path('genesys', lang), cta: 'Ver Genesys' },
+      { ic: 'message-square', icc: 'navy', name: 'Numia', tag: 'IA conversacional', text: 'Asistentes de voz y texto para automatizar atención, calificar leads y operar 24/7.', href: path('contact', lang), cta: 'Solicitar información' },
+      { ic: 'globe', icc: '', name: 'Infobip · Vonage', tag: 'Mensajería / CPaaS', text: 'APIs de SMS, WhatsApp, voz y email integradas a tus sistemas centrales.', href: path('contact', lang), cta: 'Solicitar información' },
+    ],
+    needTitle: 'Por necesidad de negocio',
+    needs: [
+      { ic: 'plug-zap', title: 'Integrar sistemas aislados', text: 'Conectamos ERP, CRM, CX y mensajería en un mismo flujo para eliminar el reproceso.' },
+      { ic: 'line-chart', title: 'Visibilidad y reportes', text: 'Tableros y KPIs accionables para decidir con datos en tiempo real.' },
+      { ic: 'refresh-cw', title: 'Migrar a la nube', text: 'Modernizamos plataformas legadas con un plan que no detiene tu operación.' },
+      { ic: 'shield-check', title: 'Reducir riesgo y deuda técnica', text: 'Seguridad, cumplimiento y soporte administrado de extremo a extremo.' },
+    ],
+  },
+  en: {
+    eyebrow: 'Solutions',
+    h1: 'Solutions that connect your operation end to end',
+    lede: 'We implement and integrate the market\'s leading platforms and operate them for you. Choose by platform or by business need.',
+    platTitle: 'By platform',
+    platforms: [
+      { ic: 'database', icc: '', name: 'Acumatica ERP', tag: 'Cloud ERP', text: 'Cloud ERP for finance, operations, inventory and supply chain. Scalable, with no hidden costs.', href: path('acumatica', lang), cta: 'View Acumatica' },
+      { ic: 'headset', icc: 'green', name: 'Genesys Cloud CX', tag: 'Contact Center', text: 'Omnichannel customer experience with intelligent routing, AI and real-time analytics.', href: path('genesys', lang), cta: 'View Genesys' },
+      { ic: 'message-square', icc: 'navy', name: 'Numia', tag: 'Conversational AI', text: 'Voice and text assistants to automate support, qualify leads and operate 24/7.', href: path('contact', lang), cta: 'Request info' },
+      { ic: 'globe', icc: '', name: 'Infobip · Vonage', tag: 'Messaging / CPaaS', text: 'SMS, WhatsApp, voice and email APIs integrated into your core systems.', href: path('contact', lang), cta: 'Request info' },
+    ],
+    needTitle: 'By business need',
+    needs: [
+      { ic: 'plug-zap', title: 'Integrate isolated systems', text: 'We connect ERP, CRM, CX and messaging into one flow to remove rework.' },
+      { ic: 'line-chart', title: 'Visibility and reporting', text: 'Actionable dashboards and KPIs to decide with real-time data.' },
+      { ic: 'refresh-cw', title: 'Migrate to the cloud', text: 'We modernize legacy platforms with a plan that doesn\'t stop your operation.' },
+      { ic: 'shield-check', title: 'Reduce risk and technical debt', text: 'Security, compliance and end-to-end managed support.' },
+    ],
+  },
+}[lang];
+---
+<section class="section" style="padding-bottom:48px">
+  <div class="wrap">
+    <span class="eyebrow"><span class="star-dot"></span>{c.eyebrow}</span>
+    <h1 class="h1" style="max-width:880px;margin-top:16px">{c.h1}</h1>
+    <p class="lede" style="max-width:740px">{c.lede}</p>
+  </div>
+</section>
+
+<section class="section alt" style="padding-top:64px">
+  <div class="wrap">
+    <div class="section-head"><h2 class="h2">{c.platTitle}</h2></div>
+    <div class="grid cols-2">
+      {c.platforms.map((p) => (
+        <a class="card hover reveal" href={p.href}>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class={`ic ${p.icc}`}><Icon name={p.ic} /></div>
+            <span class="partner">{p.tag}</span>
+          </div>
+          <h3>{p.name}</h3>
+          <p>{p.text}</p>
+          <span class="arrow">{p.cta}<Icon name="arrow-right" size={14} /></span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><h2 class="h2">{c.needTitle}</h2></div>
+    <div class="grid cols-4">
+      {c.needs.map((n) => (
+        <div class="card reveal">
+          <div class="ic"><Icon name={n.ic} /></div>
+          <h3 style="font-size:18px">{n.title}</h3>
+          <p>{n.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<CtaBand lang={lang} />

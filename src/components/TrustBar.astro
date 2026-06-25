@@ -1,0 +1,15 @@
+---
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const label = lang === 'es' ? 'Empresas que confían en Interastar' : 'Companies that trust Interastar';
+const clients = ['Petco', 'Coppel', 'Unilever', 'Porsche', 'Teleperformance'];
+---
+<section class="trust">
+  <div class="wrap trust-grid">
+    <span class="trust-label">{label}</span>
+    <div class="trust-logos">
+      {clients.map((c) => <span class="trust-logo">{c}</span>)}
+    </div>
+  </div>
+</section>

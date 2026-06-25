@@ -1,0 +1,126 @@
+---
+import Icon from '../Icon.astro';
+import LeadForm from '../LeadForm.astro';
+import { path, useTranslations, type Lang } from '../../i18n/ui';
+
+export interface SolutionContent {
+  tag: string;
+  name: string;
+  title: string;
+  lede: string;
+  heroBullets: string[];
+  capEyebrow: string;
+  capTitle: string;
+  capabilities: { ic: string; title: string; text: string }[];
+  whoEyebrow: string;
+  whoTitle: string;
+  who: { role: string; text: string }[];
+  outcomes: { num: string; label: string }[];
+  integrTitle: string;
+  integrText: string;
+  integrations: string[];
+  formTitle: string;
+}
+
+interface Props { lang: Lang; content: SolutionContent; source: string }
+const { lang, content: c, source } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="section" style="padding-bottom:56px">
+  <div class="wrap">
+    <p class="crumbs"><a href={path('solutions', lang)}>{lang === 'es' ? 'Soluciones' : 'Solutions'}</a> / {c.name}</p>
+    <div class="section-split" style="align-items:center">
+      <div>
+        <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
+        <h1 class="h1" style="margin-top:14px">{c.title}</h1>
+        <p class="lede" style="max-width:560px">{c.lede}</p>
+        <div class="hero-actions">
+          <a class="btn primary" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
+          <a class="btn secondary" href="#solicitar">{lang === 'es' ? 'Solicitar información' : 'Request info'}</a>
+        </div>
+      </div>
+      <div class="card" style="box-shadow:var(--shadow-2);padding:32px">
+        <span class="partner">{c.name}</span>
+        <ul class="checklist" style="margin-top:8px">
+          {c.heroBullets.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Outcomes -->
+<section class="stats" style="padding:64px 0">
+  <div class="wrap stats-grid">
+    {c.outcomes.map((o) => (
+      <div class="stat reveal">
+        <div class="num">{o.num}</div>
+        <div class="label">{o.label}</div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- Capabilities -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow"><span class="star-dot"></span>{c.capEyebrow}</span>
+      <h2 class="h2" style="margin-top:14px">{c.capTitle}</h2>
+    </div>
+    <div class="grid cols-3">
+      {c.capabilities.map((cap) => (
+        <div class="card reveal">
+          <div class="ic"><Icon name={cap.ic} /></div>
+          <h3 style="font-size:18px">{cap.title}</h3>
+          <p>{cap.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- For who -->
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow"><span class="star-dot"></span>{c.whoEyebrow}</span>
+      <h2 class="h2" style="margin-top:14px">{c.whoTitle}</h2>
+    </div>
+    <div class="grid cols-3">
+      {c.who.map((w) => (
+        <div class="card reveal" style="border:1px solid var(--border)">
+          <h3 style="font-size:18px;color:var(--accent)">{w.role}</h3>
+          <p>{w.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Integrations -->
+<section class="section">
+  <div class="wrap section-split">
+    <div>
+      <h2 class="h2">{c.integrTitle}</h2>
+      <p class="lede">{c.integrText}</p>
+    </div>
+    <div class="trust-logos">
+      {c.integrations.map((i) => <span class="trust-logo">{i}</span>)}
+    </div>
+  </div>
+</section>
+
+<!-- Lead form -->
+<section class="section alt" id="solicitar">
+  <div class="wrap form-grid">
+    <div>
+      <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
+      <h2 class="h2" style="margin-top:14px">{c.formTitle}</h2>
+      <ul class="checklist" style="margin-top:24px">
+        {c.heroBullets.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
+      </ul>
+    </div>
+    <LeadForm lang={lang} source={source} />
+  </div>
+</section>

@@ -1,0 +1,89 @@
+---
+import SolutionDetail, { type SolutionContent } from './SolutionDetail.astro';
+import type { Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const content: Record<Lang, SolutionContent> = {
+  es: {
+    tag: 'Genesys · Cloud CX',
+    name: 'Genesys Cloud CX',
+    title: 'Genesys Cloud: experiencia de cliente omnicanal con IA',
+    lede: 'Unifica voz, chat, correo y redes en un solo contact center en la nube, con enrutamiento inteligente, IA y analítica en tiempo real. Lo implementamos, integramos y operamos por ti.',
+    heroBullets: [
+      'Omnicanalidad real: voz, chat, email, WhatsApp y redes',
+      'Enrutamiento inteligente y asistencia con IA',
+      'Analítica y tableros de productividad en tiempo real',
+      'Integración con tu ERP, CRM y mensajería',
+    ],
+    capEyebrow: 'Capacidades',
+    capTitle: 'Todo el contact center, en la nube',
+    capabilities: [
+      { ic: 'headset', title: 'Omnicanalidad', text: 'Atiende a tus clientes en cualquier canal con una sola vista de la conversación.' },
+      { ic: 'workflow', title: 'Enrutamiento inteligente', text: 'Dirige cada interacción al agente correcto con reglas y predicción.' },
+      { ic: 'sparkles', title: 'IA y automatización', text: 'Asistencia al agente, bots y resúmenes automáticos para reducir el tiempo de atención.' },
+      { ic: 'line-chart', title: 'Analítica y WEM', text: 'Métricas de satisfacción (NPS), productividad y bienestar del equipo en tiempo real.' },
+      { ic: 'plug-zap', title: 'Integraciones', text: 'Conecta Genesys con tu ERP, CRM y APIs de mensajería sin islas de datos.' },
+      { ic: 'shield-check', title: 'Seguridad y cumplimiento', text: 'Grabación, cumplimiento normativo y control de acceso de nivel empresarial.' },
+    ],
+    whoEyebrow: 'Para tu rol',
+    whoTitle: 'Valor concreto para cada área',
+    who: [
+      { role: 'Dirección de CX', text: 'Una experiencia de cliente consistente y medible, con visibilidad total de cada canal.' },
+      { role: 'TI y Sistemas', text: 'Plataforma en la nube segura, con integraciones limpias hacia tu ERP y CRM.' },
+      { role: 'Operaciones', text: 'Productividad de agentes y reportes accionables para optimizar la operación día a día.' },
+    ],
+    outcomes: [
+      { num: '+15', label: 'años conectando operación y experiencia de cliente.' },
+      { num: '120+', label: 'proyectos de integración entregados.' },
+      { num: '100%', label: 'omnicanal en una sola plataforma en la nube.' },
+      { num: '24/7', label: 'operación con soporte administrado.' },
+    ],
+    integrTitle: 'Genesys, conectado a tu operación',
+    integrText: 'Integramos Genesys con tu ERP, CRM y plataformas de mensajería para que la atención y el negocio trabajen juntos.',
+    integrations: ['Acumatica', 'Numia', 'Infobip', 'Vonage', 'CRM', 'WhatsApp'],
+    formTitle: 'Solicita una demo personalizada de Genesys',
+  },
+  en: {
+    tag: 'Genesys · Cloud CX',
+    name: 'Genesys Cloud CX',
+    title: 'Genesys Cloud: omnichannel customer experience with AI',
+    lede: 'Unify voice, chat, email and social in a single cloud contact center, with intelligent routing, AI and real-time analytics. We implement, integrate and operate it for you.',
+    heroBullets: [
+      'True omnichannel: voice, chat, email, WhatsApp and social',
+      'Intelligent routing and AI assistance',
+      'Real-time analytics and productivity dashboards',
+      'Integration with your ERP, CRM and messaging',
+    ],
+    capEyebrow: 'Capabilities',
+    capTitle: 'The whole contact center, in the cloud',
+    capabilities: [
+      { ic: 'headset', title: 'Omnichannel', text: 'Serve customers on any channel with a single view of the conversation.' },
+      { ic: 'workflow', title: 'Intelligent routing', text: 'Send every interaction to the right agent with rules and prediction.' },
+      { ic: 'sparkles', title: 'AI & automation', text: 'Agent assist, bots and automatic summaries to reduce handle time.' },
+      { ic: 'line-chart', title: 'Analytics & WEM', text: 'Satisfaction (NPS), productivity and team wellbeing metrics in real time.' },
+      { ic: 'plug-zap', title: 'Integrations', text: 'Connect Genesys with your ERP, CRM and messaging APIs — no data islands.' },
+      { ic: 'shield-check', title: 'Security & compliance', text: 'Recording, regulatory compliance and enterprise-grade access control.' },
+    ],
+    whoEyebrow: 'For your role',
+    whoTitle: 'Concrete value for every area',
+    who: [
+      { role: 'CX leadership', text: 'A consistent, measurable customer experience with full visibility across every channel.' },
+      { role: 'IT & Systems', text: 'A secure cloud platform with clean integrations to your ERP and CRM.' },
+      { role: 'Operations', text: 'Agent productivity and actionable reports to optimize the operation day to day.' },
+    ],
+    outcomes: [
+      { num: '+15', label: 'years connecting operations and customer experience.' },
+      { num: '120+', label: 'integration projects delivered.' },
+      { num: '100%', label: 'omnichannel in one cloud platform.' },
+      { num: '24/7', label: 'operation with managed support.' },
+    ],
+    integrTitle: 'Genesys, connected to your operation',
+    integrText: 'We integrate Genesys with your ERP, CRM and messaging platforms so service and business work together.',
+    integrations: ['Acumatica', 'Numia', 'Infobip', 'Vonage', 'CRM', 'WhatsApp'],
+    formTitle: 'Request a personalized Genesys demo',
+  },
+};
+---
+<SolutionDetail lang={lang} content={content[lang]} source="solucion-genesys" />

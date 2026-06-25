@@ -1,0 +1,56 @@
+---
+import Icon from './Icon.astro';
+import { path, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="col about">
+        <img src="/brand/logo-interastar.svg" alt="Interastar" width="150" height="30" />
+        <p>{t('footer.tagline')}</p>
+      </div>
+
+      <div class="col">
+        <h4>{t('footer.solutions')}</h4>
+        <ul>
+          <li><a href={path('acumatica', lang)}>Acumatica ERP</a></li>
+          <li><a href={path('genesys', lang)}>Genesys CX</a></li>
+          <li><a href={path('solutions', lang)}>{t('footer.integration')}</a></li>
+          <li><a href={path('solutions', lang)}>{t('footer.managed')}</a></li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h4>{t('footer.company')}</h4>
+        <ul>
+          <li><a href={path('about', lang)}>{t('footer.about')}</a></li>
+          <li><a href={path('insights', lang)}>{t('footer.insights')}</a></li>
+          <li><a href={path('contact', lang)}>{t('footer.contact')}</a></li>
+          <li><a href={path('privacy', lang)}>{t('footer.privacy')}</a></li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h4>{t('footer.contact')}</h4>
+        <ul>
+          <li><a href="mailto:contacto@interastar.com">contacto@interastar.com</a></li>
+          <li><a href={path('contact', lang)}>{t('cta.secondary')}</a></li>
+          <li><a href="https://www.linkedin.com/company/interastar" rel="noopener" target="_blank">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <span>© {year} Interastar. {t('footer.rights')}</span>
+      <div class="socials" style="display:flex;gap:12px;align-items:center;">
+        <a href="https://www.linkedin.com/company/interastar" rel="noopener" target="_blank" aria-label="LinkedIn" style="color:var(--fg-3)"><Icon name="linkedin" size={18} /></a>
+        <a href={path('privacy', lang)}><span style="font-size:12px;color:var(--fg-3)">{t('footer.privacy')}</span></a>
+      </div>
+    </div>
+  </div>
+</footer>

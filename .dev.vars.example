@@ -1,0 +1,10 @@
+# Copy this file to `.dev.vars` (gitignored) for local development.
+# In production these are set via wrangler:
+#   pnpm wrangler secret put CLICKUP_API_TOKEN
+# CLICKUP_LIST_ID lives in wrangler.jsonc (vars) — override here for local tests.
+
+# ClickUp personal API token (Settings > Apps > API Token). Starts with "pk_".
+CLICKUP_API_TOKEN=pk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Destination list for web leads. Default: Marketing > Oportunidades > "List".
+CLICKUP_LIST_ID=901113951091

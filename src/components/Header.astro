@@ -1,0 +1,81 @@
+---
+import Icon from './Icon.astro';
+import { path, useTranslations, type Lang, type RouteKey } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  current?: RouteKey;
+  altPath: string; // equivalent page URL in the other language
+}
+const { lang, current, altPath } = Astro.props;
+const t = useTranslations(lang);
+const other: Lang = lang === 'es' ? 'en' : 'es';
+
+const links: { key: RouteKey; label: string }[] = [
+  { key: 'solutions', label: t('nav.solutions') },
+  { key: 'about', label: t('nav.about') },
+  { key: 'insights', label: t('nav.insights') },
+  { key: 'contact', label: t('nav.contact') },
+];
+---
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href={path('home', lang)} aria-label="Interastar">
+      <img src="/brand/logo-interastar.svg" alt="Interastar" width="150" height="30" />
+    </a>
+
+    <nav aria-label={lang === 'es' ? 'Principal' : 'Main'}>
+      <ul class="nav-links" id="navLinks">
+        {links.map((l) => (
+          <li class={l.key === 'solutions' ? 'has-sub' : ''}>
+            <a href={path(l.key, lang)} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
+            {l.key === 'solutions' && (
+              <ul class="subnav">
+                <li><a href={path('acumatica', lang)}>{t('nav.acumatica')}</a></li>
+                <li><a href={path('genesys', lang)}>{t('nav.genesys')}</a></li>
+              </ul>
+            )}
+          </li>
+        ))}
+        <li class="nav-mobile-cta"><a href={path('contact', lang)} class="btn primary">{t('nav.cta')}</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="lang-switch" href={altPath} hreflang={other} aria-label={`Switch to ${other === 'es' ? 'Español' : 'English'}`}>
+        {t('lang.switch')}
+      </a>
+      <a class="btn primary" href={path('contact', lang)}>{t('nav.cta')}</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <Icon name="menu" size={24} />
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .has-sub { position: relative; }
+  .subnav {
+    list-style: none; margin: 0; padding: 8px; position: absolute; top: 100%; left: -8px;
+    min-width: 200px; background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: var(--r-md); box-shadow: var(--shadow-3); display: none; flex-direction: column; gap: 2px;
+  }
+  .has-sub:hover .subnav, .has-sub:focus-within .subnav { display: flex; }
+  .subnav a { padding: 9px 10px; border-radius: var(--r-sm); display: block; font-weight: 500; }
+  .subnav a:hover { background: var(--ia-mist); }
+  .nav-mobile-cta { display: none; }
+  @media (max-width: 920px) {
+    .subnav { position: static; display: flex; box-shadow: none; border: 0; padding: 4px 0 8px 12px; }
+    .nav-mobile-cta { display: block; margin-top: 8px; }
+    .nav-mobile-cta .btn { width: 100%; justify-content: center; }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle?.addEventListener('click', () => {
+    const open = links?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+</script>

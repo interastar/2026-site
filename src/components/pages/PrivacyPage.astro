@@ -1,0 +1,42 @@
+---
+import type { Lang } from '../../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const c = {
+  es: {
+    title: 'Aviso de privacidad',
+    updated: 'Última actualización: junio de 2026',
+    body: [
+      ['Responsable', 'Interastar (en adelante, "Interastar") es responsable del tratamiento de los datos personales que usted nos proporciona a través de este sitio web, de conformidad con la legislación aplicable en materia de protección de datos personales.'],
+      ['Datos que recabamos', 'Recabamos los datos que usted ingresa en nuestros formularios de contacto: nombre, empresa, correo electrónico, teléfono, rol y los detalles de su solicitud. No recabamos datos personales sensibles a través de este sitio.'],
+      ['Finalidades', 'Utilizamos sus datos para: (i) atender y dar seguimiento a su solicitud de contacto, consultoría o demostración; (ii) enviarle información relacionada con nuestros servicios cuando así lo haya solicitado; y (iii) fines estadísticos y de mejora del sitio.'],
+      ['Transferencias', 'Sus datos pueden ser tratados por proveedores tecnológicos que nos apoyan en la gestión de prospectos (por ejemplo, herramientas de CRM), únicamente para las finalidades descritas y bajo obligaciones de confidencialidad.'],
+      ['Derechos ARCO', 'Usted puede ejercer sus derechos de Acceso, Rectificación, Cancelación u Oposición (ARCO), así como revocar su consentimiento, enviando una solicitud al correo contacto@interastar.com.'],
+      ['Cambios al aviso', 'Este aviso de privacidad puede actualizarse. Publicaremos cualquier cambio en esta misma página.'],
+    ],
+    contact: 'Para cualquier duda sobre este aviso, escríbenos a',
+  },
+  en: {
+    title: 'Privacy notice',
+    updated: 'Last updated: June 2026',
+    body: [
+      ['Data controller', 'Interastar ("Interastar") is responsible for processing the personal data you provide through this website, in accordance with applicable data protection law.'],
+      ['Data we collect', 'We collect the data you enter in our contact forms: name, company, email, phone, role and the details of your request. We do not collect sensitive personal data through this site.'],
+      ['Purposes', 'We use your data to: (i) handle and follow up on your contact, consultation or demo request; (ii) send you information about our services when requested; and (iii) statistics and site improvement.'],
+      ['Transfers', 'Your data may be processed by technology providers that support us in lead management (e.g. CRM tools), solely for the purposes described and under confidentiality obligations.'],
+      ['Your rights', 'You may exercise your rights of access, rectification, cancellation or opposition, and withdraw your consent, by sending a request to contacto@interastar.com.'],
+      ['Changes to this notice', 'This privacy notice may be updated. We will publish any changes on this page.'],
+    ],
+    contact: 'For any questions about this notice, write to',
+  },
+}[lang];
+---
+<section class="section">
+  <div class="wrap prose">
+    <h1 class="h1" style="font-size:clamp(32px,4vw,48px)">{c.title}</h1>
+    <p class="muted">{c.updated}</p>
+    {c.body.map(([h, p]) => (<><h2>{h}</h2><p>{p}</p></>))}
+    <p>{c.contact} <a href="mailto:contacto@interastar.com">contacto@interastar.com</a>.</p>
+  </div>
+</section>

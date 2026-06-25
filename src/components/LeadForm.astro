@@ -1,0 +1,139 @@
+---
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  source?: string;
+}
+const { lang, source = 'web' } = Astro.props;
+
+const copy = {
+  es: {
+    title: 'Solicita una consultoría de diagnóstico',
+    subtitle: 'Cuéntanos sobre tu operación. Te respondemos en menos de 24 horas hábiles.',
+    name: 'Nombre completo', company: 'Empresa', email: 'Correo de trabajo', phone: 'Teléfono (opcional)',
+    role: 'Tu rol', interest: 'Tema de interés', message: 'Cuéntanos tu reto (opcional)',
+    submit: 'Solicitar diagnóstico', sending: 'Enviando…',
+    ok: '¡Gracias! Hemos recibido tu solicitud. Un especialista te contactará en breve.',
+    err: 'No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos a contacto@interastar.com.',
+    privacy: 'Al enviar aceptas nuestro aviso de privacidad. Usamos tus datos solo para atender tu solicitud.',
+    roles: ['Selecciona…', 'Dirección general / C-Level', 'TI / Sistemas', 'Operaciones', 'Experiencia de cliente (CX)', 'Finanzas', 'Otro'],
+    interests: ['Selecciona…', 'ERP en la nube (Acumatica)', 'Cloud CX / Contact Center (Genesys)', 'IA conversacional', 'Integraciones / APIs de mensajería', 'Servicios administrados', 'Aún no estoy seguro'],
+    req: 'Obligatorio',
+  },
+  en: {
+    title: 'Request a diagnostic consultation',
+    subtitle: 'Tell us about your operation. We reply within 24 business hours.',
+    name: 'Full name', company: 'Company', email: 'Work email', phone: 'Phone (optional)',
+    role: 'Your role', interest: 'Topic of interest', message: 'Tell us your challenge (optional)',
+    submit: 'Request diagnostic', sending: 'Sending…',
+    ok: 'Thank you! We received your request. A specialist will contact you shortly.',
+    err: 'We could not send your request. Please try again or email contacto@interastar.com.',
+    privacy: 'By submitting you accept our privacy notice. We use your data only to handle your request.',
+    roles: ['Select…', 'Executive / C-Level', 'IT / Systems', 'Operations', 'Customer Experience (CX)', 'Finance', 'Other'],
+    interests: ['Select…', 'Cloud ERP (Acumatica)', 'Cloud CX / Contact Center (Genesys)', 'Conversational AI', 'Integrations / Messaging APIs', 'Managed services', "Not sure yet"],
+    req: 'Required',
+  },
+}[lang];
+---
+<div class="form-card">
+  <h3 style="margin:0 0 6px;font:600 22px var(--font-ui);color:var(--ia-ink)">{copy.title}</h3>
+  <p style="margin:0 0 22px;font:400 14px/1.6 var(--font-ui);color:var(--fg-2)">{copy.subtitle}</p>
+
+  <form id="leadForm" novalidate>
+    <input type="hidden" name="source" value={source} />
+    <input type="hidden" name="lang" value={lang} />
+    <input type="hidden" name="page" id="leadPage" value="" />
+    <div class="hp" aria-hidden="true">
+      <label>Do not fill<input type="text" name="company_url" tabindex="-1" autocomplete="off" /></label>
+    </div>
+
+    <div class="field-2">
+      <div class="field">
+        <label for="lf-name">{copy.name} <span class="req">*</span></label>
+        <input id="lf-name" name="name" type="text" required autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="lf-company">{copy.company} <span class="req">*</span></label>
+        <input id="lf-company" name="company" type="text" required autocomplete="organization" />
+      </div>
+    </div>
+
+    <div class="field-2">
+      <div class="field">
+        <label for="lf-email">{copy.email} <span class="req">*</span></label>
+        <input id="lf-email" name="email" type="email" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="lf-phone">{copy.phone}</label>
+        <input id="lf-phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+    </div>
+
+    <div class="field-2">
+      <div class="field">
+        <label for="lf-role">{copy.role} <span class="req">*</span></label>
+        <select id="lf-role" name="role" required>
+          {copy.roles.map((r, i) => <option value={i === 0 ? '' : r} disabled={i === 0} selected={i === 0}>{r}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="lf-interest">{copy.interest} <span class="req">*</span></label>
+        <select id="lf-interest" name="interest" required>
+          {copy.interests.map((r, i) => <option value={i === 0 ? '' : r} disabled={i === 0} selected={i === 0}>{r}</option>)}
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="lf-message">{copy.message}</label>
+      <textarea id="lf-message" name="message" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn primary" id="lf-submit" style="width:100%;justify-content:center">
+      <span class="lf-label">{copy.submit}</span>
+      <Icon name="arrow-right" size={18} />
+    </button>
+
+    <p class="form-note">{copy.privacy}</p>
+    <div class="form-status" id="lf-status" role="status" aria-live="polite"></div>
+  </form>
+</div>
+
+<script is:inline define:vars={{ okMsg: copy.ok, errMsg: copy.err, sendingMsg: copy.sending, submitMsg: copy.submit }}>
+  (function () {
+    const form = document.getElementById('leadForm');
+    if (!form) return;
+    const pageInput = document.getElementById('leadPage');
+    if (pageInput) pageInput.value = window.location.pathname;
+    const status = document.getElementById('lf-status');
+    const btn = document.getElementById('lf-submit');
+    const label = btn.querySelector('.lf-label');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.className = 'form-status';
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      btn.disabled = true;
+      label.textContent = sendingMsg;
+      try {
+        const res = await fetch('/api/lead', { method: 'POST', body: new FormData(form) });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          status.className = 'form-status ok';
+          status.textContent = okMsg;
+          form.reset();
+        } else {
+          throw new Error(data.error || 'request_failed');
+        }
+      } catch (err) {
+        status.className = 'form-status err';
+        status.textContent = errMsg;
+      } finally {
+        btn.disabled = false;
+        label.textContent = submitMsg;
+      }
+    });
+  })();
+</script>

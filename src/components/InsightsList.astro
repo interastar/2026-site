@@ -1,0 +1,42 @@
+---
+import Icon from './Icon.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Card { title: string; description: string; category: string; date: string; href: string }
+interface Props { lang: Lang; posts: Card[] }
+const { lang, posts } = Astro.props;
+const t = useTranslations(lang);
+
+const c = lang === 'es'
+  ? { eyebrow: 'Insights', h1: 'Conocimiento para decidir mejor', lede: 'Tendencias, guías y casos sobre ERP, CX e IA aplicada al negocio.', empty: 'Pronto publicaremos nuevos artículos.' }
+  : { eyebrow: 'Insights', h1: 'Knowledge to decide better', lede: 'Trends, guides and cases on ERP, CX and AI applied to business.', empty: 'New articles coming soon.' };
+---
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow"><span class="star-dot"></span>{c.eyebrow}</span>
+      <h1 class="h1" style="margin-top:14px;font-size:clamp(34px,4.5vw,56px)">{c.h1}</h1>
+      <p class="lede">{c.lede}</p>
+    </div>
+
+    {posts.length === 0 ? (
+      <p class="muted">{c.empty}</p>
+    ) : (
+      <div class="post-grid">
+        {posts.map((p) => (
+          <a class="post-card reveal" href={p.href}>
+            <div class="thumb"><span class="tag">{p.category}</span></div>
+            <div class="body">
+              <span class="meta">{p.date}</span>
+              <h3>{p.title}</h3>
+              <p>{p.description}</p>
+              <span class="arrow" style="color:var(--accent);font:600 13px var(--font-ui);display:inline-flex;align-items:center;gap:4px;margin-top:4px">
+                {lang === 'es' ? 'Leer artículo' : 'Read article'}<Icon name="arrow-right" size={14} />
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"compatibility_date": "2026-06-24",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"name": "2026-site",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	},
+	// Non-secret config. The destination ClickUp list for web leads:
+	// Marketing > Oportunidades > "List". Change if you create a dedicated list.
+	"vars": {
+		"CLICKUP_LIST_ID": "901113951091"
+	}
+	// Secret (do NOT commit). Set once with:
+	//   pnpm wrangler secret put CLICKUP_API_TOKEN
+	// For local dev, put it in .dev.vars (gitignored). See .dev.vars.example.
+}

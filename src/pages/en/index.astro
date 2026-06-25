@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomePage from '../../components/pages/HomePage.astro';
+import { getPostCards } from '../../lib/posts';
+const posts = await getPostCards('en');
+---
+<BaseLayout
+  lang="en"
+  current="home"
+  title="Interastar · Strategic partner in cloud ERP and CX"
+  description="B2B technology services firm and systems integrator. We unify cloud ERP, CX and conversational AI with Acumatica, Genesys, Numia, Infobip and Vonage."
+>
+  <HomePage lang="en" posts={posts} />
+</BaseLayout>

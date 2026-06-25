@@ -1,0 +1,196 @@
+---
+/**
+ * Full-bleed hero background — Interastar "Convergencia".
+ * Blurred plasma filaments (energy threads) flowing inward and concentrating
+ * into a luminous core on the right. Bottom fades to the page background (white)
+ * so the hero melts into the rest of the page. Canvas-only, no assets.
+ * Respects prefers-reduced-motion and `?still=1`; pauses off-screen/hidden.
+ */
+---
+<canvas id="heroBg" class="hero-bg-canvas" aria-hidden="true"></canvas>
+
+<style>
+  .hero-bg-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+</style>
+
+<script>
+  const canvas = document.getElementById('heroBg') as HTMLCanvasElement | null;
+  if (canvas) {
+    const ctx = canvas.getContext('2d')!;
+    const wrap = canvas.parentElement as HTMLElement;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      || new URLSearchParams(location.search).has('still');
+
+    // offscreen buffer for the plasma (blurred once when composited)
+    const off = document.createElement('canvas');
+    const octx = off.getContext('2d')!;
+
+    const core = { x: 0.72, y: 0.44 };
+    const PAGE = '250,251,252'; // --bg-page
+
+    type RGB = string;
+    const CYAN: RGB = '0,168,234', BLUE: RGB = '0,116,181', SKY: RGB = '127,211,245', GREEN: RGB = '103,219,60';
+
+    type Thread = { ang: number; len: number; w: number; col: RGB; a: number; ph: number; sp: number; curve: number };
+    type Blob = { x: number; y: number; r: number; col: RGB; a: number; sp: number; sw: number };
+
+    let W = 0, H = 0, DPR = 1, OW = 0, OH = 0;
+    let threads: Thread[] = [];
+    let blobs: Blob[] = [];
+    let raf = 0, running = false, t = 0;
+
+    function rnd(a: number, b: number) { return a + Math.random() * (b - a); }
+    function threadColor(): RGB {
+      const r = Math.random();
+      if (r < 0.42) return GREEN;          // a bit more green presence
+      if (r < 0.72) return CYAN;
+      if (r < 0.9) return SKY;
+      return BLUE;
+    }
+
+    function build() {
+      const rect = wrap.getBoundingClientRect();
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = rect.width; H = rect.height;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      OW = Math.max(1, Math.round(W * 0.45));
+      OH = Math.max(1, Math.round(H * 0.45));
+      off.width = OW; off.height = OH;
+
+      const n = 8;
+      threads = Array.from({ length: n }, (_, i) => ({
+        // bias anchors around the core: right, up-right, down-right, and some sweeping left
+        ang: (-Math.PI * 0.85) + (i / n) * (Math.PI * 1.7) + rnd(-0.18, 0.18),
+        len: rnd(0.7, 1.15),
+        w: rnd(0.05, 0.12),
+        col: threadColor(),
+        a: rnd(0.55, 1),
+        ph: rnd(0, 6.28),
+        sp: rnd(0.004, 0.009),
+        curve: rnd(0.1, 0.26) * (Math.random() < 0.5 ? 1 : -1),
+      }));
+      blobs = Array.from({ length: 5 }, () => spawnBlob(true));
+    }
+
+    function spawnBlob(anywhere: boolean): Blob {
+      let x: number, y: number;
+      if (anywhere) { x = rnd(0, OW); y = rnd(0, OH * 0.85); }
+      else {
+        const edge = Math.random();
+        if (edge < 0.5) { x = rnd(0, OW); y = (Math.random() < 0.5 ? -0.1 : 0.9) * OH; }
+        else { x = (Math.random() < 0.5 ? -0.1 : 1.1) * OW; y = rnd(0, OH * 0.85); }
+      }
+      return { x, y, r: rnd(0.18, 0.4) * Math.min(OW, OH), col: Math.random() < 0.35 ? GREEN : (Math.random() < 0.6 ? CYAN : BLUE), a: rnd(0.1, 0.2), sp: rnd(0.0007, 0.0018), sw: rnd(-0.4, 0.4) };
+    }
+
+    function drawThread(th: Thread, ocx: number, ocy: number, maxR: number) {
+      const ang = th.ang + (reduce ? 0 : Math.sin(t * 0.0009 + th.ph) * 0.16);
+      const fx = ocx + Math.cos(ang) * th.len * maxR * 0.62;
+      const fy = ocy + Math.sin(ang) * th.len * maxR * 0.62;
+      const ex = ocx + Math.cos(ang) * maxR * 0.05;
+      const ey = ocy + Math.sin(ang) * maxR * 0.05;
+      const perp = ang + Math.PI / 2;
+      const wob = (reduce ? 0.3 : Math.sin(t * th.sp + th.ph)) * th.curve * maxR * 0.5;
+      const mx = (fx + ex) / 2 + Math.cos(perp) * wob;
+      const my = (fy + ey) / 2 + Math.sin(perp) * wob;
+      const g = octx.createLinearGradient(fx, fy, ex, ey);
+      g.addColorStop(0, `rgba(${th.col},0)`);
+      g.addColorStop(0.5, `rgba(${th.col},${(0.18 * th.a).toFixed(3)})`);
+      g.addColorStop(0.85, `rgba(${th.col},${(0.42 * th.a).toFixed(3)})`);
+      g.addColorStop(1, `rgba(${th.col},${(0.6 * th.a).toFixed(3)})`);
+      octx.strokeStyle = g;
+      octx.lineWidth = th.w * Math.min(OW, OH);
+      octx.lineCap = 'round';
+      octx.beginPath();
+      octx.moveTo(fx, fy);
+      octx.quadraticCurveTo(mx, my, ex, ey);
+      octx.stroke();
+    }
+
+    function frame() {
+      t += 1;
+      const ocx = core.x * OW, ocy = core.y * OH, maxR = Math.hypot(OW, OH);
+
+      // plasma into offscreen (additive)
+      octx.setTransform(1, 0, 0, 1, 0, 0);
+      octx.clearRect(0, 0, OW, OH);
+      octx.globalCompositeOperation = 'lighter';
+
+      for (const b of blobs) {
+        const dx = ocx - b.x, dy = ocy - b.y, d = Math.hypot(dx, dy) || 1;
+        if (!reduce) {
+          b.x += (dx / d) * b.sp * OW + (-dy / d) * b.sw * 0.3;
+          b.y += (dy / d) * b.sp * OH + (dx / d) * b.sw * 0.3;
+          if (d < b.r * 0.3) Object.assign(b, spawnBlob(false));
+        }
+        const g = octx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+        g.addColorStop(0, `rgba(${b.col},${b.a})`);
+        g.addColorStop(1, `rgba(${b.col},0)`);
+        octx.fillStyle = g; octx.beginPath(); octx.arc(b.x, b.y, b.r, 0, 6.283); octx.fill();
+      }
+
+      for (const th of threads) drawThread(th, ocx, ocy, maxR);
+
+      // luminous core (bloom)
+      const pulse = reduce ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.02);
+      const cr = Math.min(OW, OH) * (0.34 + 0.05 * pulse);
+      const cg = octx.createRadialGradient(ocx, ocy, 0, ocx, ocy, cr);
+      cg.addColorStop(0, `rgba(200,240,255,${0.6 + 0.15 * pulse})`);
+      cg.addColorStop(0.3, `rgba(${CYAN},0.5)`);
+      cg.addColorStop(0.6, `rgba(${GREEN},0.14)`);
+      cg.addColorStop(1, `rgba(${BLUE},0)`);
+      octx.fillStyle = cg; octx.beginPath(); octx.arc(ocx, ocy, cr, 0, 6.283); octx.fill();
+
+      // ---- compose onto main canvas ----
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.filter = 'none';
+      // base dark field
+      const base = ctx.createLinearGradient(0, 0, W * 0.4, H);
+      base.addColorStop(0, '#001826');
+      base.addColorStop(0.6, '#002233');
+      base.addColorStop(1, '#01293c');
+      ctx.fillStyle = base; ctx.fillRect(0, 0, W, H);
+
+      // blurred plasma, added once
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.filter = `blur(${Math.max(14, Math.round(W * 0.012))}px)`;
+      ctx.drawImage(off, 0, 0, W, H);
+      ctx.filter = 'none';
+      ctx.globalCompositeOperation = 'source-over';
+
+      // left protection for headline legibility
+      const lp = ctx.createLinearGradient(0, 0, W * 0.62, 0);
+      lp.addColorStop(0, 'rgba(0,18,28,0.82)');
+      lp.addColorStop(0.55, 'rgba(0,18,28,0.32)');
+      lp.addColorStop(1, 'rgba(0,18,28,0)');
+      ctx.fillStyle = lp; ctx.fillRect(0, 0, W, H * 0.92);
+
+      // bottom fade to page background (white) — melts into the page
+      const bf = ctx.createLinearGradient(0, 0, 0, H);
+      bf.addColorStop(0, `rgba(${PAGE},0)`);
+      bf.addColorStop(0.68, `rgba(${PAGE},0)`);
+      bf.addColorStop(0.86, `rgba(${PAGE},0.55)`);
+      bf.addColorStop(1, `rgba(${PAGE},1)`);
+      ctx.fillStyle = bf; ctx.fillRect(0, 0, W, H);
+
+      if (!reduce && running) raf = requestAnimationFrame(frame);
+    }
+
+    function start() { if (!running) { running = true; frame(); } }
+    function stop() { running = false; cancelAnimationFrame(raf); }
+
+    build();
+    frame();
+    if (!reduce) {
+      const io = new IntersectionObserver((es) => { for (const e of es) e.isIntersecting ? start() : stop(); }, { threshold: 0.02 });
+      io.observe(wrap);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); else stop(); });
+      let rt: number;
+      new ResizeObserver(() => { clearTimeout(rt); rt = window.setTimeout(() => { build(); frame(); }, 150); }).observe(wrap);
+      start();
+    }
+  }
+</script>

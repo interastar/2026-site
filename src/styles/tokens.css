@@ -1,0 +1,199 @@
+/* =========================================================================
+   Interastar — Foundations (color, type, spacing, radii, shadow, motion)
+   Source: Interastar Brandbook (ES). Self-hosted fonts under /public/fonts.
+   ========================================================================= */
+
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/Exo2-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  src: url("/fonts/PublicSans-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- Brand color: green ---------------------------------------------- */
+  --ia-green-100: #daf6ce;
+  --ia-green-200: #b2ed9d;
+  --ia-green-300: #8ce46c;
+  --ia-green:     #67db3c; /* PANTONE 7488C — primary green accent */
+
+  /* ---- Brand color: light blue ---------------------------------------- */
+  --ia-cyan-100:  #bfe8fa;
+  --ia-cyan-200:  #7fd3f5;
+  --ia-cyan-300:  #40bef0;
+  --ia-cyan:      #00a8ea; /* PANTONE 299C — sky cyan */
+
+  /* ---- Brand color: blue (primary) ----------------------------------- */
+  --ia-blue-100:  #bfdcec;
+  --ia-blue-200:  #7eb9d9;
+  --ia-blue-300:  #4197c8;
+  --ia-blue:      #0074b5; /* PANTONE 7690C — primary blue */
+
+  /* ---- Brand color: deep blue ---------------------------------------- */
+  --ia-deep-100:  #bfd3de;
+  --ia-deep-200:  #7fa8be;
+  --ia-deep-300:  #407c9e;
+  --ia-deep:      #00507c; /* PANTONE 7692C */
+
+  /* ---- Brand color: navy --------------------------------------------- */
+  --ia-navy-100:  #bfced5;
+  --ia-navy-200:  #7f9ba9;
+  --ia-navy-300:  #406a80;
+  --ia-navy:      #003854; /* PANTONE 540C */
+
+  /* ---- Dark surface -------------------------------------------------- */
+  --ia-ink:       #002233; /* PANTONE 539C — dark background  */
+  --ia-logotype:  #323232; /* logo text color, used for body  */
+
+  /* ---- Warm neutrals ------------------------------------------------- */
+  --ia-off-white: #fbf8f2;
+  --ia-warm-100:  #f4eee2;
+  --ia-warm-200:  #e8e1d4;
+  --ia-warm-300:  #cbc2b1;
+  --ia-warm-500:  #8e8579;
+
+  /* ---- Neutrals (cool-leaning — default UI surfaces) ----------------- */
+  --ia-white:     #ffffff;
+  --ia-paper:     #fafbfc;
+  --ia-mist:      #f3f6f9;
+  --ia-fog:       #e6ecf1;
+  --ia-line:      #d6dee5;
+  --ia-line-strong:#b6c2cc;
+  --ia-muted:     #6b7a86;
+  --ia-subtle:    #94a0ab;
+
+  /* ---- Semantic foreground / background ------------------------------ */
+  --fg-1:         var(--ia-logotype);
+  --fg-2:         var(--ia-muted);
+  --fg-3:         var(--ia-subtle);
+  --fg-on-dark:   #ffffff;
+  --fg-on-accent: #ffffff;
+
+  --bg-page:      var(--ia-paper);
+  --bg-surface:   var(--ia-white);
+  --bg-raised:    var(--ia-white);
+  --bg-sunken:    var(--ia-mist);
+  --bg-inverse:   var(--ia-ink);
+
+  --border:       var(--ia-line);
+  --border-strong:var(--ia-line-strong);
+
+  /* ---- Accent: action / brand ---------------------------------------- */
+  --accent:           var(--ia-blue);
+  --accent-hover:     var(--ia-deep);
+  --accent-pressed:   var(--ia-navy);
+  --accent-soft:      var(--ia-cyan-100);
+  --accent-soft-fg:   var(--ia-deep);
+
+  --accent-2:         var(--ia-green);
+  --accent-2-hover:   #58c732;
+  --accent-2-soft:    var(--ia-green-100);
+  --accent-2-soft-fg: #2f7a18;
+
+  /* ---- Status (brand-tonal) ------------------------------------------ */
+  --success:         var(--ia-green);
+  --success-soft:    var(--ia-green-100);
+  --success-soft-fg: #2f6e18;
+
+  --warning:         #e0791a;
+  --warning-soft:    #fde8d2;
+  --warning-soft-fg: #8a4308;
+
+  --danger:          #e11d48;
+  --danger-soft:     #ffe4e6;
+  --danger-soft-fg:  #9f1239;
+
+  --info:            var(--ia-cyan);
+  --info-soft:       var(--ia-cyan-100);
+  --info-soft-fg:    #005a87;
+
+  /* ---- Radii --------------------------------------------------------- */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   16px;
+  --r-xl:   24px;
+  --r-pill: 999px;
+
+  /* ---- Spacing (4px grid) ------------------------------------------- */
+  --sp-0: 0;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 56px;
+  --sp-10: 72px;
+  --sp-11: 96px;
+  --sp-12: 128px;
+
+  /* ---- Shadows (subtle, cool-tinted) -------------------------------- */
+  --shadow-1: 0 1px 2px rgba(0, 34, 51, 0.05),
+              0 1px 1px rgba(0, 34, 51, 0.04);
+  --shadow-2: 0 4px 12px rgba(0, 34, 51, 0.06),
+              0 1px 2px rgba(0, 34, 51, 0.04);
+  --shadow-3: 0 12px 32px rgba(0, 34, 51, 0.10),
+              0 2px 6px rgba(0, 34, 51, 0.04);
+  --shadow-4: 0 28px 64px rgba(0, 34, 51, 0.14),
+              0 4px 12px rgba(0, 34, 51, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(0, 168, 234, 0.30);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                  inset 0 -1px 0 rgba(0, 34, 51, 0.04);
+
+  /* ---- Motion -------------------------------------------------------- */
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+
+  /* ---- Type families ------------------------------------------------ */
+  --font-display: "Exo 2", "Flexo", "Helvetica Neue", Arial, sans-serif;
+  --font-ui:      "Public Sans", "Helvetica Neue", "Arial", system-ui, sans-serif;
+  --font-body:    var(--font-ui);
+  --font-mono:    "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+
+  /* ---- Type scale (1.250 — major third) ----------------------------- */
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-24: 24px;
+  --fs-30: 30px;
+  --fs-36: 36px;
+  --fs-48: 48px;
+  --fs-60: 60px;
+  --fs-72: 72px;
+
+  --lh-tight: 1.1;
+  --lh-snug:  1.25;
+  --lh-base:  1.5;
+  --lh-loose: 1.65;
+
+  --tracking-tight: -0.02em;
+  --tracking-snug:  -0.01em;
+  --tracking-base:  0;
+  --tracking-wide:  0.08em;
+
+  --w-light:    300;
+  --w-regular:  400;
+  --w-medium:   500;
+  --w-semibold: 600;
+  --w-bold:     700;
+  --w-extra:    800;
+  --w-black:    900;
+}
