@@ -47,21 +47,21 @@ const c = {
   },
 }[lang];
 ---
-<section class="section" style="padding-bottom:48px">
+<section class="section pb-12">
   <div class="wrap">
     <span class="eyebrow"><span class="star-dot"></span>{c.eyebrow}</span>
-    <h1 class="h1" style="max-width:880px;margin-top:16px">{c.h1}</h1>
-    <p class="lede" style="max-width:740px">{c.lede}</p>
+    <h1 class="h1 max-w-[880px] mt-4">{c.h1}</h1>
+    <p class="lede max-w-[740px]">{c.lede}</p>
   </div>
 </section>
 
-<section class="section alt" style="padding-top:64px">
+<section class="section alt pt-16">
   <div class="wrap">
     <div class="section-head"><h2 class="h2">{c.platTitle}</h2></div>
     <div class="grid cols-2">
       {c.platforms.map((p) => (
         <a class="card hover reveal" href={p.href}>
-          <div style="display:flex;align-items:center;justify-content:space-between">
+          <div class="flex items-center justify-between">
             <div class={`ic ${p.icc}`}><Icon name={p.ic} /></div>
             <span class="partner">{p.tag}</span>
           </div>
@@ -81,7 +81,7 @@ const c = {
       {c.needs.map((n) => (
         <div class="card reveal">
           <div class="ic"><Icon name={n.ic} /></div>
-          <h3 style="font-size:18px">{n.title}</h3>
+          <h3 class="text-[18px]">{n.title}</h3>
           <p>{n.text}</p>
         </div>
       ))}

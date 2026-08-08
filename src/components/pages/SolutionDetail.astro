@@ -26,22 +26,22 @@ interface Props { lang: Lang; content: SolutionContent; source: string }
 const { lang, content: c, source } = Astro.props;
 const t = useTranslations(lang);
 ---
-<section class="section" style="padding-bottom:56px">
+<section class="section pb-14">
   <div class="wrap">
     <p class="crumbs"><a href={path('solutions', lang)}>{lang === 'es' ? 'Soluciones' : 'Solutions'}</a> / {c.name}</p>
-    <div class="section-split" style="align-items:center">
+    <div class="section-split">
       <div>
         <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
-        <h1 class="h1" style="margin-top:14px">{c.title}</h1>
-        <p class="lede" style="max-width:560px">{c.lede}</p>
+        <h1 class="h1 mt-[14px]">{c.title}</h1>
+        <p class="lede max-w-[560px]">{c.lede}</p>
         <div class="hero-actions">
-          <a class="btn primary" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
-          <a class="btn secondary" href="#solicitar">{lang === 'es' ? 'Solicitar información' : 'Request info'}</a>
+          <a class="btn btn-primary" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
+          <a class="btn btn-secondary" href="#solicitar">{lang === 'es' ? 'Solicitar información' : 'Request info'}</a>
         </div>
       </div>
-      <div class="card" style="box-shadow:var(--shadow-2);padding:32px">
+      <div class="card shadow-[var(--shadow-2)] p-8">
         <span class="partner">{c.name}</span>
-        <ul class="checklist" style="margin-top:8px">
+        <ul class="checklist mt-2">
           {c.heroBullets.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
         </ul>
       </div>
@@ -50,8 +50,8 @@ const t = useTranslations(lang);
 </section>
 
 <!-- Outcomes -->
-<section class="stats" style="padding:64px 0">
-  <div class="wrap stats-grid">
+<section class="stats !py-16">
+  <div class="wrap grid grid-cols-4 gap-10 relative max-[720px]:grid-cols-2 max-[720px]:gap-7">
     {c.outcomes.map((o) => (
       <div class="stat reveal">
         <div class="num">{o.num}</div>
@@ -66,13 +66,13 @@ const t = useTranslations(lang);
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.capEyebrow}</span>
-      <h2 class="h2" style="margin-top:14px">{c.capTitle}</h2>
+      <h2 class="h2 mt-[14px]">{c.capTitle}</h2>
     </div>
     <div class="grid cols-3">
       {c.capabilities.map((cap) => (
         <div class="card reveal">
           <div class="ic"><Icon name={cap.ic} /></div>
-          <h3 style="font-size:18px">{cap.title}</h3>
+          <h3 class="text-[18px]">{cap.title}</h3>
           <p>{cap.text}</p>
         </div>
       ))}
@@ -85,12 +85,12 @@ const t = useTranslations(lang);
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.whoEyebrow}</span>
-      <h2 class="h2" style="margin-top:14px">{c.whoTitle}</h2>
+      <h2 class="h2 mt-[14px]">{c.whoTitle}</h2>
     </div>
     <div class="grid cols-3">
       {c.who.map((w) => (
-        <div class="card reveal" style="border:1px solid var(--border)">
-          <h3 style="font-size:18px;color:var(--accent)">{w.role}</h3>
+        <div class="card reveal">
+          <h3 class="text-[18px] text-[var(--accent)]">{w.role}</h3>
           <p>{w.text}</p>
         </div>
       ))}
@@ -116,8 +116,8 @@ const t = useTranslations(lang);
   <div class="wrap form-grid">
     <div>
       <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
-      <h2 class="h2" style="margin-top:14px">{c.formTitle}</h2>
-      <ul class="checklist" style="margin-top:24px">
+      <h2 class="h2 mt-[14px]">{c.formTitle}</h2>
+      <ul class="checklist mt-6">
         {c.heroBullets.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
       </ul>
     </div>

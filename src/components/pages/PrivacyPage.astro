@@ -34,7 +34,7 @@ const c = {
 ---
 <section class="section">
   <div class="wrap prose">
-    <h1 class="h1" style="font-size:clamp(32px,4vw,48px)">{c.title}</h1>
+    <h1 class="h1 text-[clamp(32px,4vw,48px)]">{c.title}</h1>
     <p class="muted">{c.updated}</p>
     {c.body.map(([h, p]) => (<><h2>{h}</h2><p>{p}</p></>))}
     <p>{c.contact} <a href="mailto:contacto@interastar.com">contacto@interastar.com</a>.</p>

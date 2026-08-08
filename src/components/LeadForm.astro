@@ -38,8 +38,8 @@ const copy = {
 }[lang];
 ---
 <div class="form-card">
-  <h3 style="margin:0 0 6px;font:600 22px var(--font-ui);color:var(--ia-ink)">{copy.title}</h3>
-  <p style="margin:0 0 22px;font:400 14px/1.6 var(--font-ui);color:var(--fg-2)">{copy.subtitle}</p>
+  <h3 class="mt-0 mb-1.5 text-[22px] font-semibold text-[var(--ia-ink)]">{copy.title}</h3>
+  <p class="mt-0 mb-[22px] text-sm leading-relaxed text-[var(--fg-2)]">{copy.subtitle}</p>
 
   <form id="leadForm" novalidate>
     <input type="hidden" name="source" value={source} />
@@ -91,7 +91,7 @@ const copy = {
       <textarea id="lf-message" name="message" rows="3"></textarea>
     </div>
 
-    <button type="submit" class="btn primary" id="lf-submit" style="width:100%;justify-content:center">
+    <button type="submit" class="btn btn-primary w-full justify-center" id="lf-submit">
       <span class="lf-label">{copy.submit}</span>
       <Icon name="arrow-right" size={18} />
     </button>

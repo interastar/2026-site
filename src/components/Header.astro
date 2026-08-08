@@ -21,61 +21,53 @@ const links: { key: RouteKey; label: string }[] = [
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href={path('home', lang)} aria-label="Interastar">
-      <img src="/brand/logo-interastar.svg" alt="Interastar" width="150" height="30" />
+      <img src="/brand/logo-interastar.svg" alt="Interastar" class="h-8 w-auto" />
     </a>
 
-    <nav aria-label={lang === 'es' ? 'Principal' : 'Main'}>
-      <ul class="nav-links" id="navLinks">
-        {links.map((l) => (
-          <li class={l.key === 'solutions' ? 'has-sub' : ''}>
-            <a href={path(l.key, lang)} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
-            {l.key === 'solutions' && (
-              <ul class="subnav">
-                <li><a href={path('acumatica', lang)}>{t('nav.acumatica')}</a></li>
-                <li><a href={path('genesys', lang)}>{t('nav.genesys')}</a></li>
-              </ul>
-            )}
-          </li>
-        ))}
-        <li class="nav-mobile-cta"><a href={path('contact', lang)} class="btn primary">{t('nav.cta')}</a></li>
-      </ul>
-    </nav>
+    <div class="ml-auto flex items-center gap-4">
+      <nav aria-label={lang === 'es' ? 'Principal' : 'Main'}>
+        <ul id="navLinks" class="nav-links hidden md:flex items-center gap-7">
+          {links.map((l) => (
+            <li class={l.key === 'solutions' ? 'relative md:group' : ''}>
+              <a class="text-sm text-(--fg-2) hover:text-(--fg-1)" href={path(l.key, lang)} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
+              {l.key === 'solutions' && (
+                <ul class="flex flex-col gap-2 md:hidden md:group-hover:flex md:absolute md:top-full md:left-0 md:min-w-50 md:bg-base-100 md:border md:rounded-md md:shadow-lg md:py-2 md:px-0">
+                  <li><a class="px-3 py-1 text-sm text-(--fg-2) hover:bg-(--ia-mist)" href={path('acumatica', lang)}>{t('nav.acumatica')}</a></li>
+                  <li><a class="px-3 py-1 text-sm text-(--fg-2) hover:bg-(--ia-mist)" href={path('genesys', lang)}>{t('nav.genesys')}</a></li>
+                </ul>
+              )}
+            </li>
+          ))}
+          <li class="block md:hidden mt-2"><a href={path('contact', lang)} class="btn btn-primary w-full justify-center">{t('nav.cta')}</a></li>
+        </ul>
+      </nav>
 
-    <div class="nav-actions">
-      <a class="lang-switch" href={altPath} hreflang={other} aria-label={`Switch to ${other === 'es' ? 'Español' : 'English'}`}>
-        {t('lang.switch')}
-      </a>
-      <a class="btn primary" href={path('contact', lang)}>{t('nav.cta')}</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
-        <Icon name="menu" size={24} />
-      </button>
+      <div class="nav-actions nav-actions--bordered">
+        <a class="lang-switch" href={altPath} hreflang={other} aria-label={`Switch to ${other === 'es' ? 'Español' : 'English'}`}>
+          <Icon name="globe" size={14} />
+          {t('lang.switch')}
+        </a>
+        <a class="btn btn-primary hidden md:inline-flex" href={path('contact', lang)}>{t('nav.cta')}</a>
+        <button id="navToggle" class="nav-toggle md:hidden inline-flex" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+          <Icon name="menu" size={24} />
+        </button>
+      </div>
     </div>
   </div>
 </header>
-
-<style>
-  .has-sub { position: relative; }
-  .subnav {
-    list-style: none; margin: 0; padding: 8px; position: absolute; top: 100%; left: -8px;
-    min-width: 200px; background: var(--bg-surface); border: 1px solid var(--border);
-    border-radius: var(--r-md); box-shadow: var(--shadow-3); display: none; flex-direction: column; gap: 2px;
-  }
-  .has-sub:hover .subnav, .has-sub:focus-within .subnav { display: flex; }
-  .subnav a { padding: 9px 10px; border-radius: var(--r-sm); display: block; font-weight: 500; }
-  .subnav a:hover { background: var(--ia-mist); }
-  .nav-mobile-cta { display: none; }
-  @media (max-width: 920px) {
-    .subnav { position: static; display: flex; box-shadow: none; border: 0; padding: 4px 0 8px 12px; }
-    .nav-mobile-cta { display: block; margin-top: 8px; }
-    .nav-mobile-cta .btn { width: 100%; justify-content: center; }
-  }
-</style>
 
 <script>
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
   toggle?.addEventListener('click', () => {
-    const open = links?.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const nowHidden = links.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', nowHidden ? 'false' : 'true');
   });
+
+  const nav = document.querySelector('.nav') as HTMLElement;
+  const onScroll = () => {
+    nav?.toggleAttribute('data-scrolled', window.scrollY > 40);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 </script>

@@ -103,7 +103,7 @@ const c = {
       </h1>
       <p class="hero-sub">{c.heroSub}</p>
       <div>
-        <a class="btn cta-green" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
+        <a class="btn btn-accent text-neutral" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
       </div>
     </div>
   </div>
@@ -116,7 +116,7 @@ const c = {
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.segEyebrow}</span>
-      <h2 class="h2" style="margin-top:14px">{c.segTitle}</h2>
+      <h2 class="h2 mt-[14px]">{c.segTitle}</h2>
       <p class="lede">{c.segText}</p>
     </div>
     <div class="grid cols-3">
@@ -137,14 +137,14 @@ const c = {
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.svcEyebrow}</span>
-      <h2 class="h2" style="margin-top:14px">{c.svcTitle}</h2>
+      <h2 class="h2 mt-[14px]">{c.svcTitle}</h2>
       <p class="lede">{c.svcText}</p>
     </div>
     <div class="grid cols-4">
       {c.services.map((s) => (
         <div class="card hover reveal">
           <div class={`ic ${s.icc}`}><Icon name={s.ic} /></div>
-          <h3 style="font-size:18px">{s.title}</h3>
+          <h3 class="text-[18px]">{s.title}</h3>
           <p>{s.text}</p>
         </div>
       ))}
@@ -157,14 +157,14 @@ const c = {
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.platEyebrow}</span>
-      <h2 class="h2" style="margin-top:14px">{c.platTitle}</h2>
+      <h2 class="h2 mt-[14px]">{c.platTitle}</h2>
       <p class="lede">{c.platText}</p>
     </div>
     <div class="grid cols-2">
       {c.platforms.map((p) => (
         <a class="card hover reveal" href={p.href}>
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <span style="font:900 22px var(--font-display);color:var(--ia-ink);letter-spacing:-0.01em">{p.name}</span>
+          <div class="flex items-center justify-between">
+            <span class="text-[22px] font-black font-[family-name:var(--font-display)] text-[var(--ia-ink)] tracking-[-0.01em]">{p.name}</span>
             <span class="partner">{p.tag}</span>
           </div>
           <p>{p.text}</p>
@@ -181,13 +181,13 @@ const c = {
 {posts.length > 0 && (
   <section class="section alt">
     <div class="wrap">
-      <div class="section-head" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:24px;flex-wrap:wrap">
+      <div class="section-head flex justify-between items-end max-w-none gap-6 flex-wrap">
         <div>
           <span class="eyebrow"><span class="star-dot"></span>{c.insEyebrow}</span>
-          <h2 class="h2" style="margin-top:14px;margin-bottom:8px">{c.insTitle}</h2>
+          <h2 class="h2 mt-[14px] mb-2">{c.insTitle}</h2>
           <p class="lede">{c.insText}</p>
         </div>
-        <a class="btn secondary" href={path('insights', lang)}>{c.insAll}<Icon name="arrow-right" size={18} /></a>
+        <a class="btn btn-secondary" href={path('insights', lang)}>{c.insAll}<Icon name="arrow-right" size={18} /></a>
       </div>
       <div class="post-grid">
         {posts.slice(0, 3).map((p) => (

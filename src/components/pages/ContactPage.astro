@@ -45,22 +45,22 @@ const c = {
   <div class="wrap form-grid">
     <div>
       <span class="eyebrow"><span class="star-dot"></span>{c.eyebrow}</span>
-      <h1 class="h1" style="margin-top:14px">{c.h1}</h1>
+      <h1 class="h1 mt-[14px]">{c.h1}</h1>
       <p class="lede">{c.lede}</p>
-      <ul class="checklist" style="margin-top:24px">
+      <ul class="checklist mt-6">
         {c.benefits.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
       </ul>
 
-      <h3 class="h3" style="font-size:16px;margin-top:40px;margin-bottom:16px">{c.channelsTitle}</h3>
-      <div style="display:grid;gap:14px">
+      <h3 class="h3 text-[16px] mt-10 mb-4">{c.channelsTitle}</h3>
+      <div class="grid gap-[14px]">
         {c.channels.map((ch) => (
-          <div style="display:flex;align-items:center;gap:12px">
-            <div class="ic" style="width:38px;height:38px"><Icon name={ch.ic} size={18} /></div>
+          <div class="flex items-center gap-3">
+            <div class="ic w-[38px] h-[38px]"><Icon name={ch.ic} size={18} /></div>
             <div>
-              <div style="font:700 11px var(--font-ui);letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--fg-3)">{ch.label}</div>
+              <div class="font-bold text-[11px] tracking-[var(--tracking-wide)] uppercase text-[var(--fg-3)]">{ch.label}</div>
               {ch.href
-                ? <a href={ch.href} style="font:600 15px var(--font-ui)">{ch.value}</a>
-                : <span style="font:600 15px var(--font-ui);color:var(--fg-1)">{ch.value}</span>}
+                ? <a href={ch.href} class="font-semibold text-[15px]">{ch.value}</a>
+                : <span class="font-semibold text-[15px] text-[var(--fg-1)]">{ch.value}</span>}
             </div>
           </div>
         ))}

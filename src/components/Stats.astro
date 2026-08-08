@@ -15,7 +15,7 @@ const items = lang === 'es'
     ];
 ---
 <section class="stats">
-  <div class="wrap stats-grid stats-3">
+  <div class="wrap grid grid-cols-3 gap-10 relative max-[720px]:grid-cols-1 max-[720px]:gap-7">
     {items.map((s) => (
       <div class="stat reveal">
         <div class="num">{s.num}<b>{s.unit}</b></div>
@@ -24,8 +24,3 @@ const items = lang === 'es'
     ))}
   </div>
 </section>
-
-<style>
-  .stats-3 { grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 720px) { .stats-3 { grid-template-columns: 1fr; } }
-</style>

@@ -1,23 +1,11 @@
 /* =========================================================================
    Interastar — Foundations (color, type, spacing, radii, shadow, motion)
-   Source: Interastar Brandbook (ES). Self-hosted fonts under /public/fonts.
+   Source: Interastar Brandbook (ES).
+   Google Fonts are used instead of self-hosted TTFs for simpler updates.
    ========================================================================= */
 
-@font-face {
-  font-family: "Exo 2";
-  src: url("/fonts/Exo2-VariableFont_wght.ttf") format("truetype-variations");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Public Sans";
-  src: url("/fonts/PublicSans-VariableFont_wght.ttf") format("truetype-variations");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
+/* Import fonts from Google Fonts: Exo 2 (display), Public Sans (UI), JetBrains Mono (mono) */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;400;500;600;700;900&family=Public+Sans:wght@100;300;400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
 
 :root {
   /* ---- Brand color: green ---------------------------------------------- */

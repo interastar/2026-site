@@ -25,7 +25,7 @@ const text = Astro.props.text ?? def.text;
         <h2 set:html={title}></h2>
         <p>{text}</p>
         <div class="actions">
-          <a class="btn cta-green" href={path('contact', lang)}>
+          <a class="btn btn-accent text-neutral" href={path('contact', lang)}>
             {t('cta.primary')}
             <Icon name="arrow-right" size={18} />
           </a>

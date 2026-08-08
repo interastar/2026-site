@@ -22,16 +22,16 @@ const lang = 'es';
   description={entry.data.description}
   alternates={{ es: `/insights/${slug}/`, en: `/en/insights/${slug}/` }}
 >
-  <article class="section" style="padding-top:48px">
+  <article class="section pt-12">
     <div class="wrap prose">
       <p class="crumbs"><a href={path('insights', lang)}>Insights</a> / {entry.data.category}</p>
-      <h1 class="h1" style="font-size:clamp(30px,4vw,48px);margin-bottom:12px">{entry.data.title}</h1>
-      <p class="lede" style="margin-bottom:8px">{entry.data.description}</p>
-      <p class="muted" style="font-size:14px">{entry.data.category} · {fmtDate(entry.data.pubDate, lang)} · {entry.data.author}</p>
+      <h1 class="h1 text-[clamp(30px,4vw,48px)] mb-3">{entry.data.title}</h1>
+      <p class="lede mb-2">{entry.data.description}</p>
+      <p class="muted text-sm">{entry.data.category} · {fmtDate(entry.data.pubDate, lang)} · {entry.data.author}</p>
       <hr />
       <Content />
       <hr />
-      <a class="btn primary" href={path('contact', lang)}>Agendar diagnóstico<Icon name="arrow-right" size={18} /></a>
+      <a class="btn btn-primary" href={path('contact', lang)}>Agendar diagnóstico<Icon name="arrow-right" size={18} /></a>
     </div>
   </article>
   <CtaBand lang={lang} />
