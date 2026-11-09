@@ -7,49 +7,48 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
-<footer class="bg-base-100 border-t border-base-200 py-16">
+<footer class="bg-(--bg-surface) border-t border-(--border) py-16">
   <div class="wrap">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-      <div class="about md:col-span-2">
-        <img src="/brand/logo-interastar.svg" alt="Interastar" class="h-8 mb-3" />
-        <p class="text-sm text-[var(--fg-2)] max-w-[300px]">{t('footer.tagline')}</p>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-12 mb-12">
+      <div class="md:col-span-2">
+        <img src="/brand/logo-interastar.svg" alt="Interastar" width="120" height="32" class="h-8 w-auto mb-4" />
+        <p class="text-sm leading-relaxed text-(--fg-2) max-w-[320px]">{t('footer.tagline')}</p>
       </div>
 
       <div>
-        <h4 class="text-xs font-semibold tracking-widest uppercase text-[var(--fg-3)] mb-4">{t('footer.solutions')}</h4>
+        <h4 class="text-sm font-semibold text-(--fg-1) mb-4">{t('footer.solutions')}</h4>
         <ul class="list-none p-0 m-0 grid gap-2">
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('acumatica', lang)}>Acumatica ERP</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('genesys', lang)}>Genesys CX</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('solutions', lang)}>{t('footer.integration')}</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('solutions', lang)}>{t('footer.managed')}</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('acumatica', lang)}>Acumatica ERP</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('genesys', lang)}>Genesys CX</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('solutions', lang)}>{t('footer.integration')}</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('solutions', lang)}>{t('footer.managed')}</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="text-xs font-semibold tracking-widest uppercase text-[var(--fg-3)] mb-4">{t('footer.company')}</h4>
+        <h4 class="text-sm font-semibold text-(--fg-1) mb-4">{t('footer.company')}</h4>
         <ul class="list-none p-0 m-0 grid gap-2">
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('about', lang)}>{t('footer.about')}</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('insights', lang)}>{t('footer.insights')}</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('contact', lang)}>{t('footer.contact')}</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('privacy', lang)}>{t('footer.privacy')}</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('about', lang)}>{t('footer.about')}</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('insights', lang)}>{t('footer.insights')}</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('contact', lang)}>{t('footer.contact')}</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href={path('privacy', lang)}>{t('footer.privacy')}</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="text-xs font-semibold tracking-widest uppercase text-[var(--fg-3)] mb-4">{t('footer.contact')}</h4>
+        <h4 class="text-sm font-semibold text-(--fg-1) mb-4">{t('footer.contact')}</h4>
         <ul class="list-none p-0 m-0 grid gap-2">
-          <li><a class="text-sm text-[var(--fg-2)]" href="mailto:contacto@interastar.com">contacto@interastar.com</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href={path('contact', lang)}>{t('cta.secondary')}</a></li>
-          <li><a class="text-sm text-[var(--fg-2)] hover:text-[var(--accent)]" href="https://www.linkedin.com/company/interastar" rel="noopener" target="_blank">LinkedIn</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href="mailto:contacto@interastar.com">contacto@interastar.com</a></li>
+          <li><a class="text-sm text-(--fg-2) hover:text-(--accent)" href="https://www.linkedin.com/company/interastar" rel="noopener" target="_blank">LinkedIn</a></li>
         </ul>
       </div>
     </div>
 
-    <div class="w-full border-t pt-6 flex items-center justify-between gap-4 flex-wrap">
-      <span class="text-sm text-[var(--fg-3)]">© {year} Interastar. {t('footer.rights')}</span>
-      <div class="flex gap-3 items-center text-[var(--fg-3)]">
-        <a href="https://www.linkedin.com/company/interastar" rel="noopener" target="_blank" aria-label="LinkedIn" class="text-[var(--fg-3)]"><Icon name="linkedin" size={18} /></a>
-        <a href={path('privacy', lang)} class="text-sm text-[var(--fg-3)]">{t('footer.privacy')}</a>
+    <div class="w-full border-t border-(--border) pt-6 flex items-center justify-between gap-4 flex-wrap">
+      <span class="text-sm text-(--fg-3)">© {year} Interastar. {t('footer.rights')}</span>
+      <div class="flex gap-4 items-center">
+        <a href="https://www.linkedin.com/company/interastar" rel="noopener" target="_blank" aria-label="LinkedIn" class="text-(--fg-3) hover:text-(--accent)"><Icon name="linkedin" size={18} /></a>
+        <a href={path('privacy', lang)} class="text-sm text-(--fg-3) hover:text-(--accent)">{t('footer.privacy')}</a>
       </div>
     </div>
   </div>

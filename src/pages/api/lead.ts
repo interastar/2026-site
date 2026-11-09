@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const get = (k: string) => (form.get(k) ?? '').toString().trim();
 
-  // Honeypot — silently accept without creating a task.
+  // Honeypot: silently accept without creating a task.
   if (get('company_url')) return json({ ok: true });
 
   const name = get('name');
@@ -53,7 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { CLICKUP_API_TOKEN, CLICKUP_LIST_ID } = getEnv();
 
-  const taskName = `Lead web — ${company} (${name})`;
+  const taskName = `Lead web - ${company} (${name})`;
   const description = [
     `**Nuevo lead desde interastar.com**`,
     ``,

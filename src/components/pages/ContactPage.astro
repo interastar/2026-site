@@ -1,7 +1,7 @@
 ---
 import Icon from '../Icon.astro';
 import LeadForm from '../LeadForm.astro';
-import { path, type Lang } from '../../i18n/ui';
+import type { Lang } from '../../i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -20,7 +20,7 @@ const c = {
     channels: [
       { ic: 'mail', label: 'Correo', value: 'contacto@interastar.com', href: 'mailto:contacto@interastar.com' },
       { ic: 'linkedin', label: 'LinkedIn', value: 'Interastar', href: 'https://www.linkedin.com/company/interastar' },
-      { ic: 'map-pin', label: 'Ubicación', value: 'México · LATAM', href: null },
+      { ic: 'map-pin', label: 'Ubicación', value: 'México y LATAM', href: null },
     ],
   },
   en: {
@@ -36,7 +36,7 @@ const c = {
     channels: [
       { ic: 'mail', label: 'Email', value: 'contacto@interastar.com', href: 'mailto:contacto@interastar.com' },
       { ic: 'linkedin', label: 'LinkedIn', value: 'Interastar', href: 'https://www.linkedin.com/company/interastar' },
-      { ic: 'map-pin', label: 'Location', value: 'Mexico · LATAM', href: null },
+      { ic: 'map-pin', label: 'Location', value: 'Mexico and LATAM', href: null },
     ],
   },
 }[lang];
@@ -45,23 +45,23 @@ const c = {
   <div class="wrap form-grid">
     <div>
       <span class="eyebrow"><span class="star-dot"></span>{c.eyebrow}</span>
-      <h1 class="h1 mt-[14px]">{c.h1}</h1>
+      <h1 class="h1">{c.h1}</h1>
       <p class="lede">{c.lede}</p>
       <ul class="checklist mt-6">
         {c.benefits.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
       </ul>
 
-      <h3 class="h3 text-[16px] mt-10 mb-4">{c.channelsTitle}</h3>
-      <div class="grid gap-[14px]">
-        {c.channels.map((ch) => (
-          <div class="flex items-center gap-3">
-            <div class="ic w-[38px] h-[38px]"><Icon name={ch.ic} size={18} /></div>
-            <div>
-              <div class="font-bold text-[11px] tracking-[var(--tracking-wide)] uppercase text-[var(--fg-3)]">{ch.label}</div>
-              {ch.href
-                ? <a href={ch.href} class="font-semibold text-[15px]">{ch.value}</a>
-                : <span class="font-semibold text-[15px] text-[var(--fg-1)]">{ch.value}</span>}
-            </div>
+      <h3 class="h3 text-base mt-10 mb-4">{c.channelsTitle}</h3>
+      <div class="grid gap-3.5">
+        {c.channels.map((ch) => ch.href ? (
+          <a class="channel" href={ch.href} rel={ch.href.startsWith('http') ? 'noopener' : undefined} target={ch.href.startsWith('http') ? '_blank' : undefined}>
+            <div class="ic"><Icon name={ch.ic} size={18} /></div>
+            <div><div class="lbl">{ch.label}</div><div class="val">{ch.value}</div></div>
+          </a>
+        ) : (
+          <div class="channel">
+            <div class="ic"><Icon name={ch.ic} size={18} /></div>
+            <div><div class="lbl">{ch.label}</div><div class="val">{ch.value}</div></div>
           </div>
         ))}
       </div>

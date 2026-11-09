@@ -1,126 +1,107 @@
 ---
 import Icon from '../Icon.astro';
+import Stats from '../Stats.astro';
 import LeadForm from '../LeadForm.astro';
-import { path, useTranslations, type Lang } from '../../i18n/ui';
+import { path, type Lang } from '../../i18n/ui';
 
 export interface SolutionContent {
   tag: string;
   name: string;
   title: string;
   lede: string;
+  image: { src: string; alt: string; width: number; height: number };
+  demoCta: string;
   heroBullets: string[];
-  capEyebrow: string;
   capTitle: string;
   capabilities: { ic: string; title: string; text: string }[];
-  whoEyebrow: string;
   whoTitle: string;
   who: { role: string; text: string }[];
-  outcomes: { num: string; label: string }[];
   integrTitle: string;
   integrText: string;
-  integrations: string[];
+  integrations: { file: string; name: string }[];
   formTitle: string;
 }
 
 interface Props { lang: Lang; content: SolutionContent; source: string }
 const { lang, content: c, source } = Astro.props;
-const t = useTranslations(lang);
 ---
-<section class="section pb-14">
+<section class="section pb-12">
   <div class="wrap">
     <p class="crumbs"><a href={path('solutions', lang)}>{lang === 'es' ? 'Soluciones' : 'Solutions'}</a> / {c.name}</p>
-    <div class="section-split">
+    <div class="split">
       <div>
         <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
-        <h1 class="h1 mt-[14px]">{c.title}</h1>
+        <h1 class="h1">{c.title}</h1>
         <p class="lede max-w-[560px]">{c.lede}</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
-          <a class="btn btn-secondary" href="#solicitar">{lang === 'es' ? 'Solicitar información' : 'Request info'}</a>
+          <a class="btn btn-primary" href="#solicitar">{c.demoCta}<Icon name="arrow-right" size={18} /></a>
         </div>
       </div>
-      <div class="card shadow-[var(--shadow-2)] p-8">
-        <span class="partner">{c.name}</span>
-        <ul class="checklist mt-2">
-          {c.heroBullets.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
-        </ul>
+      <div class="shot reveal">
+        <img src={c.image.src} alt={c.image.alt} width={c.image.width} height={c.image.height} fetchpriority="high" decoding="async" />
       </div>
     </div>
   </div>
 </section>
 
-<!-- Outcomes -->
-<section class="stats !py-16">
-  <div class="wrap grid grid-cols-4 gap-10 relative max-[720px]:grid-cols-2 max-[720px]:gap-7">
-    {c.outcomes.map((o) => (
-      <div class="stat reveal">
-        <div class="num">{o.num}</div>
-        <div class="label">{o.label}</div>
-      </div>
-    ))}
-  </div>
-</section>
+<Stats lang={lang} />
 
-<!-- Capabilities -->
+<!-- Capabilities: two-column list -->
 <section class="section">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow"><span class="star-dot"></span>{c.capEyebrow}</span>
-      <h2 class="h2 mt-[14px]">{c.capTitle}</h2>
-    </div>
-    <div class="grid cols-3">
+    <div class="section-head"><h2 class="h2">{c.capTitle}</h2></div>
+    <div class="list-2">
       {c.capabilities.map((cap) => (
-        <div class="card reveal">
+        <div class="feat-row reveal">
           <div class="ic"><Icon name={cap.ic} /></div>
-          <h3 class="text-[18px]">{cap.title}</h3>
-          <p>{cap.text}</p>
+          <div>
+            <h3>{cap.title}</h3>
+            <p>{cap.text}</p>
+          </div>
         </div>
       ))}
     </div>
   </div>
 </section>
 
-<!-- For who -->
+<!-- For each role: definition rows -->
 <section class="section alt">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow"><span class="star-dot"></span>{c.whoEyebrow}</span>
-      <h2 class="h2 mt-[14px]">{c.whoTitle}</h2>
-    </div>
-    <div class="grid cols-3">
+    <h2 class="h2">{c.whoTitle}</h2>
+    <dl class="def-list mt-8">
       {c.who.map((w) => (
-        <div class="card reveal">
-          <h3 class="text-[18px] text-[var(--accent)]">{w.role}</h3>
-          <p>{w.text}</p>
+        <div class="def-row reveal">
+          <dt>{w.role}</dt>
+          <dd>{w.text}</dd>
         </div>
       ))}
-    </div>
+    </dl>
   </div>
 </section>
 
 <!-- Integrations -->
 <section class="section">
-  <div class="wrap section-split">
+  <div class="wrap split">
     <div>
       <h2 class="h2">{c.integrTitle}</h2>
       <p class="lede">{c.integrText}</p>
     </div>
-    <div class="trust-logos">
-      {c.integrations.map((i) => <span class="trust-logo">{i}</span>)}
+    <div class="logo-row">
+      {c.integrations.map((i) => <img src={`/partners/${i.file}`} alt={i.name} loading="lazy" decoding="async" />)}
     </div>
   </div>
 </section>
 
-<!-- Lead form -->
+<!-- Demo request form -->
 <section class="section alt" id="solicitar">
   <div class="wrap form-grid">
     <div>
       <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
-      <h2 class="h2 mt-[14px]">{c.formTitle}</h2>
+      <h2 class="h2 mt-3.5">{c.formTitle}</h2>
       <ul class="checklist mt-6">
         {c.heroBullets.map((b) => <li><Icon name="check" size={18} />{b}</li>)}
       </ul>
     </div>
-    <LeadForm lang={lang} source={source} />
+    <LeadForm lang={lang} source={source} submit={c.demoCta} />
   </div>
 </section>

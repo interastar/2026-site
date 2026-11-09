@@ -2,21 +2,27 @@
 import type { Lang } from '../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const items = lang === 'es'
-  ? [
-      { num: '+15', unit: ' años', label: 'acompañando a empresas de LATAM en su transformación.' },
-      { num: '120', unit: '+', label: 'proyectos de integración e implementación entregados.' },
-      { num: '24/7', unit: '', label: 'nivel de soporte y servicios administrados.' },
-    ]
-  : [
-      { num: '+15', unit: ' yrs', label: 'helping LATAM companies through their transformation.' },
-      { num: '120', unit: '+', label: 'integration and implementation projects delivered.' },
-      { num: '24/7', unit: '', label: 'support and managed-services coverage.' },
-    ];
+
+const c = lang === 'es'
+  ? {
+      intro: 'Experiencia probada en ERP y CX para empresas de LATAM.',
+      items: [
+        { num: '+15', unit: ' años', label: 'acompañando a empresas en su transformación.' },
+        { num: '120', unit: '+', label: 'proyectos de integración e implementación entregados.' },
+      ],
+    }
+  : {
+      intro: 'Proven ERP and CX experience for companies across LATAM.',
+      items: [
+        { num: '15', unit: '+ yrs', label: 'helping companies through their transformation.' },
+        { num: '120', unit: '+', label: 'integration and implementation projects delivered.' },
+      ],
+    };
 ---
 <section class="stats">
-  <div class="wrap grid grid-cols-3 gap-10 relative max-[720px]:grid-cols-1 max-[720px]:gap-7">
-    {items.map((s) => (
+  <div class="wrap stats-grid">
+    <p class="stats-intro">{c.intro}</p>
+    {c.items.map((s) => (
       <div class="stat reveal">
         <div class="num">{s.num}<b>{s.unit}</b></div>
         <div class="label">{s.label}</div>

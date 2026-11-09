@@ -5,19 +5,28 @@ import type { Lang } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 
+const image = { src: '/screens/acumatica-dashboard.png', alt: 'Acumatica dashboards on desktop and mobile', width: 1200, height: 694 };
+const integrations = [
+  { file: 'genesys-white.png', name: 'Genesys' },
+  { file: 'numia-white.png', name: 'Numia' },
+  { file: 'infobip-white.svg', name: 'Infobip' },
+  { file: 'vonage.png', name: 'Vonage' },
+];
+
 const content: Record<Lang, SolutionContent> = {
   es: {
-    tag: 'Acumatica · Cloud ERP',
+    tag: 'Cloud ERP',
     name: 'Acumatica ERP',
     title: 'Acumatica: el ERP en la nube que crece con tu negocio',
-    lede: 'Unifica finanzas, operaciones, inventario y cadena de suministro en una sola plataforma escalable. Implementamos y personalizamos Acumatica para tu industria, con una metodología end-to-end que reduce el riesgo.',
+    lede: 'Unifica finanzas, operaciones, inventario y cadena de suministro en una sola plataforma escalable. Implementamos y personalizamos Acumatica para tu industria con una metodología que reduce el riesgo.',
+    image: { ...image, alt: 'Tableros de Acumatica en escritorio y móvil' },
+    demoCta: 'Solicitar demo',
     heroBullets: [
       'Licenciamiento por consumo, sin cobro por usuario',
       'Personalización y reportes a la medida de tu operación',
       'Integraciones abiertas con CRM, CX y mensajería',
       'Acompañamiento e implementación de extremo a extremo',
     ],
-    capEyebrow: 'Capacidades',
     capTitle: 'Una plataforma, toda tu operación',
     capabilities: [
       { ic: 'line-chart', title: 'Finanzas y contabilidad', text: 'Cierre financiero más rápido, multi-entidad y multi-moneda, con reportes en tiempo real.' },
@@ -27,61 +36,48 @@ const content: Record<Lang, SolutionContent> = {
       { ic: 'plug-zap', title: 'Integraciones', text: 'APIs abiertas para conectar Acumatica con el resto de tus sistemas sin islas de datos.' },
       { ic: 'shield-check', title: 'Seguridad y cumplimiento', text: 'Roles, auditoría y respaldo en la nube con estándares empresariales.' },
     ],
-    whoEyebrow: 'Para tu rol',
     whoTitle: 'Valor concreto para cada área',
     who: [
       { role: 'Dirección general', text: 'Escalabilidad y control para crecer sin sistemas fragmentados ni costos ocultos por usuario.' },
       { role: 'TI y Sistemas', text: 'Arquitectura abierta, integraciones limpias y una implementación que reduce el riesgo del proyecto.' },
       { role: 'Finanzas y Operaciones', text: 'Cierre del mes más rápido y reportes accionables para decidir con datos en tiempo real.' },
     ],
-    outcomes: [
-      { num: '+15', label: 'años implementando ERP en la nube en LATAM.' },
-      { num: '120+', label: 'proyectos de integración e implementación.' },
-      { num: '100%', label: 'en la nube: sin servidores que mantener.' },
-      { num: '24/7', label: 'soporte y servicios administrados.' },
-    ],
     integrTitle: 'Acumatica, conectado al resto de tu operación',
-    integrText: 'Integramos Acumatica con tus plataformas de CX, mensajería y herramientas de negocio para que la información fluya sin reproceso.',
-    integrations: ['Genesys', 'Numia', 'Infobip', 'Vonage', 'CRM', 'E-commerce'],
+    integrText: 'Integramos Acumatica con tus plataformas de CX, mensajería, CRM y comercio electrónico para que la información fluya sin reproceso.',
+    integrations,
     formTitle: 'Solicita una demo personalizada de Acumatica',
   },
   en: {
-    tag: 'Acumatica · Cloud ERP',
+    tag: 'Cloud ERP',
     name: 'Acumatica ERP',
     title: 'Acumatica: the cloud ERP that grows with your business',
-    lede: 'Unify finance, operations, inventory and supply chain in one scalable platform. We implement and customize Acumatica for your industry with an end-to-end methodology that reduces risk.',
+    lede: 'Unify finance, operations, inventory and supply chain in one scalable platform. We implement and customize Acumatica for your industry with a methodology that reduces risk.',
+    image,
+    demoCta: 'Request a demo',
     heroBullets: [
       'Consumption-based licensing, no per-user fees',
       'Customization and reporting tailored to your operation',
       'Open integrations with CRM, CX and messaging',
       'End-to-end implementation and support',
     ],
-    capEyebrow: 'Capabilities',
     capTitle: 'One platform, your whole operation',
     capabilities: [
       { ic: 'line-chart', title: 'Finance & accounting', text: 'Faster financial close, multi-entity and multi-currency, with real-time reporting.' },
       { ic: 'layers', title: 'Distribution & inventory', text: 'Inventory, purchasing and sales control connected to your daily operation.' },
       { ic: 'workflow', title: 'Projects & services', text: 'Project, cost and billing management with full visibility.' },
       { ic: 'database', title: 'Manufacturing & leasing', text: 'Specialized modules, including solutions for leasing and equipment.' },
-      { ic: 'plug-zap', title: 'Integrations', text: 'Open APIs to connect Acumatica with the rest of your systems — no data islands.' },
+      { ic: 'plug-zap', title: 'Integrations', text: 'Open APIs to connect Acumatica with the rest of your systems, with no data islands.' },
       { ic: 'shield-check', title: 'Security & compliance', text: 'Roles, audit and cloud backup with enterprise standards.' },
     ],
-    whoEyebrow: 'For your role',
     whoTitle: 'Concrete value for every area',
     who: [
       { role: 'Executive / C-Level', text: 'Scalability and control to grow without fragmented systems or hidden per-user costs.' },
       { role: 'IT & Systems', text: 'Open architecture, clean integrations and an implementation that reduces project risk.' },
       { role: 'Finance & Operations', text: 'Faster monthly close and actionable reports to decide with real-time data.' },
     ],
-    outcomes: [
-      { num: '+15', label: 'years implementing cloud ERP across LATAM.' },
-      { num: '120+', label: 'integration and implementation projects.' },
-      { num: '100%', label: 'cloud: no servers to maintain.' },
-      { num: '24/7', label: 'support and managed services.' },
-    ],
     integrTitle: 'Acumatica, connected to the rest of your operation',
-    integrText: 'We integrate Acumatica with your CX, messaging and business tools so information flows with no rework.',
-    integrations: ['Genesys', 'Numia', 'Infobip', 'Vonage', 'CRM', 'E-commerce'],
+    integrText: 'We integrate Acumatica with your CX, messaging, CRM and e-commerce tools so information flows with no rework.',
+    integrations,
     formTitle: 'Request a personalized Acumatica demo',
   },
 };

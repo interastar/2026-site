@@ -1,5 +1,5 @@
 /* =========================================================================
-   i18n — languages, localized route map, and shared UI strings (nav/footer).
+   i18n: languages, localized route map, and shared UI strings (nav/footer).
    Page-level copy lives inside each page component as a { es, en } object.
    ========================================================================= */
 
@@ -36,7 +36,6 @@ export const ui = {
     'nav.contact': 'Contacto',
     'nav.cta': 'Agendar diagnóstico',
     'cta.primary': 'Agendar diagnóstico',
-    'cta.secondary': 'Hablar con un experto',
     'cta.explore': 'Ver soluciones',
     'footer.tagline': 'Firma de servicios tecnológicos B2B e integrador de sistemas. Unificamos ERP en la nube, plataformas CX e IA conversacional en una ventaja operativa.',
     'footer.solutions': 'Soluciones',
@@ -63,7 +62,6 @@ export const ui = {
     'nav.contact': 'Contact',
     'nav.cta': 'Book a diagnostic',
     'cta.primary': 'Book a diagnostic',
-    'cta.secondary': 'Talk to an expert',
     'cta.explore': 'View solutions',
     'footer.tagline': 'B2B technology services firm and systems integrator. We unify cloud ERP, CX platforms and conversational AI into a single operational advantage.',
     'footer.solutions': 'Solutions',

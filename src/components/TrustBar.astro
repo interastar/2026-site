@@ -3,13 +3,31 @@ import type { Lang } from '../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const label = lang === 'es' ? 'Empresas que confían en Interastar' : 'Companies that trust Interastar';
-const clients = ['Petco', 'Coppel', 'Unilever', 'Porsche', 'Teleperformance'];
+
+// Client marks carried over from the previous site (white on transparent).
+const clients = [
+  { file: 'petco', name: 'Petco' },
+  { file: 'coppel', name: 'Coppel' },
+  { file: 'unilever', name: 'Unilever' },
+  { file: 'porsche', name: 'Porsche' },
+  { file: 'teleperformance', name: 'Teleperformance' },
+  { file: 'qualitas', name: 'Qualitas' },
+  { file: 'city-express', name: 'City Express' },
+  { file: 'pisa', name: 'Pisa' },
+  { file: 'caliente', name: 'Caliente' },
+  { file: 'vidanta', name: 'Vidanta' },
+  { file: 'packsys', name: 'Packsys' },
+  { file: 'dlife', name: 'Dlife' },
+  { file: 'doto', name: 'Doto' },
+];
 ---
-<section class="trust">
-  <div class="wrap trust-grid">
-    <span class="trust-label">{label}</span>
+<section class="trust" aria-label={label}>
+  <div class="wrap">
+    <p class="trust-label">{label}</p>
     <div class="trust-logos">
-      {clients.map((c) => <span class="trust-logo">{c}</span>)}
+      {clients.map((c) => (
+        <img src={`/clients/${c.file}.png`} alt={c.name} loading="lazy" decoding="async" height="26" />
+      ))}
     </div>
   </div>
 </section>

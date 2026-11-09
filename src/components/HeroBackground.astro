@@ -1,9 +1,10 @@
 ---
 /**
- * Full-bleed hero background — Interastar "Convergencia".
+ * Full-bleed hero background, Interastar "Convergencia".
  * Blurred plasma filaments (energy threads) flowing inward and concentrating
- * into a luminous core on the right. Bottom fades to the page background (white)
- * so the hero melts into the rest of the page. Canvas-only, no assets.
+ * into a luminous core that sits in the hero's right column. The bottom fades
+ * into the ink of the trust strip below. Canvas-only, no assets.
+ * Frame rate is capped near 30fps; the loop pauses off-screen and when hidden.
  * Respects prefers-reduced-motion and `?still=1`; pauses off-screen/hidden.
  */
 ---
@@ -25,8 +26,8 @@
     const off = document.createElement('canvas');
     const octx = off.getContext('2d')!;
 
-    const core = { x: 0.72, y: 0.44 };
-    const PAGE = '250,251,252'; // --bg-page
+    const core = { x: 0.76, y: 0.5 };
+    const INK = '0,34,51'; // --ia-ink (trust strip below the hero)
 
     type RGB = string;
     const CYAN: RGB = '0,168,234', BLUE: RGB = '0,116,181', SKY: RGB = '127,211,245', GREEN: RGB = '103,219,60';
@@ -37,7 +38,8 @@
     let W = 0, H = 0, DPR = 1, OW = 0, OH = 0;
     let threads: Thread[] = [];
     let blobs: Blob[] = [];
-    let raf = 0, running = false, t = 0;
+    let raf = 0, running = false, t = 0, last = 0;
+    const FRAME_MS = 1000 / 30;
 
     function rnd(a: number, b: number) { return a + Math.random() * (b - a); }
     function threadColor(): RGB {
@@ -59,7 +61,7 @@
       OH = Math.max(1, Math.round(H * 0.45));
       off.width = OW; off.height = OH;
 
-      const n = 8;
+      const n = 10;
       threads = Array.from({ length: n }, (_, i) => ({
         // bias anchors around the core: right, up-right, down-right, and some sweeping left
         ang: (-Math.PI * 0.85) + (i / n) * (Math.PI * 1.7) + rnd(-0.18, 0.18),
@@ -86,7 +88,7 @@
     }
 
     function drawThread(th: Thread, ocx: number, ocy: number, maxR: number) {
-      const ang = th.ang + (reduce ? 0 : Math.sin(t * 0.0009 + th.ph) * 0.16);
+      const ang = th.ang + (reduce ? 0 : t * 0.00035 + Math.sin(t * 0.0009 + th.ph) * 0.16);
       const fx = ocx + Math.cos(ang) * th.len * maxR * 0.62;
       const fy = ocy + Math.sin(ang) * th.len * maxR * 0.62;
       const ex = ocx + Math.cos(ang) * maxR * 0.05;
@@ -168,18 +170,23 @@
       lp.addColorStop(1, 'rgba(0,18,28,0)');
       ctx.fillStyle = lp; ctx.fillRect(0, 0, W, H * 0.92);
 
-      // bottom fade to page background (white) — melts into the page
+      // bottom fade into the trust strip ink
       const bf = ctx.createLinearGradient(0, 0, 0, H);
-      bf.addColorStop(0, `rgba(${PAGE},0)`);
-      bf.addColorStop(0.68, `rgba(${PAGE},0)`);
-      bf.addColorStop(0.86, `rgba(${PAGE},0.55)`);
-      bf.addColorStop(1, `rgba(${PAGE},1)`);
+      bf.addColorStop(0, `rgba(${INK},0)`);
+      bf.addColorStop(0.72, `rgba(${INK},0)`);
+      bf.addColorStop(1, `rgba(${INK},1)`);
       ctx.fillStyle = bf; ctx.fillRect(0, 0, W, H);
 
-      if (!reduce && running) raf = requestAnimationFrame(frame);
+      if (!reduce && running) raf = requestAnimationFrame(tick);
     }
 
-    function start() { if (!running) { running = true; frame(); } }
+    function tick(now: number) {
+      if (now - last < FRAME_MS) { raf = requestAnimationFrame(tick); return; }
+      last = now;
+      frame();
+    }
+
+    function start() { if (!running) { running = true; raf = requestAnimationFrame(tick); } }
     function stop() { running = false; cancelAnimationFrame(raf); }
 
     build();

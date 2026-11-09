@@ -21,34 +21,34 @@ const links: { key: RouteKey; label: string }[] = [
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href={path('home', lang)} aria-label="Interastar">
-      <img src="/brand/logo-interastar.svg" alt="Interastar" class="h-8 w-auto" />
+      <img src="/brand/logo-interastar.svg" alt="Interastar" width="120" height="32" />
     </a>
 
     <div class="ml-auto flex items-center gap-4">
       <nav aria-label={lang === 'es' ? 'Principal' : 'Main'}>
         <ul id="navLinks" class="nav-links hidden md:flex items-center gap-7">
           {links.map((l) => (
-            <li class={l.key === 'solutions' ? 'relative md:group' : ''}>
-              <a class="text-sm text-(--fg-2) hover:text-(--fg-1)" href={path(l.key, lang)} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
+            <li class={l.key === 'solutions' ? 'has-menu' : ''}>
+              <a href={path(l.key, lang)} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a>
               {l.key === 'solutions' && (
-                <ul class="flex flex-col gap-2 md:hidden md:group-hover:flex md:absolute md:top-full md:left-0 md:min-w-50 md:bg-base-100 md:border md:rounded-md md:shadow-lg md:py-2 md:px-0">
-                  <li><a class="px-3 py-1 text-sm text-(--fg-2) hover:bg-(--ia-mist)" href={path('acumatica', lang)}>{t('nav.acumatica')}</a></li>
-                  <li><a class="px-3 py-1 text-sm text-(--fg-2) hover:bg-(--ia-mist)" href={path('genesys', lang)}>{t('nav.genesys')}</a></li>
+                <ul class="nav-menu">
+                  <li><a href={path('acumatica', lang)}>{t('nav.acumatica')}</a></li>
+                  <li><a href={path('genesys', lang)}>{t('nav.genesys')}</a></li>
                 </ul>
               )}
             </li>
           ))}
-          <li class="block md:hidden mt-2"><a href={path('contact', lang)} class="btn btn-primary w-full justify-center">{t('nav.cta')}</a></li>
+          <li class="block md:hidden mt-2"><a href={path('contact', lang)} class="btn btn-primary w-full">{t('nav.cta')}</a></li>
         </ul>
       </nav>
 
-      <div class="nav-actions nav-actions--bordered">
+      <div class="nav-actions">
         <a class="lang-switch" href={altPath} hreflang={other} aria-label={`Switch to ${other === 'es' ? 'Español' : 'English'}`}>
           <Icon name="globe" size={14} />
           {t('lang.switch')}
         </a>
         <a class="btn btn-primary hidden md:inline-flex" href={path('contact', lang)}>{t('nav.cta')}</a>
-        <button id="navToggle" class="nav-toggle md:hidden inline-flex" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <button id="navToggle" class="nav-toggle md:hidden" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
           <Icon name="menu" size={24} />
         </button>
       </div>
@@ -60,14 +60,16 @@ const links: { key: RouteKey; label: string }[] = [
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
   toggle?.addEventListener('click', () => {
-    const nowHidden = links.classList.toggle('hidden');
+    const nowHidden = links?.classList.toggle('hidden');
     toggle.setAttribute('aria-expanded', nowHidden ? 'false' : 'true');
   });
 
-  const nav = document.querySelector('.nav') as HTMLElement;
-  const onScroll = () => {
-    nav?.toggleAttribute('data-scrolled', window.scrollY > 40);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  // Compact nav after the page scrolls past a 1px sentinel at the top. No scroll listener.
+  const nav = document.querySelector('.nav');
+  const sentinel = document.getElementById('navSentinel');
+  if (nav && sentinel) {
+    new IntersectionObserver(([e]) => {
+      nav.toggleAttribute('data-scrolled', !e.isIntersecting);
+    }, { rootMargin: '40px 0px 0px 0px' }).observe(sentinel);
+  }
 </script>

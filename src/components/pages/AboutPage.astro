@@ -2,11 +2,10 @@
 import Icon from '../Icon.astro';
 import Stats from '../Stats.astro';
 import CtaBand from '../CtaBand.astro';
-import { useTranslations, type Lang } from '../../i18n/ui';
+import type { Lang } from '../../i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const t = useTranslations(lang);
 
 const c = {
   es: {
@@ -19,16 +18,16 @@ const c = {
     methodTitle: 'Una metodología end-to-end que reduce el riesgo',
     methodText: 'Acompañamos cada etapa para que el cambio tecnológico no detenga tu operación.',
     steps: [
-      { n: '01', ic: 'target', title: 'Diagnóstico', text: 'Entendemos tu operación, tus objetivos y tus restricciones antes de proponer cualquier solución.' },
-      { n: '02', ic: 'workflow', title: 'Diseño e implementación', text: 'Configuramos y personalizamos la plataforma a tu industria, con un plan claro y entregables medibles.' },
-      { n: '03', ic: 'plug-zap', title: 'Integración', text: 'Conectamos tus sistemas (ERP, CRM, CX, mensajería) para eliminar el reproceso entre áreas.' },
-      { n: '04', ic: 'refresh-cw', title: 'Operación y mejora', text: 'Soporte administrado y evolución continua para que el valor crezca con el tiempo.' },
+      { ic: 'target', title: 'Diagnóstico', text: 'Entendemos tu operación, tus objetivos y tus restricciones antes de proponer cualquier solución.' },
+      { ic: 'workflow', title: 'Diseño e implementación', text: 'Configuramos y personalizamos la plataforma a tu industria, con un plan claro y entregables medibles.' },
+      { ic: 'plug-zap', title: 'Integración', text: 'Conectamos tus sistemas (ERP, CRM, CX, mensajería) para eliminar el reproceso entre áreas.' },
+      { ic: 'refresh-cw', title: 'Operación y mejora', text: 'Soporte administrado y evolución continua para que el valor crezca con el tiempo.' },
     ],
     valuesTitle: 'Lo que nos define',
     values: [
-      { ic: 'shield-check', title: 'Confianza', text: 'Seguridad, transparencia y cumplimiento en cada implementación.' },
-      { ic: 'users', title: 'Cercanía', text: 'Acompañamiento real: somos equipo, no solo proveedor.' },
-      { ic: 'gauge', title: 'Resultados', text: 'Medimos el impacto en tiempos, costos y experiencia de cliente.' },
+      { title: 'Confianza', text: 'Seguridad, transparencia y cumplimiento en cada implementación.' },
+      { title: 'Cercanía', text: 'Acompañamiento real: somos equipo, no solo proveedor.' },
+      { title: 'Resultados', text: 'Medimos el impacto en tiempos, costos y experiencia de cliente.' },
     ],
     partnersTitle: 'Partners de las plataformas líderes',
     partnersText: 'Somos partner certificado de Acumatica y Genesys, e integramos Numia, Infobip y Vonage.',
@@ -43,37 +42,44 @@ const c = {
     methodTitle: 'An end-to-end methodology that reduces risk',
     methodText: 'We support every stage so technology change never stops your operation.',
     steps: [
-      { n: '01', ic: 'target', title: 'Diagnosis', text: 'We understand your operation, goals and constraints before proposing any solution.' },
-      { n: '02', ic: 'workflow', title: 'Design & implementation', text: 'We configure and tailor the platform to your industry, with a clear plan and measurable deliverables.' },
-      { n: '03', ic: 'plug-zap', title: 'Integration', text: 'We connect your systems (ERP, CRM, CX, messaging) to remove rework across teams.' },
-      { n: '04', ic: 'refresh-cw', title: 'Operation & improvement', text: 'Managed support and continuous evolution so value grows over time.' },
+      { ic: 'target', title: 'Diagnosis', text: 'We understand your operation, goals and constraints before proposing any solution.' },
+      { ic: 'workflow', title: 'Design & implementation', text: 'We configure and tailor the platform to your industry, with a clear plan and measurable deliverables.' },
+      { ic: 'plug-zap', title: 'Integration', text: 'We connect your systems (ERP, CRM, CX, messaging) to remove rework across teams.' },
+      { ic: 'refresh-cw', title: 'Operation & improvement', text: 'Managed support and continuous evolution so value grows over time.' },
     ],
     valuesTitle: 'What defines us',
     values: [
-      { ic: 'shield-check', title: 'Trust', text: 'Security, transparency and compliance in every implementation.' },
-      { ic: 'users', title: 'Closeness', text: 'Real partnership: we are a team, not just a vendor.' },
-      { ic: 'gauge', title: 'Results', text: 'We measure impact on time, cost and customer experience.' },
+      { title: 'Trust', text: 'Security, transparency and compliance in every implementation.' },
+      { title: 'Closeness', text: 'Real partnership: we are a team, not just a vendor.' },
+      { title: 'Results', text: 'We measure impact on time, cost and customer experience.' },
     ],
     partnersTitle: 'Partners of the leading platforms',
     partnersText: 'We are a certified partner of Acumatica and Genesys, and integrate Numia, Infobip and Vonage.',
   },
 }[lang];
+
+const partners = [
+  { file: 'acumatica-white.png', name: 'Acumatica' },
+  { file: 'genesys-white.png', name: 'Genesys' },
+  { file: 'numia-white.png', name: 'Numia' },
+  { file: 'infobip-white.svg', name: 'Infobip' },
+  { file: 'vonage.png', name: 'Vonage' },
+];
 ---
-<section class="section pb-12">
+<section class="section pb-10">
   <div class="wrap">
     <span class="eyebrow"><span class="star-dot"></span>{c.eyebrow}</span>
-    <h1 class="h1 max-w-[880px] mt-4">{c.h1}</h1>
+    <h1 class="h1 max-w-[880px]">{c.h1}</h1>
     <p class="lede max-w-[760px]">{c.lede}</p>
   </div>
 </section>
 
-<section class="section alt py-16">
-  <div class="wrap section-split">
-    <div>
-      <span class="eyebrow"><span class="star-dot"></span>{c.missionTitle}</span>
-      <h2 class="h2 mt-[14px]">{c.missionTitle}</h2>
+<section class="section alt">
+  <div class="wrap">
+    <div class="max-w-[720px]">
+      <h2 class="h2">{c.missionTitle}</h2>
+      <p class="lede">{c.mission}</p>
     </div>
-    <p class="lede">{c.mission}</p>
   </div>
 </section>
 
@@ -81,21 +87,18 @@ const c = {
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.methodEyebrow}</span>
-      <h2 class="h2 mt-[14px]">{c.methodTitle}</h2>
+      <h2 class="h2 mt-3.5">{c.methodTitle}</h2>
       <p class="lede">{c.methodText}</p>
     </div>
-    <div class="grid cols-4">
+    <ol class="timeline">
       {c.steps.map((s) => (
-        <div class="card reveal">
-          <div class="flex items-center justify-between">
-            <div class="ic"><Icon name={s.ic} /></div>
-            <span class="text-[28px] font-black font-[family-name:var(--font-display)] text-[var(--ia-fog)]">{s.n}</span>
-          </div>
-          <h3 class="text-[18px]">{s.title}</h3>
+        <li class="tl-step reveal">
+          <div class="ic"><Icon name={s.ic} /></div>
+          <h3>{s.title}</h3>
           <p>{s.text}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>
 
@@ -103,24 +106,24 @@ const c = {
 
 <section class="section">
   <div class="wrap">
-    <div class="section-head text-center">
-      <h2 class="h2">{c.valuesTitle}</h2>
-    </div>
-    <div class="grid cols-3">
+    <h2 class="h2">{c.valuesTitle}</h2>
+    <dl class="def-list mt-8">
       {c.values.map((v) => (
-        <div class="card reveal items-start">
-          <div class="ic green"><Icon name={v.ic} /></div>
-          <h3>{v.title}</h3>
-          <p>{v.text}</p>
+        <div class="def-row reveal">
+          <dt>{v.title}</dt>
+          <dd>{v.text}</dd>
         </div>
       ))}
-    </div>
-    <div class="section-head text-center mt-16 mb-6">
-      <h3 class="h3 text-xl">{c.partnersTitle}</h3>
-      <p class="muted mt-2">{c.partnersText}</p>
-    </div>
-    <div class="trust-logos justify-center">
-      {['Acumatica', 'Genesys', 'Numia', 'Infobip', 'Vonage'].map((p) => <span class="trust-logo">{p}</span>)}
+    </dl>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <h3 class="h3">{c.partnersTitle}</h3>
+    <p class="muted mt-2 mb-8 max-w-[60ch]">{c.partnersText}</p>
+    <div class="logo-row">
+      {partners.map((p) => <img src={`/partners/${p.file}`} alt={p.name} loading="lazy" decoding="async" />)}
     </div>
   </div>
 </section>

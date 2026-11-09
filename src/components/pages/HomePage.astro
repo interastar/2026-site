@@ -4,6 +4,7 @@ import TrustBar from '../TrustBar.astro';
 import Stats from '../Stats.astro';
 import CtaBand from '../CtaBand.astro';
 import HeroBackground from '../HeroBackground.astro';
+import PlatformBento from '../PlatformBento.astro';
 import { path, useTranslations, type Lang } from '../../i18n/ui';
 
 interface PostCard { title: string; href: string; category: string; date: string; description: string }
@@ -13,97 +14,85 @@ const t = useTranslations(lang);
 
 const c = {
   es: {
-    badge: 'Socio estratégico en ERP y CX',
-    h1Pre: 'Unifica tu ',
+    heroEyebrow: 'Socio estratégico en ERP y CX',
+    h1Pre: 'Un solo sistema para tu ',
     h1a: 'ERP',
     h1mid: ', tu ',
     h1b: 'CX',
-    h1post: ' y tu IA en una sola ventaja operativa.',
-    heroSub: 'Implementamos, integramos y operamos las plataformas líderes para tu empresa.',
+    h1post: ' y tu IA.',
+    heroSub: 'Implementamos, integramos y operamos Acumatica, Genesys y las plataformas líderes para que tu operación funcione como una sola.',
     segEyebrow: 'Encuentra tu camino',
     segTitle: '¿Desde dónde miras el cambio?',
     segText: 'Cada decisión tecnológica se ve distinta según tu rol. Te llevamos directo a lo que te importa.',
     seg: [
-      { ic: 'building-2', icc: 'navy', role: 'Dirección general', text: 'Escalabilidad y control para crecer sin sistemas fragmentados, con continuidad operativa garantizada.' },
-      { ic: 'shield-check', icc: '', role: 'TI y Sistemas', text: 'Seguridad, integraciones limpias y una implementación end-to-end que reduce el riesgo del proyecto.' },
-      { ic: 'headset', icc: 'green', role: 'Operaciones y CX', text: 'Omnicanalidad y visibilidad operativa con reportes accionables para decidir con datos, no intuición.' },
+      { ic: 'building-2', role: 'Dirección general', text: 'Escalabilidad y control para crecer sin sistemas fragmentados, con continuidad operativa garantizada.' },
+      { ic: 'shield-check', role: 'TI y Sistemas', text: 'Seguridad, integraciones limpias y una implementación end-to-end que reduce el riesgo del proyecto.' },
+      { ic: 'headset', role: 'Operaciones y CX', text: 'Omnicanalidad y visibilidad operativa con reportes accionables para decidir con datos, no intuición.' },
     ],
-    svcEyebrow: 'Servicios',
     svcTitle: 'Integración tecnológica de extremo a extremo',
-    svcText: 'Servicios profesionales integrales: diseño, implementación, personalización, integración, soporte administrado y consultoría estratégica.',
+    svcText: 'Diseño, implementación, personalización, integración, soporte administrado y consultoría estratégica.',
     services: [
-      { ic: 'database', icc: '', title: 'Diseño e implementación', text: 'Implementamos ERP y plataformas CX adaptadas a tu industria, con una metodología probada de extremo a extremo.' },
-      { ic: 'plug-zap', icc: 'green', title: 'Integraciones a la medida', text: 'Conectamos ERP ↔ CRM ↔ CX ↔ mensajería en un mismo flujo. Reducimos el reproceso y aceleramos el cierre del mes.' },
-      { ic: 'refresh-cw', icc: 'navy', title: 'Servicios administrados', text: 'Operamos y evolucionamos tus plataformas con soporte continuo, para que tu equipo se enfoque en el negocio.' },
-      { ic: 'graduation-cap', icc: '', title: 'Consultoría y capacitación', text: 'Acompañamiento estratégico y formación de tus equipos para capturar el valor de cada plataforma.' },
+      { ic: 'database', title: 'Diseño e implementación', text: 'Implementamos ERP y plataformas CX adaptadas a tu industria, con una metodología probada de extremo a extremo.' },
+      { ic: 'plug-zap', title: 'Integraciones a la medida', text: 'Conectamos ERP, CRM, CX y mensajería en un mismo flujo. Reducimos el reproceso y aceleramos el cierre del mes.' },
+      { ic: 'refresh-cw', title: 'Servicios administrados', text: 'Operamos y evolucionamos tus plataformas con soporte continuo, para que tu equipo se enfoque en el negocio.' },
+      { ic: 'graduation-cap', title: 'Consultoría y capacitación', text: 'Acompañamiento estratégico y formación de tus equipos para capturar el valor de cada plataforma.' },
     ],
     platEyebrow: 'Plataformas',
     platTitle: 'Las plataformas líderes, implementadas por expertos',
     platText: 'No vendemos software propio: implementamos, integramos y operamos las mejores plataformas del mercado en tu beneficio.',
-    platforms: [
-      { name: 'Acumatica', tag: 'Cloud ERP', text: 'ERP en la nube para finanzas, operaciones y cadena de suministro. Escalable y sin costos ocultos.', href: path('acumatica', lang) },
-      { name: 'Genesys', tag: 'Cloud CX', text: 'Contact center omnicanal con enrutamiento inteligente y analítica para tu experiencia de cliente.', href: path('genesys', lang) },
-      { name: 'Numia', tag: 'IA conversacional', text: 'Asistentes de IA por voz y texto para automatizar atención y calificar prospectos 24/7.', href: path('solutions', lang) },
-      { name: 'Infobip · Vonage', tag: 'Mensajería / CPaaS', text: 'APIs de comunicación para SMS, WhatsApp y voz integradas a tus sistemas centrales.', href: path('solutions', lang) },
-    ],
-    insEyebrow: 'Insights',
     insTitle: 'Conocimiento para decidir mejor',
     insText: 'Tendencias, guías y casos sobre ERP, CX e IA aplicada al negocio.',
     insAll: 'Ver todos los insights',
   },
   en: {
-    badge: 'Strategic partner in ERP and CX',
-    h1Pre: 'Unify your ',
+    heroEyebrow: 'Strategic partner in ERP and CX',
+    h1Pre: 'One system for your ',
     h1a: 'ERP',
-    h1mid: ', ',
+    h1mid: ', your ',
     h1b: 'CX',
-    h1post: ' and AI into a single operational advantage.',
-    heroSub: 'We implement, integrate and operate the leading platforms for your company.',
+    h1post: ' and your AI.',
+    heroSub: 'We implement, integrate and operate Acumatica, Genesys and the leading platforms so your operation runs as one.',
     segEyebrow: 'Find your path',
     segTitle: 'Where do you see change from?',
     segText: 'Every technology decision looks different depending on your role. We take you straight to what matters to you.',
     seg: [
-      { ic: 'building-2', icc: 'navy', role: 'Executive / C-Level', text: 'Scalability and control to grow without fragmented systems, with guaranteed business continuity.' },
-      { ic: 'shield-check', icc: '', role: 'IT & Systems', text: 'Security, clean integrations and an end-to-end implementation that reduces project risk.' },
-      { ic: 'headset', icc: 'green', role: 'Operations & CX', text: 'Omnichannel and operational visibility with actionable reports to decide with data, not intuition.' },
+      { ic: 'building-2', role: 'Executive / C-Level', text: 'Scalability and control to grow without fragmented systems, with guaranteed business continuity.' },
+      { ic: 'shield-check', role: 'IT & Systems', text: 'Security, clean integrations and an end-to-end implementation that reduces project risk.' },
+      { ic: 'headset', role: 'Operations & CX', text: 'Omnichannel and operational visibility with actionable reports to decide with data, not intuition.' },
     ],
-    svcEyebrow: 'Services',
     svcTitle: 'End-to-end technology integration',
-    svcText: 'Comprehensive professional services: design, implementation, customization, integration, managed support and strategic consulting.',
+    svcText: 'Design, implementation, customization, integration, managed support and strategic consulting.',
     services: [
-      { ic: 'database', icc: '', title: 'Design & implementation', text: 'We implement ERP and CX platforms tailored to your industry with a proven end-to-end methodology.' },
-      { ic: 'plug-zap', icc: 'green', title: 'Custom integrations', text: 'We connect ERP ↔ CRM ↔ CX ↔ messaging into one flow. Less rework, faster monthly close.' },
-      { ic: 'refresh-cw', icc: 'navy', title: 'Managed services', text: 'We operate and evolve your platforms with ongoing support so your team can focus on the business.' },
-      { ic: 'graduation-cap', icc: '', title: 'Consulting & training', text: 'Strategic guidance and team enablement to capture the full value of every platform.' },
+      { ic: 'database', title: 'Design & implementation', text: 'We implement ERP and CX platforms tailored to your industry with a proven end-to-end methodology.' },
+      { ic: 'plug-zap', title: 'Custom integrations', text: 'We connect ERP, CRM, CX and messaging into one flow. Less rework, faster monthly close.' },
+      { ic: 'refresh-cw', title: 'Managed services', text: 'We operate and evolve your platforms with ongoing support so your team can focus on the business.' },
+      { ic: 'graduation-cap', title: 'Consulting & training', text: 'Strategic guidance and team enablement to capture the full value of every platform.' },
     ],
     platEyebrow: 'Platforms',
     platTitle: 'The leading platforms, implemented by experts',
     platText: 'We don\'t sell our own software: we implement, integrate and operate the best platforms on the market on your behalf.',
-    platforms: [
-      { name: 'Acumatica', tag: 'Cloud ERP', text: 'Cloud ERP for finance, operations and supply chain. Scalable, with no hidden costs.', href: path('acumatica', lang) },
-      { name: 'Genesys', tag: 'Cloud CX', text: 'Omnichannel contact center with intelligent routing and analytics for your customer experience.', href: path('genesys', lang) },
-      { name: 'Numia', tag: 'Conversational AI', text: 'Voice and text AI assistants to automate support and qualify leads 24/7.', href: path('solutions', lang) },
-      { name: 'Infobip · Vonage', tag: 'Messaging / CPaaS', text: 'Communication APIs for SMS, WhatsApp and voice integrated into your core systems.', href: path('solutions', lang) },
-    ],
-    insEyebrow: 'Insights',
     insTitle: 'Knowledge to decide better',
     insText: 'Trends, guides and cases on ERP, CX and AI applied to business.',
     insAll: 'View all insights',
   },
 }[lang];
+
+const [lead, ...rest] = c.seg;
+const [featured, ...list] = posts;
 ---
-<!-- Hero (full-bleed background animation — placeholder) -->
-<section class="hero-full">
+<!-- Hero: copy left, animated brand canvas fills the right column -->
+<section class="hero">
   <HeroBackground />
   <div class="wrap">
-    <div class="hero-full-inner">
-      <span class="hero-badge on-dark"><span class="dot"></span>{c.badge}</span>
-      <h1 class="h1">
-        {c.h1Pre}<em>{c.h1a}</em>{c.h1mid}<em class="g">{c.h1b}</em>{c.h1post}
-      </h1>
-      <p class="hero-sub">{c.heroSub}</p>
+    <div class="hero-grid">
       <div>
-        <a class="btn btn-accent text-neutral" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
+        <span class="eyebrow"><span class="star-dot"></span>{c.heroEyebrow}</span>
+        <h1 class="h1">{c.h1Pre}<em>{c.h1a}</em>{c.h1mid}<em class="g">{c.h1b}</em>{c.h1post}</h1>
+        <p class="hero-sub">{c.heroSub}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href={path('contact', lang)}>{t('cta.primary')}<Icon name="arrow-right" size={18} /></a>
+          <a class="btn btn-secondary on-dark" href={path('solutions', lang)}>{t('cta.explore')}</a>
+        </div>
       </div>
     </div>
   </div>
@@ -111,95 +100,90 @@ const c = {
 
 <TrustBar lang={lang} />
 
-<!-- Segmentation by role -->
+<!-- Segmentation by role: one lead tile plus two stacked tiles -->
 <section class="section">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.segEyebrow}</span>
-      <h2 class="h2 mt-[14px]">{c.segTitle}</h2>
+      <h2 class="h2 mt-3.5">{c.segTitle}</h2>
       <p class="lede">{c.segText}</p>
     </div>
-    <div class="grid cols-3">
-      {c.seg.map((s) => (
-        <div class="card hover reveal">
-          <div class={`ic ${s.icc}`}><Icon name={s.ic} /></div>
+    <div class="seg-grid">
+      <div class="seg-tile lead reveal">
+        <div class="ic"><Icon name={lead.ic} /></div>
+        <h3>{lead.role}</h3>
+        <p>{lead.text}</p>
+      </div>
+      {rest.map((s) => (
+        <div class="seg-tile reveal">
+          <div class="ic"><Icon name={s.ic} /></div>
           <h3>{s.role}</h3>
           <p>{s.text}</p>
-          <a class="arrow" href={path('contact', lang)}>{t('cta.secondary')}<Icon name="arrow-right" size={14} /></a>
         </div>
       ))}
     </div>
   </div>
 </section>
 
-<!-- Services -->
+<!-- Services: two-column list, no cards -->
 <section class="section alt">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow"><span class="star-dot"></span>{c.svcEyebrow}</span>
-      <h2 class="h2 mt-[14px]">{c.svcTitle}</h2>
+      <h2 class="h2">{c.svcTitle}</h2>
       <p class="lede">{c.svcText}</p>
     </div>
-    <div class="grid cols-4">
+    <div class="list-2">
       {c.services.map((s) => (
-        <div class="card hover reveal">
-          <div class={`ic ${s.icc}`}><Icon name={s.ic} /></div>
-          <h3 class="text-[18px]">{s.title}</h3>
-          <p>{s.text}</p>
+        <div class="feat-row reveal">
+          <div class="ic"><Icon name={s.ic} /></div>
+          <div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
         </div>
       ))}
     </div>
   </div>
 </section>
 
-<!-- Platforms -->
+<!-- Platforms bento -->
 <section class="section">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow"><span class="star-dot"></span>{c.platEyebrow}</span>
-      <h2 class="h2 mt-[14px]">{c.platTitle}</h2>
+      <h2 class="h2 mt-3.5">{c.platTitle}</h2>
       <p class="lede">{c.platText}</p>
     </div>
-    <div class="grid cols-2">
-      {c.platforms.map((p) => (
-        <a class="card hover reveal" href={p.href}>
-          <div class="flex items-center justify-between">
-            <span class="text-[22px] font-black font-[family-name:var(--font-display)] text-[var(--ia-ink)] tracking-[-0.01em]">{p.name}</span>
-            <span class="partner">{p.tag}</span>
-          </div>
-          <p>{p.text}</p>
-          <span class="arrow">{lang === 'es' ? 'Conocer más' : 'Learn more'}<Icon name="arrow-right" size={14} /></span>
-        </a>
-      ))}
-    </div>
+    <PlatformBento lang={lang} otherHref={path('solutions', lang)} />
   </div>
 </section>
 
 <Stats lang={lang} />
 
-<!-- Insights preview -->
-{posts.length > 0 && (
-  <section class="section alt">
+<!-- Insights: featured article plus list -->
+{featured && (
+  <section class="section">
     <div class="wrap">
-      <div class="section-head flex justify-between items-end max-w-none gap-6 flex-wrap">
-        <div>
-          <span class="eyebrow"><span class="star-dot"></span>{c.insEyebrow}</span>
-          <h2 class="h2 mt-[14px] mb-2">{c.insTitle}</h2>
-          <p class="lede">{c.insText}</p>
-        </div>
-        <a class="btn btn-secondary" href={path('insights', lang)}>{c.insAll}<Icon name="arrow-right" size={18} /></a>
+      <div class="section-head">
+        <h2 class="h2">{c.insTitle}</h2>
+        <p class="lede">{c.insText}</p>
       </div>
-      <div class="post-grid">
-        {posts.slice(0, 3).map((p) => (
-          <a class="post-card reveal" href={p.href}>
-            <div class="thumb"><span class="tag">{p.category}</span></div>
-            <div class="body">
-              <span class="meta">{p.date}</span>
+      <div class="posts">
+        <a class="post-feature reveal" href={featured.href}>
+          <span class="post-meta"><span class="cat">{featured.category}</span><span>{featured.date}</span></span>
+          <h3>{featured.title}</h3>
+          <p>{featured.description}</p>
+        </a>
+        <div class="post-list">
+          {list.slice(0, 3).map((p) => (
+            <a class="post-row reveal" href={p.href}>
+              <span class="post-meta"><span class="cat">{p.category}</span><span>{p.date}</span></span>
               <h3>{p.title}</h3>
               <p>{p.description}</p>
-            </div>
-          </a>
-        ))}
+            </a>
+          ))}
+          <a class="link-arrow mt-5" href={path('insights', lang)}>{c.insAll}<Icon name="arrow-right" /></a>
+        </div>
       </div>
     </div>
   </section>

@@ -5,8 +5,10 @@ import type { Lang } from '../i18n/ui';
 interface Props {
   lang: Lang;
   source?: string;
+  /** Override the submit label (e.g. a demo request on solution pages). */
+  submit?: string;
 }
-const { lang, source = 'web' } = Astro.props;
+const { lang, source = 'web', submit } = Astro.props;
 
 const copy = {
   es: {
@@ -14,7 +16,7 @@ const copy = {
     subtitle: 'Cuéntanos sobre tu operación. Te respondemos en menos de 24 horas hábiles.',
     name: 'Nombre completo', company: 'Empresa', email: 'Correo de trabajo', phone: 'Teléfono (opcional)',
     role: 'Tu rol', interest: 'Tema de interés', message: 'Cuéntanos tu reto (opcional)',
-    submit: 'Solicitar diagnóstico', sending: 'Enviando…',
+    submit: 'Agendar diagnóstico', sending: 'Enviando…',
     ok: '¡Gracias! Hemos recibido tu solicitud. Un especialista te contactará en breve.',
     err: 'No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos a contacto@interastar.com.',
     privacy: 'Al enviar aceptas nuestro aviso de privacidad. Usamos tus datos solo para atender tu solicitud.',
@@ -27,7 +29,7 @@ const copy = {
     subtitle: 'Tell us about your operation. We reply within 24 business hours.',
     name: 'Full name', company: 'Company', email: 'Work email', phone: 'Phone (optional)',
     role: 'Your role', interest: 'Topic of interest', message: 'Tell us your challenge (optional)',
-    submit: 'Request diagnostic', sending: 'Sending…',
+    submit: 'Book a diagnostic', sending: 'Sending…',
     ok: 'Thank you! We received your request. A specialist will contact you shortly.',
     err: 'We could not send your request. Please try again or email contacto@interastar.com.',
     privacy: 'By submitting you accept our privacy notice. We use your data only to handle your request.',
@@ -36,6 +38,7 @@ const copy = {
     req: 'Required',
   },
 }[lang];
+const submitLabel = submit ?? copy.submit;
 ---
 <div class="form-card">
   <h3 class="mt-0 mb-1.5 text-[22px] font-semibold text-[var(--ia-ink)]">{copy.title}</h3>
@@ -92,7 +95,7 @@ const copy = {
     </div>
 
     <button type="submit" class="btn btn-primary w-full justify-center" id="lf-submit">
-      <span class="lf-label">{copy.submit}</span>
+      <span class="lf-label">{submitLabel}</span>
       <Icon name="arrow-right" size={18} />
     </button>
 
@@ -101,7 +104,7 @@ const copy = {
   </form>
 </div>
 
-<script is:inline define:vars={{ okMsg: copy.ok, errMsg: copy.err, sendingMsg: copy.sending, submitMsg: copy.submit }}>
+<script is:inline define:vars={{ okMsg: copy.ok, errMsg: copy.err, sendingMsg: copy.sending, submitMsg: submitLabel }}>
   (function () {
     const form = document.getElementById('leadForm');
     if (!form) return;

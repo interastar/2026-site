@@ -27,9 +27,12 @@ const esUrl = altMap?.es ? new URL(altMap.es, site).href : null;
 const enUrl = altMap?.en ? new URL(altMap.en, site).href : null;
 const altPath = altMap ? (altMap[lang === 'es' ? 'en' : 'es'] ?? (lang === 'es' ? '/en/' : '/')) : (lang === 'es' ? '/en/' : '/');
 const ogImage = new URL(image, site).href;
+
+// Google Tag Manager container carried over from the previous site.
+const GTM_ID = 'GTM-NJBW67D';
 ---
 <!doctype html>
-<html lang={lang} data-theme="interastar">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,6 +40,9 @@ const ogImage = new URL(image, site).href;
     <link rel="apple-touch-icon" href="/brand/star.png" />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="preload" href="/fonts/exo2-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/publicsans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -65,9 +71,18 @@ const ogImage = new URL(image, site).href;
       description: t('footer.tagline'),
       sameAs: ['https://www.linkedin.com/company/interastar'],
     })} />
+
+    <script is:inline define:vars={{ GTM_ID }}>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',GTM_ID);
+    </script>
   </head>
   <body>
-    <a href="#main" class="absolute left-[-9999px] top-2 bg-(--ia-ink) text-white px-3.5 py-2 rounded-(--r-sm) z-100 focus:left-2">{t('skip')}</a>
+    <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <a href="#main" class="absolute left-[-9999px] top-2 bg-(--ia-ink) text-white px-3.5 py-2 rounded-(--r-input) z-100 focus:left-2">{t('skip')}</a>
+    <div id="navSentinel" aria-hidden="true" class="absolute top-0 left-0 h-px w-px"></div>
     <Header lang={lang} current={current} altPath={altPath} />
     <main id="main">
       <slot />
