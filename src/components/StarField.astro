@@ -1,16 +1,16 @@
 ---
 /**
- * StarField — Hero de "puntos digitales" que forman la silueta de la estrella
- * de Interastar y rotan en pseudo-3D (canvas 2D, sin dependencias).
+ * StarField — Hero de la estrella de Interastar como nube de puntos.
  *
- * - Muestrea el propio star.svg (mismo origen -> sin taint) y toma los colores
- *   reales de cada aspa (navy -> deep -> blue -> cyan -> green), aclarados para
- *   leerse sobre fondo oscuro.
- * - Rotación continua en Y (y leve X), proyección en perspectiva, profundidad
- *   por tamaño/opacidad. Parallax sutil con el mouse (sin listeners de scroll).
- * - Entrada: los puntos se ensamblan desde posiciones dispersas.
- * - ~30fps, DPR capado a 2, pausa fuera de viewport / pestaña oculta.
- * - prefers-reduced-motion o ?still=1: estrella formada y estática, sin rotar.
+ * Selector inteligente por dispositivo:
+ *   - 3D real (Three.js/WebGL): desktop ancho, puntero fino, WebGL disponible,
+ *     >=4 núcleos y >=4GB, sin Save-Data ni prefers-reduced-motion.
+ *   - 2D (canvas, pseudo-3D): móvil, baja potencia, sin WebGL o reduced-motion.
+ *   Override para pruebas: ?hero=3d o ?hero=2d.
+ *
+ * Ambas rutas muestrean el star.svg real (mismo origen) y toman los colores
+ * de cada aspa, aclarados para leerse sobre fondo oscuro. Three.js se importa
+ * de forma dinámica, así que su peso solo se descarga donde se usa el 3D.
  */
 ---
 <canvas id="starField" class="starfield" aria-hidden="true"></canvas>
@@ -22,27 +22,18 @@
 <script>
   const canvas = document.getElementById('starField') as HTMLCanvasElement | null;
   if (canvas) {
-    const ctx = canvas.getContext('2d')!;
     const wrap = canvas.parentElement as HTMLElement;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      || new URLSearchParams(location.search).has('still');
+    const params = new URLSearchParams(location.search);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches || params.has('still');
 
     type P = { bx: number; by: number; bz: number; sx: number; sy: number; sz: number; c: string };
-    let pts: P[] = [];
-    let W = 0, H = 0, DPR = 1, cx = 0, cy = 0, scale = 1;
-    let raf = 0, running = false, t = 0, last = 0, intro = 0;
-    let mtx = 0, mty = 0, rx = 0, ry = 0; // objetivo y actual de rotación por mouse
-    const FRAME_MS = 1000 / 30;
-    let built = false;
+    let W = 0, H = 0, raf = 0, running = false, t = 0;
+    let mtx = 0, mty = 0, rx = 0, ry = 0; // objetivo/estado de rotación por puntero
 
     function brighten(r: number, g: number, b: number): string {
-      // Eleva la luminancia conservando el matiz del aspa (navy se vuelve azul vivo).
       const mx = Math.max(r, g, b, 1);
       const k = Math.min(255 / mx, 2.4) * 0.92;
-      const R = Math.min(255, Math.round(r * k + 18));
-      const G = Math.min(255, Math.round(g * k + 22));
-      const B = Math.min(255, Math.round(b * k + 26));
-      return `${R},${G},${B}`;
+      return `${Math.min(255, Math.round(r * k + 18))},${Math.min(255, Math.round(g * k + 22))},${Math.min(255, Math.round(b * k + 26))}`;
     }
 
     function sampleStar(): Promise<P[]> {
@@ -56,19 +47,15 @@
           const octx = oc.getContext('2d')!;
           octx.drawImage(img, 0, 0, rw, rh);
           let data: Uint8ClampedArray;
-          try { data = octx.getImageData(0, 0, rw, rh).data; }
-          catch { resolve([]); return; }
+          try { data = octx.getImageData(0, 0, rw, rh).data; } catch { resolve([]); return; }
           const out: P[] = [];
-          const step = 3;
-          for (let y = 0; y < rh; y += step) {
-            for (let x = 0; x < rw; x += step) {
+          for (let y = 0; y < rh; y += 3) {
+            for (let x = 0; x < rw; x += 3) {
               const i = (y * rw + x) * 4;
               if (data[i + 3] > 90) {
-                const jx = (Math.random() - 0.5) * step;
-                const jy = (Math.random() - 0.5) * step;
                 out.push({
-                  bx: (x - rw / 2) + jx,
-                  by: (y - rh / 2) + jy,
+                  bx: (x - rw / 2) + (Math.random() - 0.5) * 3,
+                  by: (y - rh / 2) + (Math.random() - 0.5) * 3,
                   bz: (Math.random() * 2 - 1) * rh * 0.14,
                   sx: 0, sy: 0, sz: 0,
                   c: brighten(data[i], data[i + 1], data[i + 2]),
@@ -76,9 +63,8 @@
               }
             }
           }
-          // posiciones de dispersión inicial (para el ensamblaje)
           for (const p of out) {
-            const a = Math.random() * Math.PI * 2, r = (0.9 + Math.random() * 1.4);
+            const a = Math.random() * Math.PI * 2, r = 0.9 + Math.random() * 1.4;
             p.sx = p.bx + Math.cos(a) * rh * r;
             p.sy = p.by + Math.sin(a) * rh * r;
             p.sz = (Math.random() * 2 - 1) * rh * 0.9;
@@ -90,95 +76,167 @@
       });
     }
 
-    function resize() {
-      const rect = wrap.getBoundingClientRect();
-      DPR = Math.min(window.devicePixelRatio || 1, 2);
-      W = rect.width; H = rect.height;
-      canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      // La estrella se ancla hacia la derecha del hero.
-      cx = W > 900 ? W * 0.72 : W * 0.5;
-      cy = H * (W > 900 ? 0.5 : 0.66);
-      const fit = Math.min(W, H);
-      scale = (W > 900 ? fit * 0.62 : fit * 0.6) / 300;
+    function pick3D(): boolean {
+      const q = params.get('hero');
+      if (q === '2d') return false;
+      if (q === '3d') return true;
+      if (reduce) return false;
+      let gl = false;
+      try { const c = document.createElement('canvas'); gl = !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { gl = false; }
+      if (!gl) return false;
+      const nav = navigator as any;
+      if (nav.connection && nav.connection.saveData) return false;
+      const wide = window.innerWidth >= 1024;
+      const fine = window.matchMedia('(pointer: fine)').matches;
+      const cores = nav.hardwareConcurrency || 4;
+      const mem = nav.deviceMemory || 4;
+      return wide && fine && cores >= 4 && mem >= 4;
     }
 
-    function draw() {
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      // fondo degradado (familia ink)
-      const bg = ctx.createLinearGradient(0, 0, W * 0.5, H);
-      bg.addColorStop(0, '#02101a'); bg.addColorStop(0.6, '#042233'); bg.addColorStop(1, '#021a29');
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    /* ---------------- 2D (canvas, pseudo-3D, fallback) ---------------- */
+    async function run2D() {
+      const ctx = canvas.getContext('2d')!;
+      let DPR = 1, cx = 0, cy = 0, scale = 1, last = 0, intro = 0;
+      const FRAME_MS = 1000 / 30;
+      const pts = await sampleStar();
 
-      // glow detrás de la estrella
-      const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, 300 * scale);
-      gl.addColorStop(0, 'rgba(0,168,234,0.20)'); gl.addColorStop(0.5, 'rgba(0,168,234,0.06)'); gl.addColorStop(1, 'rgba(0,168,234,0)');
-      ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
-
-      const ease = intro < 1 ? 1 - Math.pow(1 - intro, 3) : 1;
-      const spin = reduce ? -0.5 : t * 0.0022; // ángulo base de rotación Y
-      const ay = spin + ry; const ax = (reduce ? 0.18 : Math.sin(t * 0.0012) * 0.12) + rx;
-      const cosY = Math.cos(ay), sinY = Math.sin(ay), cosX = Math.cos(ax), sinX = Math.sin(ax);
-      const persp = 560;
-
-      ctx.globalCompositeOperation = 'lighter';
-      for (let k = 0; k < pts.length; k++) {
-        const p = pts[k];
-        // interpolación de ensamblaje
-        const x0 = p.sx + (p.bx - p.sx) * ease;
-        const y0 = p.sy + (p.by - p.sy) * ease;
-        const z0 = p.sz + (p.bz - p.sz) * ease;
-        // rotación Y luego X
-        let rxp = x0 * cosY + z0 * sinY;
-        let rzp = -x0 * sinY + z0 * cosY;
-        let ryp = y0 * cosX - rzp * sinX;
-        rzp = y0 * sinX + rzp * cosX;
-        const dz = persp / (persp + rzp * scale);
-        const px = cx + rxp * scale * dz;
-        const py = cy + ryp * scale * dz;
-        const depth = Math.max(0, Math.min(1, (rzp + 220) / 440));
-        const size = (0.6 + depth * 1.9) * Math.max(0.7, scale);
-        const alpha = (0.18 + depth * 0.72) * (0.35 + 0.65 * ease);
-        ctx.fillStyle = `rgba(${p.c},${alpha.toFixed(3)})`;
-        ctx.beginPath();
-        ctx.arc(px, py, size, 0, 6.283);
-        ctx.fill();
+      function resize() {
+        const rect = wrap.getBoundingClientRect();
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        W = rect.width; H = rect.height;
+        canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        cx = W > 900 ? W * 0.72 : W * 0.5;
+        cy = H * (W > 900 ? 0.5 : 0.66);
+        const fit = Math.min(W, H);
+        scale = (W > 900 ? fit * 0.62 : fit * 0.6) / 300;
       }
-      ctx.globalCompositeOperation = 'source-over';
-    }
+      function drawBg() {
+        const bg = ctx.createLinearGradient(0, 0, W * 0.5, H);
+        bg.addColorStop(0, '#02101a'); bg.addColorStop(0.6, '#042233'); bg.addColorStop(1, '#021a29');
+        ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+        const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, 300 * scale);
+        gl.addColorStop(0, 'rgba(0,168,234,0.20)'); gl.addColorStop(0.5, 'rgba(0,168,234,0.06)'); gl.addColorStop(1, 'rgba(0,168,234,0)');
+        ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
+      }
+      function draw() {
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        drawBg();
+        const e = intro < 1 ? 1 - Math.pow(1 - intro, 3) : 1;
+        const ay = (reduce ? -0.5 : t * 0.0022) + ry;
+        const ax = (reduce ? 0.18 : Math.sin(t * 0.0012) * 0.12) + rx;
+        const cosY = Math.cos(ay), sinY = Math.sin(ay), cosX = Math.cos(ax), sinX = Math.sin(ax);
+        const persp = 560;
+        ctx.globalCompositeOperation = 'lighter';
+        for (let k = 0; k < pts.length; k++) {
+          const p = pts[k];
+          const x0 = p.sx + (p.bx - p.sx) * e, y0 = p.sy + (p.by - p.sy) * e, z0 = p.sz + (p.bz - p.sz) * e;
+          let rxp = x0 * cosY + z0 * sinY;
+          let rzp = -x0 * sinY + z0 * cosY;
+          let ryp = y0 * cosX - rzp * sinX;
+          rzp = y0 * sinX + rzp * cosX;
+          const dz = persp / (persp + rzp * scale);
+          const px = cx + rxp * scale * dz, py = cy + ryp * scale * dz;
+          const depth = Math.max(0, Math.min(1, (rzp + 220) / 440));
+          const size = (0.6 + depth * 1.9) * Math.max(0.7, scale);
+          const alpha = (0.18 + depth * 0.72) * (0.35 + 0.65 * e);
+          ctx.fillStyle = `rgba(${p.c},${alpha.toFixed(3)})`;
+          ctx.beginPath(); ctx.arc(px, py, size, 0, 6.283); ctx.fill();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+      }
+      function frame() {
+        t += 1;
+        if (intro < 1 && !reduce) intro = Math.min(1, intro + 0.018); else if (reduce) intro = 1;
+        ry += (mtx - ry) * 0.05; rx += (mty - rx) * 0.05;
+        draw();
+        if (!reduce && running) raf = requestAnimationFrame(tick);
+      }
+      function tick(now: number) { if (now - last < FRAME_MS) { raf = requestAnimationFrame(tick); return; } last = now; frame(); }
 
-    function frame() {
-      t += 1;
-      if (intro < 1 && !reduce) intro = Math.min(1, intro + 0.018);
-      else if (reduce) intro = 1;
-      ry += (mtx - ry) * 0.05; rx += (mty - rx) * 0.05;
-      draw();
-      if (!reduce && running) raf = requestAnimationFrame(tick);
-    }
-    function tick(now: number) {
-      if (now - last < FRAME_MS) { raf = requestAnimationFrame(tick); return; }
-      last = now; frame();
-    }
-    function start() { if (!running && built) { running = true; raf = requestAnimationFrame(tick); } }
-    function stop() { running = false; cancelAnimationFrame(raf); }
-
-    (async () => {
-      pts = await sampleStar();
-      built = true;
       resize();
       if (reduce) { intro = 1; draw(); return; }
-      intro = 0; draw();
+      draw();
+      wireCommon(() => { resize(); draw(); }, () => { running = true; raf = requestAnimationFrame(tick); }, () => { running = false; cancelAnimationFrame(raf); });
+    }
+
+    /* ---------------- 3D (Three.js / WebGL) ---------------- */
+    async function run3D() {
+      const THREE: any = await import('three');
+      const pts = await sampleStar();
+      if (!pts.length) throw new Error('no-sample');
+      const N = pts.length;
+      const positions = new Float32Array(N * 3), colors = new Float32Array(N * 3);
+      const S = 1 / 118;
+      for (let i = 0; i < N; i++) {
+        const p = pts[i];
+        positions[i * 3] = p.bx * S; positions[i * 3 + 1] = -p.by * S; positions[i * 3 + 2] = p.bz * S;
+        const cc = p.c.split(','); colors[i * 3] = +cc[0] / 255; colors[i * 3 + 1] = +cc[1] / 255; colors[i * 3 + 2] = +cc[2] / 255;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      // sprite redondo suave para cada punto
+      const dc = document.createElement('canvas'); dc.width = dc.height = 64;
+      const dx = dc.getContext('2d')!;
+      const g = dx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.45, 'rgba(255,255,255,0.65)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+      dx.fillStyle = g; dx.beginPath(); dx.arc(32, 32, 32, 0, 6.283); dx.fill();
+      const tex = new THREE.CanvasTexture(dc);
+
+      const mat = new THREE.PointsMaterial({ size: 0.05, map: tex, vertexColors: true, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
+      const points = new THREE.Points(geo, mat);
+      const group = new THREE.Group(); group.add(points);
+      const scene = new THREE.Scene(); scene.add(group);
+      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      function size3() {
+        const r = wrap.getBoundingClientRect(); W = r.width; H = r.height;
+        renderer.setSize(W, H, false);
+        camera.aspect = W / H;
+        group.position.x = W > 900 ? 1.05 : 0;
+        camera.position.set(0, 0, W > 900 ? 3.0 : 3.5);
+        camera.updateProjectionMatrix();
+      }
+      let intro = 0;
+      function loop() {
+        t += 1;
+        if (intro < 1) intro = Math.min(1, intro + 0.02);
+        const e = 1 - Math.pow(1 - intro, 3);
+        mat.opacity = 0.92 * e;
+        points.scale.setScalar(0.55 + 0.45 * e);
+        ry += (mtx - ry) * 0.05; rx += (mty - rx) * 0.05;
+        points.rotation.y = t * 0.004 + ry * 1.5;
+        points.rotation.x = Math.sin(t * 0.0015) * 0.12 + rx;
+        renderer.render(scene, camera);
+        if (running) raf = requestAnimationFrame(loop);
+      }
+      size3();
+      renderer.render(scene, camera);
+      wireCommon(() => { size3(); renderer.render(scene, camera); }, () => { running = true; raf = requestAnimationFrame(loop); }, () => { running = false; cancelAnimationFrame(raf); });
+    }
+
+    /* ---------------- observadores comunes ---------------- */
+    function wireCommon(onResize: () => void, start: () => void, stop: () => void) {
       const io = new IntersectionObserver((es) => { for (const e of es) e.isIntersecting ? start() : stop(); }, { threshold: 0.02 });
       io.observe(wrap);
       document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
       let rt: number;
-      new ResizeObserver(() => { clearTimeout(rt); rt = window.setTimeout(() => { resize(); draw(); }, 150); }).observe(wrap);
+      new ResizeObserver(() => { clearTimeout(rt); rt = window.setTimeout(onResize, 150); }).observe(wrap);
       window.addEventListener('pointermove', (e) => {
         const r = wrap.getBoundingClientRect();
         mtx = ((e.clientX - r.left) / r.width - 0.5) * 0.5;
         mty = ((e.clientY - r.top) / r.height - 0.5) * -0.3;
       }, { passive: true });
       start();
+    }
+
+    (async () => {
+      if (pick3D()) { try { await run3D(); return; } catch { /* fallback a 2D */ } }
+      await run2D();
     })();
   }
 </script>
