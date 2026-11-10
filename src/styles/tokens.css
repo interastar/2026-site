@@ -84,30 +84,33 @@
   --ia-subtle:    #647280;
 
   /* ---- Semantic foreground / background ------------------------------ */
-  --fg-1:         var(--ia-logotype);
-  --fg-2:         var(--ia-muted);
-  --fg-3:         var(--ia-subtle);
+  /* ---- Tema "wow" (oscuro). La capa semántica se vuelca a oscuro; la rampa
+         de marca (arriba) se conserva intacta. En la rama ideas/wow este es
+         el tema por defecto de todo el sitio. --------------------------------- */
+  --fg-1:         #eef5f9;
+  --fg-2:         rgba(226, 238, 245, 0.72);
+  --fg-3:         rgba(226, 238, 245, 0.54);
   --fg-on-dark:   #ffffff;
-  --fg-on-accent: #ffffff;
+  --fg-on-accent: #04121c;
 
-  --bg-page:      var(--ia-paper);
-  --bg-surface:   var(--ia-white);
-  --bg-sunken:    var(--ia-mist);
-  --bg-inverse:   var(--ia-ink);
+  --bg-page:      #04121c;
+  --bg-surface:   #081d2b;
+  --bg-sunken:    #03101a;
+  --bg-inverse:   #010a11;
 
-  --border:       var(--ia-line);
-  --border-strong:var(--ia-line-strong);
+  --border:       rgba(255, 255, 255, 0.10);
+  --border-strong:rgba(255, 255, 255, 0.20);
 
-  /* ---- Accent: one action color (blue). Green is highlight only. ----- */
-  --accent:           var(--ia-blue);
-  --accent-hover:     var(--ia-deep);
-  --accent-pressed:   var(--ia-navy);
-  --accent-soft:      var(--ia-cyan-100);
-  --accent-soft-fg:   var(--ia-deep);
+  /* ---- Accent: una sola acción (cian). Verde = realce. ----------------- */
+  --accent:           var(--ia-cyan);
+  --accent-hover:     var(--ia-cyan-300);
+  --accent-pressed:   var(--ia-cyan-200);
+  --accent-soft:      rgba(0, 168, 234, 0.14);
+  --accent-soft-fg:   var(--ia-cyan-100);
 
   --highlight:        var(--ia-green);
-  --highlight-soft:   var(--ia-green-100);
-  --highlight-fg:     #2f7a18;
+  --highlight-soft:   rgba(103, 219, 60, 0.14);
+  --highlight-fg:     var(--ia-green-300);
 
   /* ---- Status ---------------------------------------------------------- */
   --success-soft:    var(--ia-green-100);

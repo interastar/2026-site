@@ -3,7 +3,7 @@ import Icon from '../Icon.astro';
 import TrustBar from '../TrustBar.astro';
 import Stats from '../Stats.astro';
 import CtaBand from '../CtaBand.astro';
-import HeroBackground from '../HeroBackground.astro';
+import StarField from '../StarField.astro';
 import PlatformBento from '../PlatformBento.astro';
 import { path, useTranslations, type Lang } from '../../i18n/ui';
 
@@ -82,7 +82,7 @@ const [featured, ...list] = posts;
 ---
 <!-- Hero: copy left, animated brand canvas fills the right column -->
 <section class="hero">
-  <HeroBackground />
+  <StarField />
   <div class="wrap">
     <div class="hero-grid">
       <div>
@@ -99,6 +99,18 @@ const [featured, ...list] = posts;
 </section>
 
 <TrustBar lang={lang} />
+
+<!-- Manifiesto: statements verbo-primero (kinético) -->
+<section class="manifesto">
+  <div class="wrap">
+    <p class="mani">
+      <span class="mw reveal" style="--i:0">{lang === 'es' ? 'Implementamos.' : 'We implement.'}</span>
+      <span class="mw reveal" style="--i:1">{lang === 'es' ? 'Integramos.' : 'We integrate.'}</span>
+      <span class="mw reveal" style="--i:2">{lang === 'es' ? 'Operamos.' : 'We operate.'}</span>
+    </p>
+    <p class="mani-sub"><span class="star"></span>{lang === 'es' ? 'Tu ERP, tu CX y tu IA como una sola operación, de principio a fin.' : 'Your ERP, CX and AI as a single operation, end to end.'}</p>
+  </div>
+</section>
 
 <!-- Segmentation by role: one lead tile plus two stacked tiles -->
 <section class="section">
