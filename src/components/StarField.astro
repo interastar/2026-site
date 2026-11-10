@@ -173,8 +173,19 @@
         positions[i * 3] = p.bx * S; positions[i * 3 + 1] = -p.by * S; positions[i * 3 + 2] = p.bz * S;
         const cc = p.c.split(','); colors[i * 3] = +cc[0] / 255; colors[i * 3 + 1] = +cc[1] / 255; colors[i * 3 + 2] = +cc[2] / 255;
       }
+      // posiciones de dispersión inicial: llegan desde todas direcciones y se integran
+      const start = new Float32Array(N * 3);
+      for (let i = 0; i < N; i++) {
+        const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2, sq = Math.sqrt(1 - u * u);
+        const rad = 2.6 + Math.random() * 2.4;
+        start[i * 3] = Math.cos(th) * sq * rad;
+        start[i * 3 + 1] = Math.sin(th) * sq * rad;
+        start[i * 3 + 2] = u * rad;
+      }
+      const cur = start.slice();
+      const posAttr = new THREE.BufferAttribute(cur, 3);
       const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('position', posAttr);
       geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
       // sprite redondo suave para cada punto
@@ -202,12 +213,16 @@
         camera.updateProjectionMatrix();
       }
       let intro = 0;
+      if (reduce) { cur.set(positions); posAttr.needsUpdate = true; intro = 1; mat.opacity = 0.92; }
       function loop() {
         t += 1;
-        if (intro < 1) intro = Math.min(1, intro + 0.02);
-        const e = 1 - Math.pow(1 - intro, 3);
-        mat.opacity = 0.92 * e;
-        points.scale.setScalar(0.55 + 0.45 * e);
+        if (intro < 1) {
+          intro = Math.min(1, intro + 0.014);
+          const e = 1 - Math.pow(1 - intro, 3);
+          for (let i = 0; i < N * 3; i++) cur[i] = start[i] + (positions[i] - start[i]) * e;
+          posAttr.needsUpdate = true;
+          mat.opacity = 0.92 * Math.min(1, e + 0.1);
+        }
         ry += (mtx - ry) * 0.05; rx += (mty - rx) * 0.05;
         points.rotation.y = t * 0.004 + ry * 1.5;
         points.rotation.x = Math.sin(t * 0.0015) * 0.12 + rx;
