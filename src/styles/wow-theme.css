@@ -1,0 +1,39 @@
+/* =========================================================================
+   Interastar — Tema "wow" (dark editorial). Capa de tokens REUTILIZABLE.
+   Se activa con [data-theme="wow"] en <html> (o en cualquier contenedor),
+   para poder migrar el resto del sitio por fases sin tocar el tema claro.
+
+   Acento único: cian. Verde: realce puntual. Superficies rectas (radio 2px),
+   botones píldora. Construido sobre la rampa de marca de tokens.css.
+   ========================================================================= */
+
+[data-theme="wow"] {
+  /* Superficies (familia navy, de profunda a elevada) */
+  --w-bg:       #04121c;
+  --w-ink:      #002233;
+  --w-deep:     #03101a;
+  --w-lift:     #061826;
+  --w-darkest:  #010a11;
+  --w-surface:   rgba(255, 255, 255, 0.03);
+  --w-surface-2: rgba(255, 255, 255, 0.05);
+  --w-line:   rgba(255, 255, 255, 0.10);
+  --w-line-2: rgba(255, 255, 255, 0.18);
+
+  /* Texto (contrastes verificados AA sobre --w-deep) */
+  --w-fg:   #eef5f9;
+  --w-fg-2: rgba(226, 238, 245, 0.72);
+  --w-fg-3: rgba(226, 238, 245, 0.54); /* subido de 0.42 -> AA en texto pequeño */
+
+  /* Acento + realce */
+  --w-accent:   #00a8ea;
+  --w-accent-2: #40bef0;
+  --w-green:    #67db3c;
+
+  /* Forma y motion */
+  --r: 2px;
+  --easing: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Tipografía (heredada de tokens.css) */
+  --w-display: var(--font-display);
+  --w-body:    var(--font-ui);
+}

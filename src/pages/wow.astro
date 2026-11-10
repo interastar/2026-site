@@ -11,7 +11,8 @@
    Acento único: cian. Verde: realce puntual. Cero em-dash.
    ========================================================================= */
 import '../styles/tokens.css';
-import HeroBackground from '../components/HeroBackground.astro';
+import '../styles/wow-theme.css';
+import StarField from '../components/StarField.astro';
 import Icon from '../components/Icon.astro';
 import { path } from '../i18n/ui';
 import { getPostCards } from '../lib/posts';
@@ -56,7 +57,7 @@ const description = 'Implementamos, integramos y operamos Acumatica, Genesys y l
 const canonical = 'https://www.interastar.com/wow/';
 ---
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="wow">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -99,7 +100,7 @@ const canonical = 'https://www.interastar.com/wow/';
   <main id="main">
     <!-- HERO -->
     <section class="hero">
-      <HeroBackground />
+      <StarField />
       <div class="wrap hero-inner">
         <span class="eyebrow"><span class="star"></span>Socio en ERP, CX e IA</span>
         <h1 class="display">
@@ -126,11 +127,23 @@ const canonical = 'https://www.interastar.com/wow/';
       </div>
     </section>
 
+    <!-- MANIFIESTO: statements verbo-primero (kinético) -->
+    <section class="manifesto">
+      <div class="wrap">
+        <p class="mani">
+          <span class="mw reveal" style="--i:0">Implementamos.</span>
+          <span class="mw reveal" style="--i:1">Integramos.</span>
+          <span class="mw reveal" style="--i:2">Operamos.</span>
+        </p>
+        <p class="mani-sub"><span class="star"></span>Tu ERP, tu CX y tu IA como una sola operación, de principio a fin.</p>
+      </div>
+    </section>
+
     <!-- CAPACIDADES: lista editorial -->
     <section class="section deep">
       <div class="wrap">
         <div class="head">
-          <h2 class="display sm">Integración tecnológica de extremo a extremo.</h2>
+          <h2 class="display sm">Capacidades. <em class="dim">Integración de extremo a extremo.</em></h2>
           <p class="lede">No vendemos software propio. Implementamos, integramos y operamos las mejores plataformas del mercado en tu beneficio.</p>
         </div>
         <ul class="cap-list">
@@ -177,8 +190,7 @@ const canonical = 'https://www.interastar.com/wow/';
     <section class="section lift">
       <div class="wrap">
         <div class="head">
-          <span class="eyebrow"><span class="star"></span>Plataformas</span>
-          <h2 class="display sm mt">Las plataformas líderes, implementadas por expertos.</h2>
+          <h2 class="display sm">Plataformas. <em class="dim">Implementadas por expertos.</em></h2>
         </div>
         <div class="bento">
           {platforms.map((p, i) => (
@@ -215,7 +227,7 @@ const canonical = 'https://www.interastar.com/wow/';
       <section class="section deep">
         <div class="wrap">
           <div class="head">
-            <h2 class="display sm">Conocimiento para decidir mejor.</h2>
+            <h2 class="display sm">Insights. <em class="dim">Conocimiento para decidir mejor.</em></h2>
             <p class="lede">Tendencias, guías y casos sobre ERP, CX e IA aplicada al negocio.</p>
           </div>
           <div class="posts">
@@ -283,26 +295,7 @@ const canonical = 'https://www.interastar.com/wow/';
   </footer>
 
   <style>
-    /* ---------- Tema oscuro local (lock) ---------- */
-    :root {
-      --w-bg: #04121c;
-      --w-ink: #002233;
-      --w-deep: #03101a;
-      --w-lift: #061826;
-      --w-darkest: #010a11;
-      --w-surface: rgba(255,255,255,0.03);
-      --w-surface-2: rgba(255,255,255,0.05);
-      --w-line: rgba(255,255,255,0.10);
-      --w-line-2: rgba(255,255,255,0.18);
-      --w-fg: #eef5f9;
-      --w-fg-2: rgba(226,238,245,0.68);
-      --w-fg-3: rgba(226,238,245,0.42);
-      --w-accent: #00a8ea;
-      --w-accent-2: #40bef0;
-      --w-green: #67db3c;
-      --r: 2px;
-      --easing: cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
+    /* Tokens del tema en src/styles/wow-theme.css (activado por [data-theme="wow"]). */
     * , *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
@@ -330,6 +323,16 @@ const canonical = 'https://www.interastar.com/wow/';
     .display.sm { font-size: clamp(30px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -0.025em; }
     .display em { font-style: normal; color: var(--w-accent); }
     .display em.g { color: var(--w-green); }
+    .display em.dim { font-style: normal; color: var(--w-fg-3); }
+
+    /* Banda manifiesto (statements verbo-primero, kinético) */
+    .manifesto { padding-block: clamp(72px, 10vw, 150px); background: var(--w-deep); border-top: 1px solid var(--w-line); }
+    .mani { display: flex; flex-wrap: wrap; gap: 0 0.3em; margin: 0; color: var(--w-fg); font: 900 clamp(40px, 7.4vw, 108px)/0.98 var(--w-display); letter-spacing: -0.035em; }
+    .mani .mw { transition-delay: calc(var(--i) * 0.09s); }
+    .mani .mw:nth-child(2) { color: var(--w-accent); }
+    .mani .mw:nth-child(3) { color: var(--w-green); }
+    .mani-sub { display: flex; align-items: center; gap: 11px; margin: clamp(22px, 3vw, 34px) 0 0; font: 400 clamp(16px, 1.9vw, 20px)/1.5 var(--w-body); color: var(--w-fg-2); }
+    .mani-sub .star { width: 14px; height: 14px; flex-shrink: 0; background: url("/brand/star.svg") center/contain no-repeat; }
 
     .eyebrow {
       display: inline-flex; align-items: center; gap: 9px;
@@ -354,9 +357,11 @@ const canonical = 'https://www.interastar.com/wow/';
     .btn-ghost { background: transparent; color: var(--w-fg); border-color: var(--w-line-2); }
     .btn-ghost:hover { background: var(--w-surface-2); border-color: var(--w-fg); }
 
-    .link-arrow { display: inline-flex; align-items: center; gap: 7px; font: 600 14px var(--font-ui); color: var(--w-accent-2); }
+    .link-arrow { position: relative; display: inline-flex; align-items: center; gap: 7px; font: 600 14px var(--font-ui); color: var(--w-accent-2); }
+    .link-arrow::after { content: ""; position: absolute; left: 0; bottom: -3px; height: 1px; width: 0; background: currentColor; transition: width 260ms var(--easing); }
+    .link-arrow:hover::after { width: 100%; }
     .link-arrow svg { transition: transform 200ms var(--easing); }
-    .link-arrow:hover svg { transform: translateX(3px); }
+    .link-arrow:hover svg { transform: translateX(4px); }
 
     /* ---------- Nav ---------- */
     .nav {
@@ -387,6 +392,8 @@ const canonical = 'https://www.interastar.com/wow/';
 
     /* ---------- Hero ---------- */
     .hero { position: relative; overflow: hidden; background: var(--w-ink); min-height: calc(100svh - 72px); display: flex; align-items: center; }
+    /* velo de legibilidad: oscurece la izquierda donde vive el titular */
+    .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(2,16,26,0.82) 0%, rgba(2,16,26,0.45) 38%, rgba(2,16,26,0) 62%); }
     .hero-inner { position: relative; z-index: 2; padding: clamp(40px, 7vh, 96px) 0 clamp(48px, 8vh, 96px); max-width: 1160px; }
     .hero .eyebrow { color: var(--w-accent-2); }
     .hero h1 { margin: 20px 0 0; font-size: clamp(36px, 5.2vw, 78px); line-height: 0.96; }
@@ -443,7 +450,9 @@ const canonical = 'https://www.interastar.com/wow/';
 
     /* Bento de plataformas */
     .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-    .bento-cell { position: relative; overflow: hidden; grid-column: span 6; border: 1px solid var(--w-line); background: var(--w-surface); border-radius: var(--r); padding: clamp(26px, 3vw, 38px); min-height: 300px; display: flex; flex-direction: column; gap: 10px; transition: border-color 220ms var(--easing), transform 220ms var(--easing), background-color 220ms var(--easing); }
+    .bento-cell { position: relative; overflow: hidden; grid-column: span 6; border: 1px solid var(--w-line); background: var(--w-surface); border-radius: var(--r); padding: clamp(26px, 3vw, 38px); min-height: 300px; display: flex; flex-direction: column; gap: 10px; transition: border-color 220ms var(--easing), transform 220ms var(--easing), background-color 220ms var(--easing), opacity 0.45s var(--easing), filter 0.45s var(--easing); }
+    /* hover-dim estilo nk.studio: al enfocar una celda, las hermanas se atenúan */
+    .bento:hover .bento-cell:not(:hover) { opacity: 0.45; filter: blur(3px); }
     .bento-cell.wide { grid-column: span 7; }
     .bento-cell.wide + .bento-cell:not(.wide) { grid-column: span 5; }
     .bento-cell:nth-child(3) { grid-column: span 5; }
@@ -469,7 +478,7 @@ const canonical = 'https://www.interastar.com/wow/';
     .stats { background: var(--w-ink); border-block: 1px solid var(--w-line); padding-block: clamp(56px, 7vw, 92px); }
     .stats-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px clamp(40px, 6vw, 88px); align-items: start; }
     .stats-intro { font: 600 clamp(20px, 2.4vw, 28px)/1.3 var(--font-display); letter-spacing: -0.02em; color: var(--w-fg); margin: 0; max-width: 22ch; }
-    .num { font: 900 clamp(48px, 6vw, 78px)/0.95 var(--font-display); letter-spacing: -0.03em; color: var(--w-fg); white-space: nowrap; }
+    .num { font: 900 clamp(48px, 6vw, 78px)/0.95 var(--font-display); letter-spacing: -0.03em; color: var(--w-fg); white-space: nowrap; font-variant-numeric: tabular-nums; }
     .num b { color: var(--w-green); font-weight: 900; font-size: 0.56em; letter-spacing: -0.02em; }
     .stat-label { font: 400 14px/1.5 var(--font-ui); color: var(--w-fg-2); margin-top: 12px; max-width: 230px; }
     @media (max-width: 780px) { .stats-grid { grid-template-columns: 1fr 1fr; } .stats-intro { grid-column: 1 / -1; } }
