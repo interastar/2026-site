@@ -32,7 +32,7 @@ limpieza del blog, badges de partner, y una pasada editorial iniciada en la Home
 
 ## 4. Reglas EDITORIALES (acordadas con el usuario)
 
-- **Audiencia: dueños de negocio.** Explicar cada abreviación en su **primer uso** por página: "sistema de gestión empresarial (ERP)", "experiencia de cliente (CX)", "sistema de clientes (CRM)", etc. El hero puede quedar punchy (tríada ERP/CX/IA) y explicar justo debajo.
+- **Audiencia: dueños de negocio.** Explicar cada abreviación en su **primer uso** por página: "sistema de gestión empresarial (ERP)", "experiencia de cliente (CX)", "sistema de clientes (CRM)", etc. El hero **lidera con el resultado en tono humano** ("Todo tu negocio funcionando en armonía"), **sin siglas sueltas**; nombra Acumatica/Genesys y explica en palabras llanas en el subtítulo. (Evitar la tríada "Tu ERP/CX/IA": son siglas que no dicen nada y "tu ERP" sugiere el sistema del cliente, cuando nosotros implementamos Acumatica.)
 - **Español sobre anglicismos:** "de extremo a extremo" (no "end-to-end"), "sistemas antiguos" (no "legacy/legadas"), "centro de contacto" (no "contact center"). Tags de plataforma en español ("ERP en la nube", "Experiencia de cliente en la nube", etc.). Quitar siglas oscuras como "WEM", "CPaaS" de los títulos.
 - **Framing de integración (importante):** NO decir "un solo sistema". Son **soluciones distintas (ERP, centro de contacto, IA) que INTEGRAMOS** "para que trabajen como una sola operación". Cuidar no confundir al lector.
 - **IA tejida en toda la prosa:** mencionar que hay IA en todas las soluciones y en nuestro conocimiento (hero, servicios, bloques de marca).
@@ -54,6 +54,7 @@ limpieza del blog, badges de partner, y una pasada editorial iniciada en la Home
 - SEO: títulos con señal de partner + `BreadcrumbList`/`Article` JSON-LD (ES y EN).
 - `/wow` consolidado: redirige a `/` (el home de producción ES el diseño wow).
 - Pasada editorial **aplicada solo en la Home** (muestra aprobada): abreviaciones, español, tags, "centro de contacto", framing de integración, IA tejida, footer sin "B2B".
+- **Hero reescrito** (nov 2025): H1 "Todo tu negocio funcionando en armonía" (negocio en cian, armonía en verde); eyebrow "Integramos tus plataformas de negocio"; subtítulo nombra Acumatica (ERP) y Genesys (CX) con IA integrada y framing de integración. Manifiesto alineado. ES + EN.
 - Marcas actualizadas (descripción + IA); logo de Telnyx agregado.
 
 ## 7. SIGUIENTES PASOS (pendientes)
