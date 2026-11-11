@@ -1,3 +1,16 @@
+## Fuente de verdad del proyecto
+
+Antes de trabajar, lee **`docs/handoff.md`**: contiene el contexto del proyecto, las
+reglas de **diseño** y **editoriales**, el estado actual y los **pendientes**. Síguelo
+como reglas del proyecto.
+
+**Mantén `docs/handoff.md` actualizado:** cuando completes un pendiente, cambies una
+regla o tomes una decisión, edítalo en el **mismo commit** del cambio (mueve ítems de
+"Siguientes pasos" a "Estado actual", ajusta reglas, etc.). Si el cambio no afecta al
+handoff, no lo toques.
+
+Desarrolla siempre en la rama **`ideas/wow`** y haz commit + push de cada avance.
+
 ## Development
 
 When starting the dev server, use background mode:
