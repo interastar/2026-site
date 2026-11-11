@@ -1,0 +1,249 @@
+/* =========================================================================
+   Interastar — capa "wow-fx". Efectos de realce (glass, brillo, gradientes,
+   perspectiva 3D) inspirados en referencias tipo stackbyte.dev, reinterpretados
+   con la marca Interastar (cian #00a8ea, verde #67db3c).
+
+   Se importa DESPUÉS de global.css para tener la última palabra. Todo respeta
+   prefers-reduced-motion. Pensado para ser fácil de ajustar o desactivar.
+   ========================================================================= */
+
+@layer components {
+
+:root {
+  --rgb-cyan: 0, 168, 234;
+  --rgb-green: 103, 219, 60;
+  /* Superficies glass */
+  --glass-bg:   rgba(255, 255, 255, 0.045);
+  --glass-brd:  rgba(255, 255, 255, 0.12);
+  --glass-hi:   inset 0 1px 0 rgba(255, 255, 255, 0.08); /* luz en la orilla superior */
+  --glass-blur: 14px;
+}
+
+/* Permite animar el ángulo del borde cónico (brillo que recorre la orilla). */
+@property --edge-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+
+/* -------------------------------------------------------------------------
+   1) ENCABEZADOS: relleno en gradiente + brillo sutil
+   Se aplica a títulos de sección y de páginas internas. El hero conserva sus
+   palabras coloreadas (ver abajo) para no perder el cian/verde del H1.
+   ------------------------------------------------------------------------- */
+.h2,
+.cta-block h2,
+.split .h1,
+.section > .wrap > .h1,
+.post-feature h3 {
+  background-image: linear-gradient(96deg, var(--fg-1) 0%, var(--ia-cyan-100) 58%, var(--fg-1) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+/* Restaurar los acentos en línea (em, b) dentro de títulos con gradiente. */
+.h2 em,
+.h2 em.g,
+.cta-block h2 b {
+  -webkit-text-fill-color: currentColor;
+}
+
+/* Hero: mantener palabras coloreadas y darles brillo (sensación de energía). */
+.hero .h1 em    { text-shadow: 0 0 26px rgba(var(--rgb-cyan), 0.45); }
+.hero .h1 em.g  { text-shadow: 0 0 26px rgba(var(--rgb-green), 0.45); }
+
+/* Punto-estrella del eyebrow con leve resplandor. */
+.eyebrow .star-dot { filter: drop-shadow(0 0 6px rgba(var(--rgb-cyan), 0.6)); }
+
+/* -------------------------------------------------------------------------
+   2) VIDRIO ESMERILADO (glass) en menús y tarjetas de sección
+   ------------------------------------------------------------------------- */
+.bento-cell,
+.seg-tile:not(.lead),
+.form-card,
+.tst-card {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  border-color: var(--glass-brd);
+  box-shadow: var(--glass-hi);
+}
+
+/* Celdas con tinte de marca: glass translúcido del color (conservan identidad). */
+.bento-cell.tint-cyan,
+.seg-tile.lead,
+.post-feature {
+  background:
+    linear-gradient(180deg, rgba(var(--rgb-cyan), 0.14), rgba(var(--rgb-cyan), 0.05));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+  border: 1px solid rgba(var(--rgb-cyan), 0.22);
+  box-shadow: var(--glass-hi);
+}
+.bento-cell.tint-green {
+  background:
+    linear-gradient(180deg, rgba(var(--rgb-green), 0.14), rgba(var(--rgb-green), 0.05));
+  border: 1px solid rgba(var(--rgb-green), 0.22);
+}
+
+/* Menús de navegación en glass. */
+.nav-menu {
+  background: rgba(6, 20, 30, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border-color: var(--glass-brd);
+}
+@media (max-width: 767px) {
+  .nav-links {
+    background: rgba(6, 20, 30, 0.9);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    backdrop-filter: blur(16px) saturate(1.2);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   3) BRILLO EN LA ORILLA DE TARJETAS (borde cónico que recorre al hover)
+   El ::before dibuja un borde fino con un arco luminoso cian->verde que gira.
+   ------------------------------------------------------------------------- */
+.bento-cell,
+.tst-card,
+.form-card,
+.post-feature,
+.seg-tile:not(.lead) { position: relative; isolation: isolate; }
+
+.bento-cell::before,
+.tst-card::before,
+.form-card::before,
+.post-feature::before,
+.seg-tile:not(.lead)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--edge-a),
+      transparent 0deg 55%,
+      rgba(var(--rgb-cyan), 0.9) 72%,
+      rgba(var(--rgb-green), 0.9) 84%,
+      transparent 95% 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+.bento-cell:hover::before,
+.tst-card:hover::before,
+.form-card:focus-within::before,
+.post-feature:hover::before,
+.seg-tile:not(.lead):hover::before {
+  opacity: 1;
+  animation: edge-rotate 3.6s linear infinite;
+}
+@keyframes edge-rotate { to { --edge-a: 360deg; } }
+
+/* -------------------------------------------------------------------------
+   4) ILUMINACIÓN SUTIL AL PASAR EL MOUSE (spotlight que sigue al cursor)
+   Un script define --mx/--my por tarjeta (en px). El ::after lo pinta.
+   ------------------------------------------------------------------------- */
+.bento-cell::after,
+.tst-card::after,
+.form-card::after,
+.post-feature::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(var(--rgb-cyan), 0.14), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+  pointer-events: none;
+  z-index: 0;
+}
+.bento-cell:hover::after,
+.tst-card:hover::after,
+.form-card:hover::after,
+.post-feature:hover::after { opacity: 1; }
+
+/* El contenido de la tarjeta va por encima de spotlight y borde.
+   Se excluye .shot: ya es position:absolute y no debe reposicionarse. */
+.bento-cell > *:not(.shot),
+.tst-card > *,
+.form-card > *,
+.post-feature > * { position: relative; z-index: 2; }
+
+/* -------------------------------------------------------------------------
+   5) IMÁGENES DE PRODUCTO con perspectiva 3D (3/4) y zoom
+   - Bento: la captura "flota" inclinada y se endereza/acerca al hover.
+   - Detalle de solución: inclinación sutil que se endereza al hover.
+   ------------------------------------------------------------------------- */
+.bento-cell .shot {
+  z-index: 2; /* por encima del spotlight (::after) y el borde (::before) */
+  transform: perspective(1300px) rotateY(-16deg) rotateX(7deg) scale(1.06);
+  transform-origin: left center;
+  box-shadow: -18px 30px 60px rgba(0, 0, 0, 0.5);
+  transition: transform var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+.bento-cell:hover .shot {
+  transform: perspective(1300px) rotateY(-9deg) rotateX(3deg) scale(1.12);
+  box-shadow: -14px 26px 54px rgba(0, 0, 0, 0.55);
+}
+
+.split .shot img,
+.shot > img {
+  transform: perspective(1500px) rotateY(-9deg) rotateX(4deg) scale(1.03);
+  transition: transform var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+  will-change: transform;
+}
+.split .shot:hover img,
+.shot:hover > img {
+  transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1.05);
+}
+
+/* -------------------------------------------------------------------------
+   6) PROFUNDIDAD DE FONDO: resplandor radial superior + rejilla tenue
+   ------------------------------------------------------------------------- */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 72% 42%, rgba(var(--rgb-cyan), 0.12), transparent 70%);
+}
+.section.alt {
+  background-image:
+    linear-gradient(rgba(var(--rgb-cyan), 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--rgb-cyan), 0.025) 1px, transparent 1px);
+  background-size: 54px 54px;
+  background-position: center top;
+}
+
+/* -------------------------------------------------------------------------
+   7) SCROLL: reveal un poco más rico (con soporte de escalado y stagger)
+   ------------------------------------------------------------------------- */
+.reveal { transform: translateY(18px) scale(0.992); }
+.reveal.in { transform: none; }
+/* Stagger opcional dentro de rejillas con [data-stagger] y --i por hijo. */
+[data-stagger] > .reveal { transition-delay: calc(var(--i, 0) * 0.06s); }
+
+/* -------------------------------------------------------------------------
+   Accesibilidad: sin movimiento -> sin giros, spotlight ni inclinaciones.
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .bento-cell:hover::before,
+  .tst-card:hover::before,
+  .form-card:focus-within::before,
+  .post-feature:hover::before,
+  .seg-tile:not(.lead):hover::before { animation: none; }
+  .bento-cell .shot,
+  .bento-cell:hover .shot,
+  .split .shot img,
+  .shot > img,
+  .split .shot:hover img,
+  .shot:hover > img { transform: none; }
+}
+
+}
