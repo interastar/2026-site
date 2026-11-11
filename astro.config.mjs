@@ -10,6 +10,7 @@ import tailwindcss from '@tailwindcss/vite';
 // Blog posts not yet migrated land on the Insights index until their new slug exists.
 const legacyBlog = '/blog/';
 const redirects = {
+  '/wow': '/',
   '/Home.html': '/',
   '/Nosotros.html': '/nosotros/',
   '/Insights.html': '/insights/',
@@ -29,12 +30,12 @@ const redirects = {
   '/en/FAQ-Page.html': '/en/',
   [legacyBlog + 'erp-para-arrendadoras-en-2025-acumatica-la-solución-que-evoluciona-con-tu-negocio.html']: '/insights/erp-arrendadoras-2025/',
   [legacyBlog + 'genesys-cloud-2025-4-claves-para-maximizar-la-productividad-de-tus-agentes-con-ia-ética-y-xr.html']: '/insights/genesys-productividad-agentes-2025/',
-  [legacyBlog + 'acumatica-erp-2025-para-el-sector-automotriz-gestión-inteligente-de-flotas-eléctricas-y-sostenibilidad.html']: '/insights/',
-  [legacyBlog + 'ciberseguridad-en-erps-2025-cómo-acumatica-protege-contra-ransomware-y-fraude-en-arrendadoras.html']: '/insights/',
+  [legacyBlog + 'acumatica-erp-2025-para-el-sector-automotriz-gestión-inteligente-de-flotas-eléctricas-y-sostenibilidad.html']: '/insights/acumatica-sector-automotriz/',
+  [legacyBlog + 'ciberseguridad-en-erps-2025-cómo-acumatica-protege-contra-ransomware-y-fraude-en-arrendadoras.html']: '/insights/ciberseguridad-erp-acumatica/',
   [legacyBlog + 'erp-en-la-nube-2025-7-resultados-que-revolucionarán-tu-empresa-más-allá-del-ahorro-de-costos.html']: '/insights/',
-  [legacyBlog + 'erp-para-pymes-2025-5-mitos-derribados-casos-reales-de-éxito-y-costos-asequibles.html']: '/insights/',
-  [legacyBlog + 'genesys-cloud-2025-3-estrategias-revolucionarias-para-duplicar-la-productividad-de-tus-agentes-con-ia-ética.html']: '/insights/',
-  [legacyBlog + 'migrar-tu-contact-center-a-la-nube-en-2025-guía-definitiva-con-ia-cuántica-ahorro-real-y-cumplimiento-gdpr-5.html']: '/insights/',
+  [legacyBlog + 'erp-para-pymes-2025-5-mitos-derribados-casos-reales-de-éxito-y-costos-asequibles.html']: '/insights/erp-pymes-mitos/',
+  [legacyBlog + 'genesys-cloud-2025-3-estrategias-revolucionarias-para-duplicar-la-productividad-de-tus-agentes-con-ia-ética.html']: '/insights/genesys-productividad-bienestar/',
+  [legacyBlog + 'migrar-tu-contact-center-a-la-nube-en-2025-guía-definitiva-con-ia-cuántica-ahorro-real-y-cumplimiento-gdpr-5.html']: '/insights/migrar-contact-center-nube/',
   [legacyBlog + 'odoo-vs-acumatica-2025-comparativa-definitiva-con-ia-generativa-costos-reales-y-casos-de-uso.html']: '/insights/',
 };
 

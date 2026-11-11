@@ -1,65 +1,75 @@
 ---
 /**
- * Four-cell bento of the platforms Interastar implements. Two tinted cells
- * carry real product screenshots; the other two carry partner marks.
+ * Bento de alianzas/plataformas. Dos filas:
+ *  - Acumatica (ERP) + Genesys (CX), con capturas reales.
+ *  - Infobip (bloque propio, prioritario), Numia y Vonage + Telnyx.
  */
 import Icon from './Icon.astro';
 import { path, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
-  /** Where the Numia and Infobip/Vonage cells link (solutions index or contact). */
+  /** Destino de las celdas sin página propia (índice de soluciones o contacto). */
   otherHref: string;
 }
 const { lang, otherHref } = Astro.props;
 const more = lang === 'es' ? 'Conocer más' : 'Learn more';
 
 const c = {
-  es: [
-    { key: 'acumatica', tag: 'Cloud ERP', name: 'Acumatica', text: 'ERP en la nube para finanzas, operaciones y cadena de suministro. Escalable y sin cobro por usuario.', href: path('acumatica', lang) },
-    { key: 'genesys', tag: 'Cloud CX', name: 'Genesys', text: 'Contact center omnicanal con enrutamiento inteligente y analítica en tiempo real.', href: path('genesys', lang) },
-    { key: 'numia', tag: 'IA conversacional', name: 'Numia', text: 'Asistentes de IA por voz y texto para automatizar atención y calificar prospectos 24 horas al día.', href: otherHref },
-    { key: 'cpaas', tag: 'Mensajería y CPaaS', name: 'Infobip y Vonage', text: 'APIs de comunicación para SMS, WhatsApp y voz integradas a tus sistemas centrales.', href: otherHref },
-  ],
-  en: [
-    { key: 'acumatica', tag: 'Cloud ERP', name: 'Acumatica', text: 'Cloud ERP for finance, operations and supply chain. Scalable, with no per-user fees.', href: path('acumatica', lang) },
-    { key: 'genesys', tag: 'Cloud CX', name: 'Genesys', text: 'Omnichannel contact center with intelligent routing and real-time analytics.', href: path('genesys', lang) },
-    { key: 'numia', tag: 'Conversational AI', name: 'Numia', text: 'Voice and text AI assistants to automate support and qualify leads around the clock.', href: otherHref },
-    { key: 'cpaas', tag: 'Messaging and CPaaS', name: 'Infobip and Vonage', text: 'Communication APIs for SMS, WhatsApp and voice integrated into your core systems.', href: otherHref },
-  ],
+  es: {
+    acu: { tag: 'Cloud ERP', name: 'Acumatica', text: 'ERP en la nube para finanzas, operaciones y cadena de suministro. Escalable y sin cobro por usuario.', href: path('acumatica', lang) },
+    gen: { tag: 'Cloud CX', name: 'Genesys', text: 'Contact center omnicanal con enrutamiento inteligente y analítica en tiempo real.', href: path('genesys', lang) },
+    infobip: { tag: 'Mensajería y CPaaS', name: 'Infobip', text: 'Plataforma global de comunicaciones: SMS, WhatsApp, correo y voz, con APIs listas para integrar a tus sistemas.', href: otherHref },
+    numia: { tag: 'IA para el mundo físico', name: 'Numia', text: 'Orquesta en tiempo real lo que pasa en tus puntos físicos: menos esperas, más conversión y datos accionables. La agilidad del mundo digital, llevada a la operación física.', href: otherHref },
+    vonage: { tag: 'Voz y APIs', name: 'Vonage y Telnyx', text: 'APIs de voz, mensajería y verificación para construir comunicaciones a la medida de tu operación.', href: otherHref },
+  },
+  en: {
+    acu: { tag: 'Cloud ERP', name: 'Acumatica', text: 'Cloud ERP for finance, operations and supply chain. Scalable, with no per-user fees.', href: path('acumatica', lang) },
+    gen: { tag: 'Cloud CX', name: 'Genesys', text: 'Omnichannel contact center with intelligent routing and real-time analytics.', href: path('genesys', lang) },
+    infobip: { tag: 'Messaging and CPaaS', name: 'Infobip', text: 'Global communications platform: SMS, WhatsApp, email and voice, with APIs ready to integrate into your systems.', href: otherHref },
+    numia: { tag: 'AI for the physical world', name: 'Numia', text: 'Orchestrates in real time what happens at your physical locations: shorter waits, more conversion and actionable data. Digital agility, brought to physical operations.', href: otherHref },
+    vonage: { tag: 'Voice and APIs', name: 'Vonage and Telnyx', text: 'Voice, messaging and verification APIs to build communications tailored to your operation.', href: otherHref },
+  },
 }[lang];
-const [acu, gen, num, cpaas] = c;
 ---
 <div class="bento">
-  <a class="bento-cell span-7 tint-cyan has-shot reveal" href={acu.href}>
-    <span class="tag">{acu.tag}</span>
-    <h3>{acu.name}</h3>
-    <p>{acu.text}</p>
+  <a class="bento-cell span-7 tint-cyan has-shot reveal" href={c.acu.href}>
+    <span class="tag">{c.acu.tag}</span>
+    <h3>{c.acu.name}</h3>
+    <p>{c.acu.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
     <img class="shot" src="/screens/acumatica-dashboard.png" alt="" width="1200" height="694" loading="lazy" decoding="async" />
   </a>
-  <a class="bento-cell span-5 tint-green has-shot reveal" href={gen.href}>
-    <span class="tag">{gen.tag}</span>
-    <h3>{gen.name}</h3>
-    <p>{gen.text}</p>
+
+  <a class="bento-cell span-5 tint-green has-shot reveal" href={c.gen.href}>
+    <span class="tag">{c.gen.tag}</span>
+    <h3>{c.gen.name}</h3>
+    <p>{c.gen.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
     <img class="shot" src="/screens/genesys-dashboard.png" alt="" width="1260" height="814" loading="lazy" decoding="async" />
   </a>
-  <a class="bento-cell span-5 reveal" href={num.href}>
-    <div class="logos"><img src="/partners/numia-white.png" alt="Numia" loading="lazy" decoding="async" /></div>
-    <span class="tag">{num.tag}</span>
-    <h3>{num.name}</h3>
-    <p>{num.text}</p>
+
+  <a class="bento-cell span-5 reveal" href={c.infobip.href}>
+    <div class="logos"><img src="/partners/infobip-white.svg" alt="Infobip" loading="lazy" decoding="async" /></div>
+    <span class="tag">{c.infobip.tag}</span>
+    <h3>{c.infobip.name}</h3>
+    <p>{c.infobip.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
   </a>
-  <a class="bento-cell span-7 tint-mist reveal" href={cpaas.href}>
-    <div class="logos">
-      <img src="/partners/infobip-white.svg" alt="Infobip" loading="lazy" decoding="async" />
-      <img src="/partners/vonage.png" alt="Vonage" loading="lazy" decoding="async" />
-    </div>
-    <span class="tag">{cpaas.tag}</span>
-    <h3>{cpaas.name}</h3>
-    <p>{cpaas.text}</p>
+
+  <a class="bento-cell span-4 reveal" href={c.numia.href}>
+    <div class="logos"><img src="/partners/numia-white.png" alt="Numia" loading="lazy" decoding="async" /></div>
+    <span class="tag">{c.numia.tag}</span>
+    <h3>{c.numia.name}</h3>
+    <p>{c.numia.text}</p>
+    <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
+  </a>
+
+  <a class="bento-cell span-3 reveal" href={c.vonage.href}>
+    <div class="logos"><img src="/partners/vonage.png" alt="Vonage" loading="lazy" decoding="async" /></div>
+    <span class="tag">{c.vonage.tag}</span>
+    <h3>{c.vonage.name}</h3>
+    <p>{c.vonage.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
   </a>
 </div>

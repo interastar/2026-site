@@ -23,13 +23,13 @@ const c = {
     h1b: 'CX',
     h1post: ' y tu IA.',
     heroSub: 'Implementamos, integramos y operamos Acumatica, Genesys y las plataformas líderes para que tu operación funcione como una sola.',
-    segEyebrow: 'Encuentra tu camino',
-    segTitle: '¿Desde dónde miras el cambio?',
+    segEyebrow: 'Por rol',
+    segTitle: 'Cada rol, una prioridad distinta',
     segText: 'Cada decisión tecnológica se ve distinta según tu rol. Te llevamos directo a lo que te importa.',
     seg: [
-      { ic: 'building-2', role: 'Dirección general', text: 'Escalabilidad y control para crecer sin sistemas fragmentados, con continuidad operativa garantizada.' },
-      { ic: 'shield-check', role: 'TI y Sistemas', text: 'Seguridad, integraciones limpias y una implementación end-to-end que reduce el riesgo del proyecto.' },
-      { ic: 'headset', role: 'Operaciones y CX', text: 'Omnicanalidad y visibilidad operativa con reportes accionables para decidir con datos, no intuición.' },
+      { ic: 'building-2', role: 'Dirección general', text: 'Escalabilidad y control para crecer sin sistemas fragmentados, con continuidad operativa garantizada.', img: '/sections/role-direccion.webp' },
+      { ic: 'shield-check', role: 'TI y Sistemas', text: 'Seguridad, integraciones limpias y una implementación de extremo a extremo que reduce el riesgo del proyecto.', img: '/sections/role-ti.webp' },
+      { ic: 'headset', role: 'Operaciones y CX', text: 'Omnicanalidad y visibilidad operativa con reportes accionables para decidir con datos, no con intuición.', img: '/sections/role-operaciones.webp' },
     ],
     svcTitle: 'Integración tecnológica de extremo a extremo',
     svcText: 'Diseño, implementación, personalización, integración, soporte administrado y consultoría estratégica.',
@@ -39,9 +39,9 @@ const c = {
       { ic: 'refresh-cw', title: 'Servicios administrados', text: 'Operamos y evolucionamos tus plataformas con soporte continuo, para que tu equipo se enfoque en el negocio.' },
       { ic: 'graduation-cap', title: 'Consultoría y capacitación', text: 'Acompañamiento estratégico y formación de tus equipos para capturar el valor de cada plataforma.' },
     ],
-    platEyebrow: 'Plataformas',
-    platTitle: 'Las plataformas líderes, implementadas por expertos',
-    platText: 'No vendemos software propio: implementamos, integramos y operamos las mejores plataformas del mercado en tu beneficio.',
+    platEyebrow: 'Alianzas',
+    platTitle: 'Las plataformas líderes, de la mano de un partner certificado',
+    platText: 'No vendemos software propio: como partner certificado (Acumatica Gold, Genesys Silver) implementamos, integramos y operamos las mejores plataformas del mercado en tu beneficio.',
     insTitle: 'Conocimiento para decidir mejor',
     insText: 'Tendencias, guías y casos sobre ERP, CX e IA aplicada al negocio.',
     insAll: 'Ver todos los insights',
@@ -54,13 +54,13 @@ const c = {
     h1b: 'CX',
     h1post: ' and your AI.',
     heroSub: 'We implement, integrate and operate Acumatica, Genesys and the leading platforms so your operation runs as one.',
-    segEyebrow: 'Find your path',
-    segTitle: 'Where do you see change from?',
+    segEyebrow: 'By role',
+    segTitle: 'Every role, a different priority',
     segText: 'Every technology decision looks different depending on your role. We take you straight to what matters to you.',
     seg: [
-      { ic: 'building-2', role: 'Executive / C-Level', text: 'Scalability and control to grow without fragmented systems, with guaranteed business continuity.' },
-      { ic: 'shield-check', role: 'IT & Systems', text: 'Security, clean integrations and an end-to-end implementation that reduces project risk.' },
-      { ic: 'headset', role: 'Operations & CX', text: 'Omnichannel and operational visibility with actionable reports to decide with data, not intuition.' },
+      { ic: 'building-2', role: 'Executive / C-Level', text: 'Scalability and control to grow without fragmented systems, with guaranteed business continuity.', img: '/sections/role-direccion.webp' },
+      { ic: 'shield-check', role: 'IT & Systems', text: 'Security, clean integrations and an end-to-end implementation that reduces project risk.', img: '/sections/role-ti.webp' },
+      { ic: 'headset', role: 'Operations & CX', text: 'Omnichannel and operational visibility with actionable reports to decide with data, not intuition.', img: '/sections/role-operaciones.webp' },
     ],
     svcTitle: 'End-to-end technology integration',
     svcText: 'Design, implementation, customization, integration, managed support and strategic consulting.',
@@ -70,9 +70,9 @@ const c = {
       { ic: 'refresh-cw', title: 'Managed services', text: 'We operate and evolve your platforms with ongoing support so your team can focus on the business.' },
       { ic: 'graduation-cap', title: 'Consulting & training', text: 'Strategic guidance and team enablement to capture the full value of every platform.' },
     ],
-    platEyebrow: 'Platforms',
-    platTitle: 'The leading platforms, implemented by experts',
-    platText: 'We don\'t sell our own software: we implement, integrate and operate the best platforms on the market on your behalf.',
+    platEyebrow: 'Alliances',
+    platTitle: 'The leading platforms, backed by a certified partner',
+    platText: 'We don\'t sell our own software: as a certified partner (Acumatica Gold, Genesys Silver) we implement, integrate and operate the best platforms on the market on your behalf.',
     insTitle: 'Knowledge to decide better',
     insText: 'Trends, guides and cases on ERP, CX and AI applied to business.',
     insAll: 'View all insights',
@@ -124,13 +124,15 @@ const [featured, ...list] = posts;
       <p class="lede">{c.segText}</p>
     </div>
     <div class="seg-grid">
-      <div class="seg-tile lead reveal">
+      <div class:list={['seg-tile', 'lead', 'reveal', { 'has-bg': lead.img }]}>
+        {lead.img && <div class="seg-bg" style={`background-image:url(${lead.img})`}></div>}
         <div class="ic"><Icon name={lead.ic} /></div>
         <h3>{lead.role}</h3>
         <p>{lead.text}</p>
       </div>
       {rest.map((s) => (
-        <div class="seg-tile reveal">
+        <div class:list={['seg-tile', 'reveal', { 'has-bg': s.img }]}>
+          {s.img && <div class="seg-bg" style={`background-image:url(${s.img})`}></div>}
           <div class="ic"><Icon name={s.ic} /></div>
           <h3>{s.role}</h3>
           <p>{s.text}</p>
