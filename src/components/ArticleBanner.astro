@@ -1,0 +1,128 @@
+---
+/**
+ * ArticleBanner — cabecera on-brand para artículos del blog, SIN fotos.
+ * El fondo (gradiente + motivo abstracto + color de acento) varía según el
+ * slug, para que cada artículo tenga una cabecera distinta pero coherente.
+ */
+import { path, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  author: string;
+  slug: string;
+}
+const { lang, title, description, category, date, author, slug } = Astro.props;
+
+// Semilla determinista a partir del slug -> variedad estable por artículo.
+const seed = [...slug].reduce((a, c) => a + c.charCodeAt(0), 0);
+const motif = seed % 4;                 // 0 rayos · 1 anillos · 2 malla de puntos · 3 órbitas
+const pairs = [
+  ['0,168,234', '103,219,60'],          // cian + verde
+  ['0,116,181', '0,168,234'],           // azul + cian
+  ['103,219,60', '127,211,245'],        // verde + cielo
+  ['127,211,245', '0,116,181'],         // cielo + azul
+  ['0,168,234', '0,80,124'],            // cian + profundo
+];
+const [c1, c2] = pairs[seed % pairs.length];
+const angle = 115 + (seed % 110);
+const side = seed % 2 ? 'right' : 'left';
+const ox = side === 'right' ? 74 : 26;  // centro X del motivo (%)
+const crumbs = lang === 'es' ? 'Insights' : 'Insights';
+---
+<header class={`art-banner side-${side}`} style={`--b1:${c1}; --b2:${c2}; --bang:${angle}deg; --bx:${ox}%`}>
+  <div class="art-bg" aria-hidden="true">
+    {motif === 0 && (
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        {Array.from({ length: 7 }).map((_, i) => (
+          <rect x="190" y="-40" width={6 + (i % 3) * 5} height="380" rx="3"
+            transform={`rotate(${-70 + i * 20} 200 150)`} fill={`rgba(${i % 2 ? c2 : c1},0.5)`} />
+        ))}
+      </svg>
+    )}
+    {motif === 1 && (
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <circle cx="200" cy="150" r={30 + i * 34} fill="none" stroke={`rgba(${i % 2 ? c2 : c1},0.55)`} stroke-width="2" />
+        ))}
+      </svg>
+    )}
+    {motif === 2 && (
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        {Array.from({ length: 11 }).map((_, r) =>
+          Array.from({ length: 14 }).map((_, c) => (
+            <circle cx={12 + c * 28} cy={12 + r * 27} r={(r + c) % 5 === 0 ? 3.4 : 1.8}
+              fill={`rgba(${(r + c) % 3 ? c1 : c2},${0.18 + ((r * c) % 7) * 0.06})`} />
+          ))
+        )}
+      </svg>
+    )}
+    {motif === 3 && (
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <ellipse cx="200" cy="150" rx={60 + i * 48} ry={26 + i * 18}
+            transform={`rotate(${20 + i * 32} 200 150)`} fill="none"
+            stroke={`rgba(${i % 2 ? c2 : c1},0.5)`} stroke-width="1.8" />
+        ))}
+        <circle cx="200" cy="150" r="16" fill={`rgba(${c1},0.9)`} />
+      </svg>
+    )}
+  </div>
+
+  <div class="wrap art-banner-inner">
+    <p class="crumbs"><a href={path('insights', lang)}>{crumbs}</a> / {category}</p>
+    <span class="eyebrow"><span class="star-dot"></span>{category}</span>
+    <h1 class="h1 art-title">{title}</h1>
+    <p class="lede art-lede">{description}</p>
+    <p class="post-meta"><span>{date}</span><span>{author}</span></p>
+  </div>
+</header>
+
+<style>
+  .art-banner {
+    position: relative;
+    overflow: hidden;
+    background: var(--ia-ink-deep);
+    border-bottom: 1px solid var(--border);
+    padding-block: clamp(84px, 12vh, 140px) clamp(28px, 5vh, 52px);
+  }
+  /* capa de color: gradiente base + glow del acento sobre el lado elegido */
+  .art-banner::before {
+    content: "";
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(60% 90% at var(--bx) 42%, rgba(var(--b1), 0.26), transparent 60%),
+      radial-gradient(42% 70% at calc(var(--bx) + 10%) 80%, rgba(var(--b2), 0.16), transparent 62%),
+      linear-gradient(var(--bang), #02101a 0%, #04202f 55%, #021a29 100%);
+  }
+  .art-bg {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.6;
+    filter: blur(2px);
+    -webkit-mask-image: radial-gradient(70% 90% at var(--bx) 50%, #000 30%, transparent 78%);
+    mask-image: radial-gradient(70% 90% at var(--bx) 50%, #000 30%, transparent 78%);
+  }
+  .art-bg svg { position: absolute; top: 50%; left: var(--bx); width: 72%; height: 150%; transform: translate(-50%, -50%); }
+  /* velo para legibilidad del texto (más fuerte del lado del texto) */
+  .art-banner::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, rgba(2,16,26,0.82) 0%, rgba(2,16,26,0.4) 45%, rgba(2,16,26,0) 70%);
+  }
+  .side-right::after { background: linear-gradient(90deg, rgba(2,16,26,0.82) 0%, rgba(2,16,26,0.4) 45%, rgba(2,16,26,0) 72%); }
+  .side-left::after { background: linear-gradient(270deg, rgba(2,16,26,0.72) 0%, rgba(2,16,26,0.35) 48%, rgba(2,16,26,0.5) 100%); }
+
+  .art-banner-inner { position: relative; z-index: 2; max-width: 820px; }
+  .art-banner .crumbs { margin-bottom: 16px; }
+  .art-banner .crumbs a { color: var(--fg-2); }
+  .art-title { margin: 14px 0 0; font-size: clamp(30px, 4.2vw, 50px); line-height: 1.04; }
+  .art-lede { margin-top: 16px; max-width: 60ch; }
+  .art-banner .post-meta { margin-top: 18px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .art-title { animation: ab-rise 0.7s var(--ease-out, ease) both; }
+  }
+  @keyframes ab-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+</style>
