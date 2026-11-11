@@ -100,6 +100,16 @@
       const FRAME_MS = 1000 / 30;
       const pts = await sampleStar();
 
+      // Barrido 2D: ángulo y peso de orilla por punto (puntas brillan más).
+      const ang2 = new Float32Array(pts.length), rw2 = new Float32Array(pts.length);
+      let rMax2 = 1;
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i]; ang2[i] = Math.atan2(-p.by, p.bx);
+        const rr = Math.hypot(p.bx, p.by); if (rr > rMax2) rMax2 = rr; rw2[i] = rr;
+      }
+      for (let i = 0; i < pts.length; i++) rw2[i] = Math.max(0, Math.min(1, (rw2[i] / rMax2 - 0.34) / 0.66));
+      const SIG2 = 0.5;
+
       function resize() {
         const rect = wrap.getBoundingClientRect();
         DPR = Math.min(window.devicePixelRatio || 1, 2);
@@ -128,6 +138,8 @@
         const cosY = Math.cos(ay), sinY = Math.sin(ay), cosX = Math.cos(ax), sinX = Math.sin(ax);
         const persp = 560;
         ctx.globalCompositeOperation = 'lighter';
+        const doSweep = !reduce && e >= 1;
+        const ph = t * 0.012, phB = ph + Math.PI;
         for (let k = 0; k < pts.length; k++) {
           const p = pts[k];
           const x0 = p.sx + (p.bx - p.sx) * e, y0 = p.sy + (p.by - p.sy) * e, z0 = p.sz + (p.bz - p.sz) * e;
@@ -138,8 +150,14 @@
           const dz = persp / (persp + rzp * scale);
           const px = cx + rxp * scale * dz, py = cy + ryp * scale * dz;
           const depth = Math.max(0, Math.min(1, (rzp + 220) / 440));
-          const size = (0.6 + depth * 1.9) * Math.max(0.7, scale);
-          const alpha = (0.18 + depth * 0.72) * (0.35 + 0.65 * e);
+          let f = 0;
+          if (doSweep) {
+            let d1 = ang2[k] - ph; d1 = Math.atan2(Math.sin(d1), Math.cos(d1));
+            let d2 = ang2[k] - phB; d2 = Math.atan2(Math.sin(d2), Math.cos(d2));
+            f = Math.max(Math.exp(-(d1 * d1) / (SIG2 * SIG2)), Math.exp(-(d2 * d2) / (SIG2 * SIG2))) * rw2[k];
+          }
+          const size = (0.6 + depth * 1.9) * Math.max(0.7, scale) * (1 + 0.7 * f);
+          const alpha = Math.min(1, (0.18 + depth * 0.72) * (0.35 + 0.65 * e) * (0.75 + 1.1 * f));
           ctx.fillStyle = `rgba(${p.c},${alpha.toFixed(3)})`;
           ctx.beginPath(); ctx.arc(px, py, size, 0, 6.283); ctx.fill();
         }
@@ -167,12 +185,23 @@
       if (!pts.length) throw new Error('no-sample');
       const N = pts.length;
       const positions = new Float32Array(N * 3), colors = new Float32Array(N * 3);
+      const base = new Float32Array(N * 3);           // colores base (sin barrido)
+      const ang = new Float32Array(N), rw = new Float32Array(N); // ángulo y peso de orilla
       const S = 1 / 118;
+      let rMax = 1;
       for (let i = 0; i < N; i++) {
         const p = pts[i];
         positions[i * 3] = p.bx * S; positions[i * 3 + 1] = -p.by * S; positions[i * 3 + 2] = p.bz * S;
-        const cc = p.c.split(','); colors[i * 3] = +cc[0] / 255; colors[i * 3 + 1] = +cc[1] / 255; colors[i * 3 + 2] = +cc[2] / 255;
+        const cc = p.c.split(',');
+        const r0 = +cc[0] / 255, g0 = +cc[1] / 255, b0 = +cc[2] / 255;
+        colors[i * 3] = r0; colors[i * 3 + 1] = g0; colors[i * 3 + 2] = b0;
+        base[i * 3] = r0; base[i * 3 + 1] = g0; base[i * 3 + 2] = b0;
+        ang[i] = Math.atan2(-p.by, p.bx);              // ángulo en el plano de la estrella
+        const rr = Math.hypot(p.bx, p.by); if (rr > rMax) rMax = rr;
+        rw[i] = rr;                                     // se normaliza abajo
       }
+      // Peso de orilla: los puntos exteriores (puntas/filos) brillan más.
+      for (let i = 0; i < N; i++) rw[i] = Math.max(0, Math.min(1, (rw[i] / rMax - 0.34) / 0.66));
       // posiciones de dispersión inicial: llegan desde todas direcciones y se integran
       const start = new Float32Array(N * 3);
       for (let i = 0; i < N; i++) {
@@ -186,7 +215,27 @@
       const posAttr = new THREE.BufferAttribute(cur, 3);
       const geo = new THREE.BufferGeometry();
       geo.setAttribute('position', posAttr);
-      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      const colAttr = new THREE.BufferAttribute(colors, 3);
+      geo.setAttribute('color', colAttr);
+
+      // Barrido: 2 arcos de luz opuestos recorren la orilla de la estrella.
+      // Realzan el color propio de cada aspa (sección) al cruzarla.
+      const SIG = 0.5;            // ancho angular del arco (rad)
+      function sweep() {
+        const ph = t * 0.012;     // fase del barrido
+        const ph2 = ph + Math.PI;
+        for (let i = 0; i < N; i++) {
+          let d1 = ang[i] - ph; d1 = Math.atan2(Math.sin(d1), Math.cos(d1));
+          let d2 = ang[i] - ph2; d2 = Math.atan2(Math.sin(d2), Math.cos(d2));
+          const band = Math.max(Math.exp(-(d1 * d1) / (SIG * SIG)), Math.exp(-(d2 * d2) / (SIG * SIG)));
+          const f = band * rw[i];                 // intensidad del brillo en este punto
+          const k = 0.6 + 0.95 * f, add = 0.32 * f; // atenúa base, realza y aclara el arco
+          colors[i * 3]     = Math.min(1, base[i * 3]     * k + add);
+          colors[i * 3 + 1] = Math.min(1, base[i * 3 + 1] * k + add);
+          colors[i * 3 + 2] = Math.min(1, base[i * 3 + 2] * k + add);
+        }
+        colAttr.needsUpdate = true;
+      }
 
       // sprite redondo suave para cada punto
       const dc = document.createElement('canvas'); dc.width = dc.height = 64;
@@ -223,6 +272,7 @@
           posAttr.needsUpdate = true;
           mat.opacity = 0.92 * Math.min(1, e + 0.1);
         }
+        if (!reduce && intro >= 1) sweep();
         ry += (mtx - ry) * 0.05; rx += (mty - rx) * 0.05;
         points.rotation.y = t * 0.004 + ry * 1.5;
         points.rotation.x = Math.sin(t * 0.0015) * 0.12 + rx;
