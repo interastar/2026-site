@@ -63,7 +63,7 @@ limpieza del blog, badges de partner, y una pasada editorial iniciada en la Home
 
 1. **Pasada editorial: ES hecho** en Acumatica, Genesys, Soluciones, Nosotros y Contacto (ver §6). Pendiente: revisar las páginas EN (`/en/...`) por si queda algún "single system" u otro framing a ajustar, y aplicar las reglas a nuevas secciones que se agreguen.
    - **Imagen de Genesys: hecha.** El usuario subió su captura de Agent Workspace (1920x1079) por git; Claude le quitó la etiqueta de video "Agent" (relleno plano sobre nav azul `rgb(37,61,128)` y panel `rgb(251,251,251)`) y la dejó en `public/screens/genesys-dashboard.png`. Dimensiones/alt actualizados en GenesysPage y PlatformBento. Nota de proceso: en esta sesión cloud las imágenes pegadas/adjuntadas NO llegan a disco (`/mnt/user-data/uploads/` queda vacío); para pasar un archivo, súbelo por git al repo y Claude hace `git pull`.
-2. **Traducir al inglés** los 5 artículos nuevos del blog (hoy solo en ES): crear sus pares en `src/content/blog/en/` con el mismo nombre de archivo.
+2. **Blog EN: hecho.** Los 7 artículos ES ya tienen su par en inglés en `src/content/blog/en/` (mismo nombre de archivo, `lang: en`, traducción fiel sin inventar datos). Los enlaces internos usan la ruta `/en/insights/<slug>/`.
 3. **Imágenes pendientes (el usuario las genera/provee):**
    - Fondos difuminados de los 3 tiles de rol → `public/sections/role-direccion.webp`, `role-ti.webp`, `role-operaciones.webp` (prompts entregados en el chat).
    - 6 logos de cliente (blanco/transparente PNG) → `public/clients/bankaool.png`, `marzam.png`, `htrent.png`, `vanrenta.png`, `leasemd.png`, `yellowshine.png`. Al colocarlos, quitar `pending: true` en `src/components/TrustBar.astro`.
