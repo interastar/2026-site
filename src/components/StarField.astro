@@ -133,8 +133,8 @@
         ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
         drawBg();
         const e = intro < 1 ? 1 - Math.pow(1 - intro, 3) : 1;
-        const ay = (reduce ? -0.5 : t * 0.0022) + ry;
-        const ax = (reduce ? 0.18 : Math.sin(t * 0.0012) * 0.12) + rx;
+        const ay = (reduce ? -0.5 : t * 0.0010) + ry;
+        const ax = (reduce ? 0.18 : Math.sin(t * 0.0008) * 0.12) + rx;
         const cosY = Math.cos(ay), sinY = Math.sin(ay), cosX = Math.cos(ax), sinX = Math.sin(ax);
         const persp = 560;
         ctx.globalCompositeOperation = 'lighter';
@@ -274,8 +274,8 @@
         }
         if (!reduce && intro >= 1) sweep();
         ry += (mtx - ry) * 0.05; rx += (mty - rx) * 0.05;
-        points.rotation.y = t * 0.004 + ry * 1.5;
-        points.rotation.x = Math.sin(t * 0.0015) * 0.12 + rx;
+        points.rotation.y = t * 0.0016 + ry * 1.5;
+        points.rotation.x = Math.sin(t * 0.0009) * 0.12 + rx;
         renderer.render(scene, camera);
         if (running) raf = requestAnimationFrame(loop);
       }

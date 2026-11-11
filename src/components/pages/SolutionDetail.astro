@@ -29,7 +29,7 @@ const { lang, content: c, source } = Astro.props;
 <section class="section pb-12">
   <div class="wrap">
     <p class="crumbs"><a href={path('solutions', lang)}>{lang === 'es' ? 'Soluciones' : 'Solutions'}</a> / {c.name}</p>
-    <div class="split">
+    <div class="split sol-hero">
       <div>
         <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
         <h1 class="h1">{c.title}</h1>

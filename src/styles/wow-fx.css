@@ -180,13 +180,14 @@
    ------------------------------------------------------------------------- */
 .bento-cell .shot {
   z-index: 2; /* por encima del spotlight (::after) y el borde (::before) */
-  transform: perspective(1300px) rotateY(-16deg) rotateX(7deg) scale(1.06);
+  top: 50%; bottom: auto;            /* centrada verticalmente (antes quedaba muy abajo) */
+  transform: translateY(-50%) perspective(1300px) rotateY(-16deg) rotateX(7deg) scale(1.08);
   transform-origin: left center;
   box-shadow: -18px 30px 60px rgba(0, 0, 0, 0.5);
   transition: transform var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
 }
 .bento-cell:hover .shot {
-  transform: perspective(1300px) rotateY(-9deg) rotateX(3deg) scale(1.12);
+  transform: translateY(-50%) perspective(1300px) rotateY(-9deg) rotateX(3deg) scale(1.14);
   box-shadow: -14px 26px 54px rgba(0, 0, 0, 0.55);
 }
 
@@ -230,6 +231,30 @@
 [data-stagger] > .reveal { transition-delay: calc(var(--i, 0) * 0.06s); }
 
 /* -------------------------------------------------------------------------
+   Hero de página de solución: captura grande que asoma detrás del texto.
+   En desktop la imagen se posiciona absoluta, grande y ligeramente inclinada,
+   con un scrim que mantiene legible el texto. En móvil fluye normal.
+   ------------------------------------------------------------------------- */
+@media (min-width: 921px) {
+  .sol-hero { position: relative; display: block; min-height: 500px; overflow: hidden; }
+  .sol-hero > div:first-child { position: relative; z-index: 2; max-width: 560px; }
+  .sol-hero::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, var(--bg-page) 34%, rgba(4, 18, 28, 0.42) 56%, transparent 80%);
+  }
+  .sol-hero .shot {
+    position: absolute; right: -3%; top: 50%; width: min(62vw, 880px);
+    z-index: 0; margin: 0; pointer-events: none;
+  }
+  .sol-hero .shot img {
+    width: 100%; height: auto; border-radius: var(--r-card);
+    transform: translateY(-50%) perspective(1700px) rotateY(-13deg) rotateX(5deg) scale(1.04);
+    transform-origin: right center;
+    box-shadow: -34px 44px 90px rgba(0, 0, 0, 0.55);
+  }
+}
+
+/* -------------------------------------------------------------------------
    Accesibilidad: sin movimiento -> sin giros, spotlight ni inclinaciones.
    ------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
@@ -239,11 +264,15 @@
   .post-feature:hover::before,
   .seg-tile:not(.lead):hover::before { animation: none; }
   .bento-cell .shot,
-  .bento-cell:hover .shot,
+  .bento-cell:hover .shot { transform: translateY(-50%); }  /* conserva el centrado, sin inclinación */
   .split .shot img,
   .shot > img,
   .split .shot:hover img,
   .shot:hover > img { transform: none; }
+}
+/* En desktop, el hero de solución conserva su centrado (sin inclinación). */
+@media (prefers-reduced-motion: reduce) and (min-width: 921px) {
+  .sol-hero .shot img { transform: translateY(-50%); }
 }
 
 }
