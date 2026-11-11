@@ -56,10 +56,13 @@ limpieza del blog, badges de partner, y una pasada editorial iniciada en la Home
 - Pasada editorial **aplicada solo en la Home** (muestra aprobada): abreviaciones, español, tags, "centro de contacto", framing de integración, IA tejida, footer sin "B2B".
 - **Hero reescrito** (nov 2025): H1 "Todo tu negocio funcionando en armonía" (negocio en cian, armonía en verde); eyebrow "Integramos tus plataformas de negocio"; subtítulo nombra Acumatica (ERP) y Genesys (CX) con IA integrada y framing de integración. Manifiesto alineado. ES + EN.
 - Marcas actualizadas (descripción + IA); logo de Telnyx agregado.
+- **Pasada editorial extendida (ES)** a Acumatica, Genesys, Soluciones, Nosotros y Contacto (nov 2025): siglas expandidas en su primer uso, tags en español, "centro de contacto" (no "contact center"), "de extremo a extremo" (no "end-to-end"), "sistemas antiguos" (no "legadas"), quitado "WEM" de títulos, y framing "trabajen como una sola operación" (no "un solo sistema"). Barrido ES sin restos.
+- **Imagen de Acumatica actualizada**: dashboard oficial vigente "Sales Manager" (1838x960) en `public/screens/acumatica-dashboard.png`; dimensiones corregidas en AcumaticaPage y PlatformBento.
 
 ## 7. SIGUIENTES PASOS (pendientes)
 
-1. **Extender la pasada editorial al resto del sitio** con las reglas de §4 y §5: páginas Acumatica, Genesys, Soluciones, Nosotros, Contacto (ES primero, luego EN). Revisar en especial: expandir abreviaciones, "centro de contacto", framing "soluciones distintas que integramos", IA tejida.
+1. **Pasada editorial: ES hecho** en Acumatica, Genesys, Soluciones, Nosotros y Contacto (ver §6). Pendiente: revisar las páginas EN (`/en/...`) por si queda algún "single system" u otro framing a ajustar, y aplicar las reglas a nuevas secciones que se agreguen.
+   - **Imagen de Genesys (bloqueada):** el usuario tiene una captura buena de Agent Workspace (alta resolución, con una etiqueta de video "Agent" abajo a la izquierda que hay que recortar). En esta sesión cloud las imágenes pegadas/adjuntadas llegan al modelo como contenido visual pero **no se materializan en disco** (`/mnt/user-data/uploads/` queda vacío), así que no se pudo guardar. Vía fiable: el usuario coloca el archivo en `public/screens/genesys-dashboard.png` en su clon (WSL) y hace push, o lo deja donde Claude pueda leerlo. Plan B: captura oficial `genesys.com/media/screenshot_agent_laptop_626x365.png` (baja resolución, 626x365, marco de laptop, con IA).
 2. **Traducir al inglés** los 5 artículos nuevos del blog (hoy solo en ES): crear sus pares en `src/content/blog/en/` con el mismo nombre de archivo.
 3. **Imágenes pendientes (el usuario las genera/provee):**
    - Fondos difuminados de los 3 tiles de rol → `public/sections/role-direccion.webp`, `role-ti.webp`, `role-operaciones.webp` (prompts entregados en el chat).
