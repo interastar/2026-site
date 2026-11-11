@@ -1,10 +1,12 @@
 ---
 import type { Lang } from '../i18n/ui';
+
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const label = lang === 'es' ? 'Empresas que confían en Interastar' : 'Companies that trust Interastar';
 
-// Client marks carried over from the previous site (white on transparent).
+// Marcas de cliente (logo blanco sobre transparente en public/clients/<file>.png).
+// Para activar un cliente pendiente: coloca su PNG y quita `pending: true`.
 const clients = [
   { file: 'petco', name: 'Petco' },
   { file: 'coppel', name: 'Coppel' },
@@ -19,13 +21,21 @@ const clients = [
   { file: 'packsys', name: 'Packsys' },
   { file: 'dlife', name: 'Dlife' },
   { file: 'doto', name: 'Doto' },
+  // Clientes actuales pendientes de logo (deja el PNG en public/clients/ y quita `pending`).
+  { file: 'bankaool', name: 'Bankaool', pending: true },
+  { file: 'marzam', name: 'Marzam', pending: true },
+  { file: 'htrent', name: 'HTrent', pending: true },
+  { file: 'vanrenta', name: 'VanRenta', pending: true },
+  { file: 'leasemd', name: 'LeaseMD', pending: true },
+  { file: 'yellowshine', name: 'YellowShine', pending: true },
 ];
+const shown = clients.filter((c) => !('pending' in c && c.pending));
 ---
 <section class="trust" aria-label={label}>
   <div class="wrap">
     <p class="trust-label">{label}</p>
     <div class="trust-logos">
-      {clients.map((c) => (
+      {shown.map((c) => (
         <img src={`/clients/${c.file}.png`} alt={c.name} loading="lazy" decoding="async" height="26" />
       ))}
     </div>
