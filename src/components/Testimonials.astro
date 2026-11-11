@@ -1,0 +1,58 @@
+---
+/**
+ * Testimonials — "Voces de clientes".
+ *
+ * Rellena `items` con testimonios REALES y autorizados (cita + nombre + cargo
+ * + empresa + ciudad). Mientras el array esté vacío, la sección muestra un
+ * estado placeholder claramente marcado: NO inventa citas ni nombres.
+ * Formato recomendado de cita: máximo 3 líneas.
+ */
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Testimonial { quote: string; name: string; role: string; company: string; city?: string }
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// TODO: cargar testimonios reales autorizados aquí.
+const items: Testimonial[] = [];
+
+const t = lang === 'es'
+  ? { eyebrow: 'Voces de clientes', title: 'Lo que dicen quienes ya operan con nosotros', pend: 'Testimonio por publicar' }
+  : { eyebrow: 'Client voices', title: 'What teams already running with us say', pend: 'Testimonial coming soon' };
+
+const hasItems = items.length > 0;
+---
+<section class="section">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow"><span class="star-dot"></span>{t.eyebrow}</span>
+      <h2 class="h2 mt-3.5">{t.title}</h2>
+    </div>
+
+    {hasItems ? (
+      <div class="tst-grid">
+        {items.map((it) => (
+          <figure class="tst-card">
+            <Icon name="quotes" size={26} />
+            <blockquote>{it.quote}</blockquote>
+            <figcaption>
+              <span class="tst-name">{it.name}</span>
+              <span class="tst-role">{it.role}{it.company ? `, ${it.company}` : ''}{it.city ? ` (${it.city})` : ''}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    ) : (
+      <div class="tst-grid" aria-hidden="true">
+        {[0, 1, 2].map(() => (
+          <figure class="tst-card tst-empty">
+            <Icon name="quotes" size={26} />
+            <div class="tst-lines"><span></span><span></span><span></span></div>
+            <figcaption><span class="tst-pend">{t.pend}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

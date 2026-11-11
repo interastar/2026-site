@@ -14,8 +14,10 @@ interface Props {
   noindex?: boolean;
   /** Explicit alternate URLs (for pages without a fixed route key, e.g. articles). */
   alternates?: { es?: string; en?: string };
+  /** Extra JSON-LD structured data for this page (Article, BreadcrumbList, …). */
+  jsonLd?: unknown;
 }
-const { title, description, lang, current, image = '/brand/og-default.svg', noindex = false, alternates } = Astro.props;
+const { title, description, lang, current, image = '/brand/og-default.svg', noindex = false, alternates, jsonLd } = Astro.props;
 const t = useTranslations(lang);
 
 const site = Astro.site ?? new URL('https://www.interastar.com');
@@ -71,6 +73,7 @@ const GTM_ID = 'GTM-NJBW67D';
       description: t('footer.tagline'),
       sameAs: ['https://www.linkedin.com/company/interastar'],
     })} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
     <script is:inline define:vars={{ GTM_ID }}>
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});

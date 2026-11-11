@@ -30,7 +30,7 @@ const c = {
       { title: 'Resultados', text: 'Medimos el impacto en tiempos, costos y experiencia de cliente.' },
     ],
     partnersTitle: 'Partners de las plataformas líderes',
-    partnersText: 'Somos partner certificado de Acumatica y Genesys, e integramos Numia, Infobip y Vonage.',
+    partnersText: 'Somos Acumatica Gold Certified Partner y Genesys Silver Tier Partner, e integramos Numia, Infobip y Vonage.',
   },
   en: {
     eyebrow: 'About',
@@ -54,7 +54,7 @@ const c = {
       { title: 'Results', text: 'We measure impact on time, cost and customer experience.' },
     ],
     partnersTitle: 'Partners of the leading platforms',
-    partnersText: 'We are a certified partner of Acumatica and Genesys, and integrate Numia, Infobip and Vonage.',
+    partnersText: 'We are an Acumatica Gold Certified Partner and a Genesys Silver Tier Partner, and we integrate Numia, Infobip and Vonage.',
   },
 }[lang];
 
@@ -121,7 +121,11 @@ const partners = [
 <section class="section alt">
   <div class="wrap">
     <h3 class="h3">{c.partnersTitle}</h3>
-    <p class="muted mt-2 mb-8 max-w-[60ch]">{c.partnersText}</p>
+    <p class="muted mt-2 mb-6 max-w-[60ch]">{c.partnersText}</p>
+    <div class="cert-list mb-8">
+      <span class="cert gold"><Icon name="seal-check" size={18} /><b>Acumatica</b><i class="tier">Gold Certified Partner</i></span>
+      <span class="cert silver"><Icon name="seal-check" size={18} /><b>Genesys</b><i class="tier">Silver Tier Partner</i></span>
+    </div>
     <div class="logo-row">
       {partners.map((p) => <img src={`/partners/${p.file}`} alt={p.name} loading="lazy" decoding="async" />)}
     </div>

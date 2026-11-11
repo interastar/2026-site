@@ -16,12 +16,24 @@ const { Content } = await render(entry);
 const slug = slugOf(entry.id);
 const lang = 'es';
 const t = useTranslations(lang);
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.pubDate.toISOString(),
+  author: { '@type': 'Organization', name: entry.data.author || 'Interastar' },
+  publisher: { '@type': 'Organization', name: 'Interastar', logo: { '@type': 'ImageObject', url: 'https://www.interastar.com/brand/logo-interastar.svg' } },
+  mainEntityOfPage: `https://www.interastar.com/insights/${slug}/`,
+  articleSection: entry.data.category,
+};
 ---
 <BaseLayout
   lang={lang}
   title={`${entry.data.title} · Interastar`}
   description={entry.data.description}
   alternates={{ es: `/insights/${slug}/`, en: `/en/insights/${slug}/` }}
+  jsonLd={articleLd}
 >
   <article class="section pt-12">
     <div class="wrap prose">

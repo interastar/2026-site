@@ -1,0 +1,33 @@
+---
+/**
+ * PartnerBadges — tira de certificaciones/alianzas. Niveles reales:
+ * Acumatica Gold Certified Partner y Genesys Silver Tier Partner.
+ * Los tonos oro/plata se usan solo en el sello y la palabra del nivel
+ * (información semántica del tier), el resto sigue el tema de marca.
+ */
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; tone?: 'ink' | 'page' }
+const { lang, tone = 'ink' } = Astro.props;
+const label = lang === 'es' ? 'Certificaciones y alianzas' : 'Certifications & alliances';
+
+const badges = [
+  { name: 'Acumatica', tier: lang === 'es' ? 'Gold Certified Partner' : 'Gold Certified Partner', cls: 'gold' },
+  { name: 'Genesys', tier: lang === 'es' ? 'Silver Tier Partner' : 'Silver Tier Partner', cls: 'silver' },
+];
+---
+<section class={`certs certs-${tone}`} aria-label={label}>
+  <div class="wrap certs-inner">
+    <span class="certs-label">{label}</span>
+    <div class="cert-list">
+      {badges.map((b) => (
+        <span class={`cert ${b.cls}`}>
+          <Icon name="seal-check" size={18} />
+          <b>{b.name}</b>
+          <i class="tier">{b.tier}</i>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>

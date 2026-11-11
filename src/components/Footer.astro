@@ -45,7 +45,10 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="w-full border-t border-(--border) pt-6 flex items-center justify-between gap-4 flex-wrap">
-      <span class="text-sm text-(--fg-3)">© {year} Interastar. {t('footer.rights')}</span>
+      <div class="text-sm text-(--fg-3) grid gap-1">
+        <span>© {year} Interastar. {t('footer.rights')}</span>
+        <span>Acumatica Gold Certified Partner · Genesys Silver Tier Partner</span>
+      </div>
       <div class="flex gap-4 items-center">
         <a href="https://www.linkedin.com/company/interastar" rel="noopener" target="_blank" aria-label="LinkedIn" class="text-(--fg-3) hover:text-(--accent)"><Icon name="linkedin" size={18} /></a>
         <a href={path('privacy', lang)} class="text-sm text-(--fg-3) hover:text-(--accent)">{t('footer.privacy')}</a>

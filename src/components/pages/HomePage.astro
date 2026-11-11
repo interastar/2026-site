@@ -1,6 +1,8 @@
 ---
 import Icon from '../Icon.astro';
 import TrustBar from '../TrustBar.astro';
+import PartnerBadges from '../PartnerBadges.astro';
+import Testimonials from '../Testimonials.astro';
 import Stats from '../Stats.astro';
 import CtaBand from '../CtaBand.astro';
 import StarField from '../StarField.astro';
@@ -99,6 +101,7 @@ const [featured, ...list] = posts;
 </section>
 
 <TrustBar lang={lang} />
+<PartnerBadges lang={lang} />
 
 <!-- Manifiesto: statements verbo-primero (kinético) -->
 <section class="manifesto">
@@ -200,5 +203,7 @@ const [featured, ...list] = posts;
     </div>
   </section>
 )}
+
+<Testimonials lang={lang} />
 
 <CtaBand lang={lang} />

@@ -11,6 +11,7 @@ export interface SolutionContent {
   lede: string;
   image: { src: string; alt: string; width: number; height: number };
   demoCta: string;
+  cert?: { label: string; cls: 'gold' | 'silver' };
   heroBullets: string[];
   capTitle: string;
   capabilities: { ic: string; title: string; text: string }[];
@@ -33,6 +34,7 @@ const { lang, content: c, source } = Astro.props;
         <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
         <h1 class="h1">{c.title}</h1>
         <p class="lede max-w-[560px]">{c.lede}</p>
+        {c.cert && <div class="mt-4"><span class={`cert ${c.cert.cls}`}><Icon name="seal-check" size={18} /><i class="tier">{c.cert.label}</i></span></div>}
         <div class="hero-actions">
           <a class="btn btn-primary" href="#solicitar">{c.demoCta}<Icon name="arrow-right" size={18} /></a>
         </div>
