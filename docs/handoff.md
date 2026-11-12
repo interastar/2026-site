@@ -80,7 +80,7 @@ pasada editorial en español y blog bilingüe. **Para saber qué sigue, ve direc
 
 **B. Los puede hacer Claude**
 
-4. **Revisar las páginas EN** (`/en/...`) con las reglas de §4: buscar restos de "single system" u otro framing; solo se ajustó el lede de Nosotros y el "WEM" de Genesys.
+4. ~~**Revisar las páginas EN** con las reglas de §4.~~ **Hecho (nov 2026):** barrido de framing en EN sin restos de "single system"/"one system" (todo usa el framing aprobado "work as a single operation" / "into one flow", en paridad con ES). Se expandieron las siglas en su primer uso en EN donde el ES ya lo hacía y el EN no: Soluciones ("Integrate isolated systems"), Acumatica (lede + bullet de integraciones) y Genesys (bullet de integración). Nota: "end-to-end", "legacy" y "contact center" son correctos en inglés (las reglas de anglicismos de §4 aplican al español, no se tocan en EN).
 5. **Rayos en el respaldo 2D** (móvil/baja potencia): hoy el 2D solo tiene el barrido de brillo sobre puntos. Si el usuario quiere el mismo efecto en móvil, dibujar la ruta `MOB` en el canvas 2D.
 6. (Opcional) Logos oficiales de los programas de partner (Acumatica/Genesys) para los badges, si se consiguen.
 
