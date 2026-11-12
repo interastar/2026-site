@@ -21,15 +21,16 @@ const clients = [
   { file: 'packsys', name: 'Packsys' },
   { file: 'dlife', name: 'Dlife' },
   { file: 'doto', name: 'Doto' },
-  // Clientes actuales pendientes de logo (deja el PNG en public/clients/ y quita `pending`).
-  { file: 'bankaool', name: 'Bankaool', pending: true },
-  { file: 'marzam', name: 'Marzam', pending: true },
-  { file: 'htrent', name: 'HTrent', pending: true },
-  { file: 'vanrenta', name: 'VanRenta', pending: true },
-  { file: 'leasemd', name: 'LeaseMD', pending: true },
-  { file: 'yellowshine', name: 'YellowShine', pending: true },
-  { file: 'bankaya', name: 'Bankaya', pending: true },
-  { file: 'gpautolease', name: 'GPAutolease', pending: true },
+  // Clientes de arrendamiento/financieros (logos en blanco obtenidos de sus sitios, nov 2025).
+  { file: 'bankaool', name: 'Bankaool' },
+  { file: 'bankaya', name: 'Bankaya', pending: true }, // pendiente: su sitio bloquea la descarga (Cloudflare); el usuario aporta el logo.
+  { file: 'marzam', name: 'Marzam' },
+  { file: 'fimubac', name: 'Fimubac' },
+  { file: 'irm', name: 'IRM Leasing' },
+  { file: 'jhl', name: 'JHL' },
+  { file: 'leasemd', name: 'LeaseMD' },
+  { file: 'vanrenta', name: 'VanRenta' },
+  { file: 'yellowshine', name: 'YellowShine' },
 ];
 const shown = clients.filter((c) => !('pending' in c && c.pending));
 ---
