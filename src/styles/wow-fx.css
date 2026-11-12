@@ -243,11 +243,11 @@
     background: linear-gradient(90deg, var(--bg-page) 34%, rgba(4, 18, 28, 0.42) 56%, transparent 80%);
   }
   .sol-hero .shot {
-    position: absolute; right: -3%; top: 50%; width: min(62vw, 880px);
+    position: absolute; right: -2%; top: 50%; width: min(54vw, 760px);
     z-index: 0; margin: 0; pointer-events: none;
   }
   .sol-hero .shot img {
-    width: 100%; height: auto; border-radius: var(--r-card);
+    width: 100%; height: auto; border-radius: 20px;
     transform: translateY(-50%) perspective(1700px) rotateY(-13deg) rotateX(5deg) scale(1.04);
     transform-origin: right center;
     box-shadow: -34px 44px 90px rgba(0, 0, 0, 0.55);

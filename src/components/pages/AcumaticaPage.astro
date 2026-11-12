@@ -6,6 +6,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 
 const image = { src: '/screens/acumatica-dashboard.png', alt: 'Acumatica dashboard with sales KPIs, gauges and charts', width: 1838, height: 960 };
+const logo = { src: '/partners/acumatica-white.png', alt: 'Acumatica', width: 1045, height: 255 };
 const integrations = [
   { file: 'genesys-white.png', name: 'Genesys' },
   { file: 'numia-white.png', name: 'Numia' },
@@ -19,6 +20,7 @@ const content: Record<Lang, SolutionContent> = {
     name: 'Acumatica ERP',
     title: 'Acumatica: el ERP en la nube que crece con tu negocio',
     lede: 'Acumatica es el sistema de gestión empresarial (ERP) en la nube que unifica finanzas, operaciones, inventario y cadena de suministro en una sola plataforma escalable. Lo implementamos y personalizamos para tu industria con una metodología que reduce el riesgo.',
+    logo,
     image: { ...image, alt: 'Tablero de Acumatica con KPIs de ventas, medidores y gráficas' },
     demoCta: 'Solicitar demo',
     cert: { label: 'Acumatica Gold Certified Partner', cls: 'gold' },
@@ -53,6 +55,7 @@ const content: Record<Lang, SolutionContent> = {
     name: 'Acumatica ERP',
     title: 'Acumatica: the cloud ERP that grows with your business',
     lede: 'Unify finance, operations, inventory and supply chain in one scalable platform. We implement and customize Acumatica for your industry with a methodology that reduces risk.',
+    logo,
     image,
     demoCta: 'Request a demo',
     cert: { label: 'Acumatica Gold Certified Partner', cls: 'gold' },

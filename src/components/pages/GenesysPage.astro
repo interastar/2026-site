@@ -6,6 +6,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 
 const image = { src: '/screens/genesys-dashboard.png', alt: 'Genesys Cloud Agent Workspace with an omnichannel conversation and customer journey', width: 1920, height: 1079 };
+const logo = { src: '/partners/genesys-white.png', alt: 'Genesys', width: 1965, height: 363 };
 const integrations = [
   { file: 'acumatica-white.png', name: 'Acumatica' },
   { file: 'numia-white.png', name: 'Numia' },
@@ -19,6 +20,7 @@ const content: Record<Lang, SolutionContent> = {
     name: 'Genesys Cloud CX',
     title: 'Genesys Cloud: experiencia de cliente omnicanal con IA',
     lede: 'Unifica voz, chat, correo y redes en un solo centro de contacto en la nube, con enrutamiento inteligente, IA y analítica en tiempo real. Lo implementamos, integramos y operamos por ti.',
+    logo,
     image: { ...image, alt: 'Agent Workspace de Genesys Cloud con una conversación omnicanal y el recorrido del cliente' },
     demoCta: 'Solicitar demo',
     cert: { label: 'Genesys Silver Tier Partner', cls: 'silver' },
@@ -53,6 +55,7 @@ const content: Record<Lang, SolutionContent> = {
     name: 'Genesys Cloud CX',
     title: 'Genesys Cloud: omnichannel customer experience with AI',
     lede: 'Unify voice, chat, email and social in a single cloud contact center, with intelligent routing, AI and real-time analytics. We implement, integrate and operate it for you.',
+    logo,
     image,
     demoCta: 'Request a demo',
     cert: { label: 'Genesys Silver Tier Partner', cls: 'silver' },

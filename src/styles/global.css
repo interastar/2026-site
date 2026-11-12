@@ -265,6 +265,10 @@ a.bento-cell:hover { box-shadow: var(--shadow-3); transform: translateY(-3px); }
 .split .shot img { border-radius: var(--r-card); box-shadow: var(--shadow-3); display: block; }
 @media (max-width: 920px) { .split { grid-template-columns: 1fr; } }
 
+/* Logo de marca en el hero de las páginas de solución (Acumatica/Genesys). */
+.sol-logo { display: block; height: 40px; width: auto; max-width: 240px; margin-bottom: 18px; }
+@media (max-width: 920px) { .sol-logo { height: 34px; } }
+
 /* ---- Checklist ----------------------------------------------------------- */
 .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
 .checklist li { display: flex; gap: 10px; align-items: flex-start; font: var(--w-regular) 15px/1.5 var(--font-ui); color: var(--fg-1); }
