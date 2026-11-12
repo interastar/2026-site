@@ -234,14 +234,23 @@ a.bento-cell:hover { box-shadow: var(--shadow-3); transform: translateY(-3px); }
 .bento-cell.has-shot p, .bento-cell.has-shot h3, .bento-cell.has-shot .tag { max-width: 46%; }
 .bento-cell .logos { display: flex; gap: 22px; align-items: center; margin-bottom: 4px; }
 .bento-cell .logos img { height: 22px; width: auto; max-width: 120px; filter: none; opacity: 0.9; }
-/* Experimento: el logo de marca hace de título de la tarjeta (en lugar del
-   nombre en texto), conservando el eyebrow arriba. */
-.bento-cell h3.brand { display: flex; align-items: center; gap: 20px; margin: 4px 0 2px; line-height: 0; }
-.bento-cell h3.brand img { height: 30px; width: auto; max-width: 170px; filter: none; opacity: 0.95; display: block; }
-.bento-cell h3.brand img[alt="Infobip"] { height: 40px; }
-/* Celda angosta con dos logos (Vonage + Telnyx): más chicos para que quepan. */
-.bento-cell.span-3 h3.brand { gap: 14px; flex-wrap: wrap; }
-.bento-cell.span-3 h3.brand img { height: 20px; }
+/* El logo de marca va como sello en la esquina superior derecha, respetando su
+   clear-space (por eso Infobip/Numia llevan más px: su arte incluye el aire de
+   marca reglamentario). Alturas normalizadas por ALTO DE TINTA (medido con
+   canvas) para que la tinta real pese parejo. El título de texto (h3) regresa
+   al cuerpo de la tarjeta. */
+.bento-cell .brand-mark { position: absolute; top: 26px; right: 28px; z-index: 3; height: 24px; width: auto; filter: none; opacity: 0.9; pointer-events: none; }
+.bento-cell .brand-mark[alt="Infobip"] { height: 54px; top: 14px; }
+.bento-cell .brand-mark[alt="Numia"] { height: 27px; }
+/* Reserva a la derecha para que el eyebrow y el título no choquen con el sello. */
+.bento-cell:not(.has-shot) .tag, .bento-cell:not(.has-shot) h3 { padding-right: 112px; }
+/* Columna apilada (Vonage encima de Telnyx), separadas por marca. */
+.bento-col { display: flex; flex-direction: column; gap: 16px; }
+.bento-col.span-3 { grid-column: span 3; }
+.bento-col .bento-cell { min-height: 0; flex: 1; padding: 24px; gap: 6px; }
+.bento-col .bento-cell .brand-mark { height: 18px; top: 22px; right: 22px; }
+.bento-col .bento-cell:not(.has-shot) .tag, .bento-col .bento-cell:not(.has-shot) h3 { padding-right: 88px; }
+@media (max-width: 920px) { .bento-col.span-3 { grid-column: span 12; } }
 @media (max-width: 920px) {
   .bento-cell.span-7, .bento-cell.span-5, .bento-cell.span-4, .bento-cell.span-3 { grid-column: span 12; }
   .bento-cell.has-shot { min-height: 340px; }
@@ -279,8 +288,8 @@ a.bento-cell:hover { box-shadow: var(--shadow-3); transform: translateY(-3px); }
 
 /* Logo de marca arriba del todo en las páginas de solución (Acumatica/Genesys),
    como lockup de marca con aire propio, separado del breadcrumb y el eyebrow. */
-.sol-logo { display: block; height: 38px; width: auto; max-width: 240px; margin-bottom: 24px; }
-@media (max-width: 920px) { .sol-logo { height: 32px; margin-bottom: 20px; } }
+.sol-logo { display: block; height: 52px; width: auto; max-width: 300px; margin-bottom: 26px; }
+@media (max-width: 920px) { .sol-logo { height: 42px; margin-bottom: 20px; } }
 
 /* ---- Checklist ----------------------------------------------------------- */
 .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }

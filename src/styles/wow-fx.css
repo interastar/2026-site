@@ -168,7 +168,7 @@
 
 /* El contenido de la tarjeta va por encima de spotlight y borde.
    Se excluye .shot: ya es position:absolute y no debe reposicionarse. */
-.bento-cell > *:not(.shot),
+.bento-cell > *:not(.shot):not(.brand-mark),
 .tst-card > *,
 .form-card > *,
 .post-feature > * { position: relative; z-index: 2; }

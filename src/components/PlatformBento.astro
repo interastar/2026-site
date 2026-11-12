@@ -21,52 +21,68 @@ const c = {
     gen: { tag: 'Experiencia de cliente en la nube', name: 'Genesys', text: 'Plataforma de experiencia de cliente potenciada por IA: orquesta cada interacción en tiempo real para fidelizar a tus clientes y hacer más eficientes a tus equipos.', href: path('genesys', lang) },
     infobip: { tag: 'Agentes de IA y mensajería', name: 'Infobip', text: 'Potenciado por AgentOS: crea y orquesta agentes de IA que atienden a tus clientes en todos los canales (WhatsApp, SMS, correo, chat y voz), integrados a tus sistemas.', href: otherHref },
     numia: { tag: 'IA para el mundo físico', name: 'Numia', text: 'Orquesta en tiempo real lo que pasa en tus puntos físicos: menos esperas, más conversión y datos accionables. La agilidad del mundo digital, llevada a la operación física.', href: otherHref },
-    vonage: { tag: 'Voz y comunicaciones', name: 'Vonage y Telnyx', text: 'APIs e infraestructura de comunicación (voz, mensajería, video y verificación) para integrar la comunicación en tus aplicaciones, incluida voz para agentes de IA en tiempo real.', href: otherHref },
+    vonage: { tag: 'Comunicaciones (APIs)', name: 'Vonage', text: 'APIs de voz, mensajería, video y verificación para integrar la comunicación en tus aplicaciones.', href: otherHref },
+    telnyx: { tag: 'Infraestructura en tiempo real', name: 'Telnyx', text: 'Infraestructura de comunicación en tiempo real, incluida voz para agentes de IA.', href: otherHref },
   },
   en: {
     acu: { tag: 'Cloud ERP', name: 'Acumatica', text: 'Cloud ERP to run your whole business: finance, operations and inventory with a complete, real-time view from anywhere. With built-in AI.', href: path('acumatica', lang) },
     gen: { tag: 'Cloud CX', name: 'Genesys', text: 'An AI-powered customer experience platform: it orchestrates every interaction in real time to build loyalty and more efficient teams.', href: path('genesys', lang) },
     infobip: { tag: 'AI agents & messaging', name: 'Infobip', text: 'Powered by AgentOS: build and orchestrate AI agents that serve customers across every channel (WhatsApp, SMS, email, chat and voice), integrated into your systems.', href: otherHref },
     numia: { tag: 'AI for the physical world', name: 'Numia', text: 'Orchestrates in real time what happens at your physical locations: shorter waits, more conversion and actionable data. Digital agility, brought to physical operations.', href: otherHref },
-    vonage: { tag: 'Voice & communications', name: 'Vonage and Telnyx', text: 'Communication APIs and infrastructure (voice, messaging, video and verification) to embed communications in your apps, including voice for real-time AI agents.', href: otherHref },
+    vonage: { tag: 'Communication APIs', name: 'Vonage', text: 'Voice, messaging, video and verification APIs to embed communication in your apps.', href: otherHref },
+    telnyx: { tag: 'Real-time infrastructure', name: 'Telnyx', text: 'Real-time communication infrastructure, including voice for AI agents.', href: otherHref },
   },
 }[lang];
 ---
 <div class="bento">
   <a class="bento-cell span-7 tint-cyan has-shot reveal" href={c.acu.href}>
+    <img class="brand-mark" src="/partners/acumatica-white.png" alt={c.acu.name} width="1045" height="255" loading="lazy" decoding="async" />
     <span class="tag">{c.acu.tag}</span>
-    <h3 class="brand"><img src="/partners/acumatica-white.png" alt={c.acu.name} width="1045" height="255" loading="lazy" decoding="async" /></h3>
+    <h3>{c.acu.name}</h3>
     <p>{c.acu.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
     <img class="shot" src="/screens/acumatica-dashboard.png" alt="" width="1838" height="960" loading="lazy" decoding="async" />
   </a>
 
   <a class="bento-cell span-5 tint-green has-shot reveal" href={c.gen.href}>
+    <img class="brand-mark" src="/partners/genesys-white.png" alt={c.gen.name} width="1965" height="363" loading="lazy" decoding="async" />
     <span class="tag">{c.gen.tag}</span>
-    <h3 class="brand"><img src="/partners/genesys-white.png" alt={c.gen.name} width="1965" height="363" loading="lazy" decoding="async" /></h3>
+    <h3>{c.gen.name}</h3>
     <p>{c.gen.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
     <img class="shot" src="/screens/genesys-dashboard.png" alt="" width="1920" height="1079" loading="lazy" decoding="async" />
   </a>
 
   <a class="bento-cell span-5 reveal" href={c.infobip.href}>
+    <img class="brand-mark" src="/partners/infobip-white.svg" alt={c.infobip.name} loading="lazy" decoding="async" />
     <span class="tag">{c.infobip.tag}</span>
-    <h3 class="brand"><img src="/partners/infobip-white.svg" alt={c.infobip.name} loading="lazy" decoding="async" /></h3>
+    <h3>{c.infobip.name}</h3>
     <p>{c.infobip.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
   </a>
 
   <a class="bento-cell span-4 reveal" href={c.numia.href}>
+    <img class="brand-mark" src="/partners/numia-white.png" alt={c.numia.name} loading="lazy" decoding="async" />
     <span class="tag">{c.numia.tag}</span>
-    <h3 class="brand"><img src="/partners/numia-white.png" alt={c.numia.name} loading="lazy" decoding="async" /></h3>
+    <h3>{c.numia.name}</h3>
     <p>{c.numia.text}</p>
     <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
   </a>
 
-  <a class="bento-cell span-3 reveal" href={c.vonage.href}>
-    <span class="tag">{c.vonage.tag}</span>
-    <h3 class="brand"><img src="/partners/vonage.png" alt="Vonage" loading="lazy" decoding="async" /><img src="/partners/telnyx-white.svg" alt="Telnyx" loading="lazy" decoding="async" /></h3>
-    <p>{c.vonage.text}</p>
-    <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
-  </a>
+  <div class="bento-col span-3">
+    <a class="bento-cell reveal" href={c.vonage.href}>
+      <img class="brand-mark" src="/partners/vonage.png" alt="Vonage" loading="lazy" decoding="async" />
+      <span class="tag">{c.vonage.tag}</span>
+      <h3>{c.vonage.name}</h3>
+      <p>{c.vonage.text}</p>
+      <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
+    </a>
+    <a class="bento-cell reveal" href={c.telnyx.href}>
+      <img class="brand-mark" src="/partners/telnyx-white.svg" alt="Telnyx" loading="lazy" decoding="async" />
+      <span class="tag">{c.telnyx.tag}</span>
+      <h3>{c.telnyx.name}</h3>
+      <p>{c.telnyx.text}</p>
+      <span class="link-arrow">{more}<Icon name="arrow-right" /></span>
+    </a>
+  </div>
 </div>
