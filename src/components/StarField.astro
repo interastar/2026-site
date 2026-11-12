@@ -11,6 +11,13 @@
  * Ambas rutas muestrean el star.svg real (mismo origen) y toman los colores
  * de cada aspa, aclarados para leerse sobre fondo oscuro. Three.js se importa
  * de forma dinámica, así que su peso solo se descarga donde se usa el 3D.
+ *
+ * Rayos de luz (solo 3D): el logo es una cinta doblada 5 veces (una cinta de
+ * Möbius); unos rayos recorren su borde único siguiendo el contorno de las
+ * bandas y cambiando de nivel de forma continua. Ver el bloque "RAYOS" en
+ * run3D. Ajustables por URL para probar: ?rays ?len ?speed ?depth ?round
+ * ?zsmooth ?thick. La ruta (MOB) se precalcula de public/brand/star.svg.
+ * El 2D conserva un barrido de brillo sobre los puntos (sin rayos).
  */
 ---
 <canvas id="starField" class="starfield" aria-hidden="true"></canvas>
@@ -185,23 +192,12 @@
       if (!pts.length) throw new Error('no-sample');
       const N = pts.length;
       const positions = new Float32Array(N * 3), colors = new Float32Array(N * 3);
-      const base = new Float32Array(N * 3);           // colores base (sin barrido)
-      const ang = new Float32Array(N), rw = new Float32Array(N); // ángulo y peso de orilla
       const S = 1 / 118;
-      let rMax = 1;
       for (let i = 0; i < N; i++) {
         const p = pts[i];
         positions[i * 3] = p.bx * S; positions[i * 3 + 1] = -p.by * S; positions[i * 3 + 2] = p.bz * S;
-        const cc = p.c.split(',');
-        const r0 = +cc[0] / 255, g0 = +cc[1] / 255, b0 = +cc[2] / 255;
-        colors[i * 3] = r0; colors[i * 3 + 1] = g0; colors[i * 3 + 2] = b0;
-        base[i * 3] = r0; base[i * 3 + 1] = g0; base[i * 3 + 2] = b0;
-        ang[i] = Math.atan2(-p.by, p.bx);              // ángulo en el plano de la estrella
-        const rr = Math.hypot(p.bx, p.by); if (rr > rMax) rMax = rr;
-        rw[i] = rr;                                     // se normaliza abajo
+        const cc = p.c.split(','); colors[i * 3] = +cc[0] / 255; colors[i * 3 + 1] = +cc[1] / 255; colors[i * 3 + 2] = +cc[2] / 255;
       }
-      // Peso de orilla: los puntos exteriores (puntas/filos) brillan más.
-      for (let i = 0; i < N; i++) rw[i] = Math.max(0, Math.min(1, (rw[i] / rMax - 0.34) / 0.66));
       // posiciones de dispersión inicial: llegan desde todas direcciones y se integran
       const start = new Float32Array(N * 3);
       for (let i = 0; i < N; i++) {
@@ -215,27 +211,7 @@
       const posAttr = new THREE.BufferAttribute(cur, 3);
       const geo = new THREE.BufferGeometry();
       geo.setAttribute('position', posAttr);
-      const colAttr = new THREE.BufferAttribute(colors, 3);
-      geo.setAttribute('color', colAttr);
-
-      // Barrido: 2 arcos de luz opuestos recorren la orilla de la estrella.
-      // Realzan el color propio de cada aspa (sección) al cruzarla.
-      const SIG = 0.5;            // ancho angular del arco (rad)
-      function sweep() {
-        const ph = t * 0.012;     // fase del barrido
-        const ph2 = ph + Math.PI;
-        for (let i = 0; i < N; i++) {
-          let d1 = ang[i] - ph; d1 = Math.atan2(Math.sin(d1), Math.cos(d1));
-          let d2 = ang[i] - ph2; d2 = Math.atan2(Math.sin(d2), Math.cos(d2));
-          const band = Math.max(Math.exp(-(d1 * d1) / (SIG * SIG)), Math.exp(-(d2 * d2) / (SIG * SIG)));
-          const f = band * rw[i];                 // intensidad del brillo en este punto
-          const k = 0.6 + 0.95 * f, add = 0.32 * f; // atenúa base, realza y aclara el arco
-          colors[i * 3]     = Math.min(1, base[i * 3]     * k + add);
-          colors[i * 3 + 1] = Math.min(1, base[i * 3 + 1] * k + add);
-          colors[i * 3 + 2] = Math.min(1, base[i * 3 + 2] * k + add);
-        }
-        colAttr.needsUpdate = true;
-      }
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
       // sprite redondo suave para cada punto
       const dc = document.createElement('canvas'); dc.width = dc.height = 64;
@@ -248,6 +224,89 @@
       const mat = new THREE.PointsMaterial({ size: 0.05, map: tex, vertexColors: true, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
       const points = new THREE.Points(geo, mat);
       const group = new THREE.Group(); group.add(points);
+
+      /* === RAYOS POR EL BORDE DE LA CINTA MOEBIUS ============================
+         El logo es una sola cinta doblada 5 veces (una por punta). La luz recorre
+         su borde único: 10 tramos (los 2 bordes largos de cada banda) encadenados
+         por las esquinas de las puntas, en 2 vueltas. En planta sigue el contorno
+         de las bandas; en profundidad el nivel cambia de forma continua: centro
+         del tramo = nivel de su banda (verde al frente ... navy al fondo), cada
+         punta = nivel medio entre las 2 bandas que une.
+         MOB: por tramo [x, y, nivel] en coords base del hero (nivel -2..2),
+         generado con scripts/star-ray-route.py a partir del SVG.
+         Ajustes en vivo por URL: ?rays=3&len=0.06&speed=1&depth=0.8&round=0
+                                  &zsmooth=1&thick=0.006                        */
+      const MOB = [[-106.9,92.7,0,-102,84.5,0.16,-97.3,76.1,0.35,-92.7,67.7,0.56,-88.3,59.1,0.78,-84.1,50.4,1,-79.9,41.6,1.22,-76,32.7,1.42,-72.2,23.7,1.61,-68.5,14.6,1.77,-65,5.4,1.89,-61.7,-4,1.97,-58.5,-13.4,2,-55.6,-22.9,1.99,-52.8,-32.4,1.95,-50.2,-41.9,1.88,-47.8,-51.4,1.8,-45.5,-60.9,1.71,-43.5,-70.4,1.61,-41.6,-80,1.5,-40,-89.5,1.39,-38.5,-99.1,1.28,-37.2,-108.6,1.18,-36.1,-118.1,1.08,-35.2,-127.6,1],
+        [-34.9,-126.5,1,-33.9,-115.2,0.91,-32.7,-103.9,0.82,-31.3,-92.5,0.73,-29.6,-81.2,0.63,-27.7,-69.9,0.54,-25.6,-58.5,0.45,-23.2,-47.2,0.37,-20.6,-35.9,0.28,-17.8,-24.6,0.2,-14.7,-13.3,0.13,-11.4,-2,0.06,-7.9,9.2,0,-4.1,20.4,-0.05,-0.1,31.5,-0.1,4,42.4,-0.15,8.4,53.3,-0.19,13,63.9,-0.23,17.7,74.5,-0.27,22.7,84.9,-0.3,27.8,95.2,-0.34,33.1,105.3,-0.38,38.6,115.3,-0.42,44.3,125.2,-0.46,50.1,134.9,-0.5],
+        [50.2,135,-0.5,43.8,127.8,-0.54,37.3,120.8,-0.59,30.7,113.8,-0.64,23.9,107,-0.69,16.9,100.2,-0.75,9.8,93.6,-0.8,2.6,87.1,-0.86,-4.8,80.7,-0.9,-12.4,74.4,-0.94,-20.1,68.2,-0.97,-27.9,62.2,-0.99,-35.9,56.3,-1,-44,50.5,-0.99,-52.2,44.9,-0.95,-60.5,39.5,-0.88,-68.8,34.3,-0.8,-77.2,29.2,-0.71,-85.6,24.3,-0.61,-94.1,19.6,-0.5,-102.7,15.1,-0.39,-111.3,10.8,-0.28,-120,6.6,-0.18,-128.7,2.6,-0.08,-137.5,-1.2,-0],
+        [-137.5,-1.2,0,-126.4,1.3,0.09,-115.3,3.7,0.2,-104,5.8,0.3,-92.7,7.7,0.41,-81.4,9.4,0.52,-69.9,10.9,0.63,-58.4,12.2,0.73,-46.8,13.2,0.82,-35.2,14,0.89,-23.5,14.6,0.95,-11.7,15,0.99,0.1,15.1,1,11.9,14.9,0.98,23.7,14.5,0.92,35.3,13.8,0.84,47,12.9,0.72,58.5,11.7,0.59,70,10.3,0.44,81.4,8.7,0.29,92.8,6.8,0.12,104.1,4.8,-0.04,115.3,2.6,-0.21,126.4,0.2,-0.36,137.5,-2.4,-0.5],
+        [137.4,-2.4,-0.5,128.7,1.4,-0.62,119.9,5.4,-0.77,111.3,9.6,-0.92,102.6,13.9,-1.08,94.1,18.5,-1.25,85.6,23.2,-1.41,77.1,28,-1.57,68.7,33.1,-1.71,60.4,38.3,-1.82,52.2,43.7,-1.92,44,49.3,-1.98,35.9,55.1,-2,27.9,61,-1.97,20,67,-1.89,12.3,73.2,-1.77,4.8,79.5,-1.61,-2.6,85.9,-1.42,-9.9,92.4,-1.22,-17,99.1,-1,-23.9,105.8,-0.78,-30.7,112.6,-0.56,-37.4,119.6,-0.35,-43.9,126.7,-0.16,-50.2,133.8,0],
+        [-50.2,133.8,0,-44.4,124.1,0.19,-38.7,114.2,0.39,-33.2,104.2,0.61,-27.9,94.1,0.83,-22.7,83.8,1.05,-17.8,73.4,1.26,-13,62.8,1.46,-8.5,52.1,1.63,-4.1,41.3,1.78,0.1,30.4,1.9,4,19.3,1.97,7.8,8.1,2,11.4,-3.1,1.99,14.7,-14.4,1.95,17.7,-25.7,1.89,20.5,-37,1.82,23.1,-48.3,1.73,25.5,-59.7,1.63,27.6,-71,1.52,29.5,-82.3,1.41,31.2,-93.6,1.3,32.6,-105,1.2,33.8,-116.3,1.09,34.8,-127.6,1],
+        [35.1,-126.5,1,36,-117,0.92,37.1,-107.5,0.84,38.4,-97.9,0.75,39.9,-88.4,0.66,41.6,-78.9,0.57,43.4,-69.3,0.47,45.4,-59.8,0.38,47.7,-50.3,0.3,50.1,-40.8,0.21,52.7,-31.3,0.13,55.5,-21.8,0.06,58.4,-12.3,-0,61.6,-2.8,-0.05,64.9,6.5,-0.11,68.4,15.7,-0.15,72.1,24.8,-0.2,75.9,33.8,-0.24,79.9,42.7,-0.28,84,51.5,-0.32,88.2,60.2,-0.35,92.7,68.8,-0.39,97.2,77.3,-0.43,101.9,85.6,-0.46,106.8,93.9,-0.5],
+        [106.8,93.9,-0.5,99.3,85.3,-0.55,91.7,76.8,-0.6,83.9,68.5,-0.65,75.9,60.3,-0.71,67.7,52.3,-0.76,59.3,44.4,-0.81,50.7,36.6,-0.86,41.9,29,-0.91,33,21.5,-0.95,23.9,14.1,-0.97,14.6,6.9,-0.99,5.1,-0.1,-1,-4.6,-6.9,-0.99,-14.3,-13.6,-0.95,-24.1,-20,-0.89,-34,-26.2,-0.82,-44,-32.1,-0.73,-54,-37.9,-0.63,-64.2,-43.4,-0.52,-74.4,-48.7,-0.41,-84.6,-53.8,-0.3,-95,-58.6,-0.2,-105.3,-63.3,-0.09,-115.8,-67.7,0],
+        [-115.9,-67.7,0,-106.5,-65.7,0.08,-97.1,-63.8,0.18,-87.7,-62.1,0.28,-78.1,-60.5,0.39,-68.5,-59.1,0.5,-58.9,-57.9,0.61,-49.2,-56.9,0.71,-39.4,-56.1,0.8,-29.6,-55.4,0.88,-19.8,-55,0.95,-9.9,-54.7,0.99,0.1,-54.6,1,10,-54.7,0.98,19.9,-55.1,0.92,29.8,-55.6,0.82,39.5,-56.4,0.71,49.3,-57.4,0.57,58.9,-58.5,0.41,68.5,-59.8,0.25,78.1,-61.3,0.08,87.6,-63,-0.08,97,-64.8,-0.23,106.4,-66.8,-0.38,115.8,-68.9,-0.5],
+        [115.8,-68.9,-0.5,105.3,-64.5,-0.64,94.9,-59.8,-0.79,84.6,-54.9,-0.96,74.3,-49.9,-1.12,64.1,-44.6,-1.29,54,-39,-1.44,43.9,-33.3,-1.59,33.9,-27.3,-1.73,24.1,-21.1,-1.84,14.2,-14.7,-1.92,4.5,-8.1,-1.98,-5.1,-1.3,-2,-14.6,5.8,-1.97,-23.9,12.9,-1.9,-33,20.3,-1.78,-42,27.8,-1.63,-50.7,35.4,-1.46,-59.3,43.2,-1.26,-67.7,51.1,-1.05,-75.9,59.2,-0.83,-83.9,67.3,-0.61,-91.8,75.7,-0.39,-99.4,84.1,-0.19,-106.8,92.7,0]];
+      const qn = (name: string, dflt: number) => { const v = parseFloat(params.get(name) || ''); return isFinite(v) ? v : dflt; };
+      const RAYS = Math.max(1, Math.round(qn('rays', 3)));   // rayos viajando a la vez (repartidos)
+      const RAY_LEN = qn('len', 0.06);                       // largo de la cola (fracción del lazo; 0.1 = una banda)
+      const RAY_SPEED = qn('speed', 1);                      // multiplicador de velocidad
+      const DEPTH = qn('depth', 0.8);                        // separación total entre nivel 1 y nivel 5
+      const CORNER_R = qn('round', 0);                       // radio de redondeo del doblez en las puntas (0 = esquina)
+      const Z_SMOOTH = Math.max(0, Math.round(qn('zsmooth', 1))); // pasadas extra de suavizado del nivel
+      const WRAD = qn('thick', 0.006);                       // grosor de la línea
+
+      const mp: number[][] = [];
+      for (const tr of MOB) {
+        const n = tr.length / 3, x0 = tr[0], y0 = tr[1], x1 = tr[(n - 1) * 3], y1 = tr[(n - 1) * 3 + 1];
+        for (let i = 0; i < n - 1; i++) {                    // el último punto es la esquina del tramo siguiente
+          const x = tr[i * 3], y = tr[i * 3 + 1];
+          if (CORNER_R > 0 && (Math.hypot(x - x0, y - y0) < CORNER_R || Math.hypot(x - x1, y - y1) < CORNER_R)) continue;
+          mp.push([x, y, tr[i * 3 + 2]]);
+        }
+      }
+      for (let pass = 0; pass < Z_SMOOTH; pass++) {
+        const zs = mp.map((p) => p[2]), m = mp.length;
+        for (let i = 0; i < m; i++) mp[i][2] = (zs[(i - 1 + m) % m] + 2 * zs[i] + zs[(i + 1) % m]) / 4;
+      }
+      const wcp: any[] = mp.map((p) => new THREE.Vector3(p[0] * S, -p[1] * S, p[2] * DEPTH / 4));
+      const wcurve = new THREE.CatmullRomCurve3(wcp, true, 'centripetal');
+      const WTS = 1000, WRS = 5;
+      const wgeo = new THREE.TubeGeometry(wcurve, WTS, WRAD, WRS, true);
+      const wvc = wgeo.attributes.position.count;
+      const wu = new Float32Array(wvc), wz = new Float32Array(wvc);
+      { const pa = wgeo.attributes.position.array;
+        for (let i = 0; i < wvc; i++) { wu[i] = Math.floor(i / (WRS + 1)) / WTS; wz[i] = pa[i * 3 + 2]; } }
+      const wcol = new Float32Array(wvc * 4);                // RGBA: alfa = brillo (invisible donde no hay luz)
+      const wcolAttr = new THREE.BufferAttribute(wcol, 4);
+      wgeo.setAttribute('color', wcolAttr);
+      const wmat = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 0, depthWrite: false });
+      group.add(new THREE.Mesh(wgeo, wmat));
+      // color por profundidad: fondo cian -> frente verde
+      const Z2 = Math.max(0.001, DEPTH / 2);
+      for (let i = 0; i < wvc; i++) {
+        const tt = Math.max(0, Math.min(1, (wz[i] + Z2) / (2 * Z2)));
+        wcol[i * 4] = 0.25 + (0.62 - 0.25) * tt; wcol[i * 4 + 1] = 0.80 + (0.96 - 0.80) * tt; wcol[i * 4 + 2] = 0.98 + (0.36 - 0.98) * tt;
+      }
+
+      function updateRays() {
+        const head = (t * 0.0004 * RAY_SPEED) % 1;           // posición de la cabeza del primer rayo
+        for (let i = 0; i < wvc; i++) {
+          let g = 0;
+          for (let j = 0; j < RAYS; j++) {
+            let dd = (head + j / RAYS - wu[i]) % 1; if (dd < 0) dd += 1;     // distancia detrás de la cabeza
+            let e = 0;
+            if (dd < RAY_LEN) { const f = 1 - dd / RAY_LEN; e = f * f; }      // cola que se desvanece
+            else if (dd > 1 - 0.006) { const f = (1 - dd) / 0.006; e = 1 - f; } // borde suave delante de la cabeza
+            if (e > g) g = e;
+          }
+          wcol[i * 4 + 3] = g;
+        }
+        wcolAttr.needsUpdate = true;
+      }
+      function raysOpacity(v: number) { wmat.opacity = v; }
+      function raysFadeIn() { if (wmat.opacity < 1) wmat.opacity = Math.min(1, wmat.opacity + 0.03); }
+      /* === fin rayos ======================================================= */
+
       const scene = new THREE.Scene(); scene.add(group);
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -262,7 +321,7 @@
         camera.updateProjectionMatrix();
       }
       let intro = 0;
-      if (reduce) { cur.set(positions); posAttr.needsUpdate = true; intro = 1; mat.opacity = 0.92; }
+      if (reduce) { cur.set(positions); posAttr.needsUpdate = true; intro = 1; mat.opacity = 0.92; raysOpacity(0.9); updateRays(); }
       function loop() {
         t += 1;
         if (intro < 1) {
@@ -272,10 +331,14 @@
           posAttr.needsUpdate = true;
           mat.opacity = 0.92 * Math.min(1, e + 0.1);
         }
-        if (!reduce && intro >= 1) sweep();
+        if (!reduce && intro >= 1) {
+          updateRays();
+          raysFadeIn();
+        }
         ry += (mtx - ry) * 0.05; rx += (mty - rx) * 0.05;
-        points.rotation.y = t * 0.0016 + ry * 1.5;
-        points.rotation.x = Math.sin(t * 0.0009) * 0.12 + rx;
+        // rota el grupo completo (puntos + rayos) para que los rayos giren con la estrella
+        group.rotation.y = t * 0.0016 + ry * 1.5;
+        group.rotation.x = Math.sin(t * 0.0009) * 0.12 + rx;
         renderer.render(scene, camera);
         if (running) raf = requestAnimationFrame(loop);
       }

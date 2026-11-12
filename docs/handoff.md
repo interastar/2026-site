@@ -15,8 +15,9 @@ limpieza del blog, badges de partner, y una pasada editorial iniciada en la Home
 
 ## 2. Comandos y entorno
 
-- Build: `pnpm install && pnpm astro build`. Dev: `pnpm astro dev` (en este contenedor cloud falla con `process is not defined` por el runtime de Cloudflare; en WSL corre bien. Alternativa: servir `dist/client/` con `python3 -m http.server`).
-- Hero: `?hero=3d` fuerza WebGL, `?hero=2d` fuerza canvas 2D, `?still=1` estático.
+- Build: `pnpm install && pnpm astro build`. Dev: `pnpm astro dev` (en este contenedor cloud falla con `process is not defined` por el runtime de Cloudflare; en WSL corre bien).
+- **Verificación visual en el contenedor cloud (sí se puede):** el build corre bien (el aviso `Request.cf ... Request was cancelled` durante el prerender es inofensivo). Sirve `dist/client/` con `python3 -m http.server` y captura con el Playwright/Chromium preinstalado. Para WebGL en headless: `--use-angle=swiftshader --enable-unsafe-swiftshader --ignore-gpu-blocklist` y `?hero=3d`. Hay que hacer scroll antes de capturar secciones para disparar los `.reveal`.
+- Hero: `?hero=3d` fuerza WebGL, `?hero=2d` fuerza canvas 2D, `?still=1` estático. Rayos del hero ajustables por URL: `?rays ?len ?speed ?depth ?round ?zsmooth ?thick`.
 - **Red (sandbox):** los dominios externos están bloqueados salvo los permitidos. Ya se permitieron: nk.studio, interastar.com, numia.co, infobip/genesys/acumatica/vonage.mx/telnyx.com. Para leer un sitio nuevo hay que añadirlo con la herramienta de entorno (lo aprueba el usuario).
 - **GitHub:** push requiere la Claude GitHub App instalada en la org `interastar` con escritura. Commits terminan con el footer de atribución de Claude.
 
@@ -58,16 +59,17 @@ limpieza del blog, badges de partner, y una pasada editorial iniciada en la Home
 - Marcas actualizadas (descripción + IA); logo de Telnyx agregado.
 - **Pasada editorial extendida (ES)** a Acumatica, Genesys, Soluciones, Nosotros y Contacto (nov 2025): siglas expandidas en su primer uso, tags en español, "centro de contacto" (no "contact center"), "de extremo a extremo" (no "end-to-end"), "sistemas antiguos" (no "legadas"), quitado "WEM" de títulos, y framing "trabajen como una sola operación" (no "un solo sistema"). Barrido ES sin restos.
 - **Imagen de Acumatica actualizada**: dashboard oficial vigente "Sales Manager" (1838x960) en `public/screens/acumatica-dashboard.png`; dimensiones corregidas en AcumaticaPage y PlatformBento.
-- **Capa de efectos "wow" `src/styles/wow-fx.css`** (importada tras global.css en BaseLayout; inspiración: stackbyte.dev, reinterpretada con cian/verde). Incluye: encabezados con relleno en gradiente + brillo; **vidrio esmerilado** (backdrop-blur) en menús y tarjetas (bento, roles, form, testimonios); **borde cónico luminoso que recorre la orilla** al hover (`@property --edge-a` + conic-gradient enmascarado); **spotlight** radial que sigue al cursor (script en BaseLayout define `--mx/--my`); capturas de producto con **perspectiva 3D (3/4)** y zoom (bento y detalle de solución); resplandor radial en el hero + rejilla tenue en `.section.alt`; reveal de scroll un poco más rico. Todo respeta `prefers-reduced-motion`. Variables rgb de marca: `--rgb-cyan`, `--rgb-green`. **Pendiente de revisión visual en WSL** (el build no corre en el contenedor cloud).
-- **Hero (StarField): barrido de luz "en armonía".** Dos arcos de luz opuestos recorren la estrella y realzan los puntos de la orilla (puntas/filos), brillando con el color propio de cada aspa/sección al cruzarla. Implementado en 3D (Three.js: `sweep()` actualiza el buffer de color por frame; atenúa base a 0.6 y realza el arco) y en el respaldo 2D (modula alfa/tamaño). Respeta reduced-motion. Ajustables: `SIG`/`SIG2` (ancho del arco), velocidad `t*0.012`, y el 0.6 de atenuación base.
+- **Capa de efectos "wow" `src/styles/wow-fx.css`** (importada tras global.css en BaseLayout; inspiración: stackbyte.dev, reinterpretada con cian/verde). Incluye: encabezados con relleno en gradiente + brillo; **vidrio esmerilado** (backdrop-blur) en menús y tarjetas (bento, roles, form, testimonios); **borde cónico luminoso que recorre la orilla** al hover (`@property --edge-a` + conic-gradient enmascarado); **spotlight** radial que sigue al cursor (script en BaseLayout define `--mx/--my`); capturas de producto con **perspectiva 3D (3/4)** y zoom (bento y detalle de solución); resplandor radial en el hero + rejilla tenue en `.section.alt`; reveal de scroll un poco más rico. Todo respeta `prefers-reduced-motion`. Variables rgb de marca: `--rgb-cyan`, `--rgb-green`.
+- **Hero (StarField): rayos por el borde de la cinta de Möbius del logo (solo 3D).** El logo es una sola cinta doblada 5 veces (5 bandas en pentagrama); los 2 bordes largos de cada banda se encadenan por las esquinas de las puntas en un único lazo de 10 tramos (2 vueltas). 3 rayos finos recorren ese lazo: en planta siguen el contorno de las bandas y doblan en la esquina de cada punta; en profundidad el nivel cambia de forma continua (centro del tramo = nivel de su banda, verde al frente ... navy al fondo; cada punta = nivel medio entre las dos bandas). Tubo con color RGBA por vértice (alfa = brillo, invisible sin luz); gira con la estrella. La ruta (`MOB`) se genera con **`scripts/star-ray-route.py`** desde `public/brand/star.svg`. Valores por defecto elegidos por el usuario: `rays=3, len=0.06, speed=1, depth=0.8, round=0, zsmooth=1, thick=0.006` (todos ajustables por URL). El respaldo 2D conserva el barrido de brillo sobre los puntos (sin rayos). La rama de experimento `ideas/wow-lineas` ya se integró aquí y se borró.
+- **Fondos de los 3 tiles de rol** (`public/sections/role-*.webp`, aportados por el usuario): activos en el Home. `.seg-bg` los muestra casi completos (opacidad 0.9, sin desenfoque extra) con un velo lateral para legibilidad del texto.
 
 ## 7. SIGUIENTES PASOS (pendientes)
 
 1. **Pasada editorial: ES hecho** en Acumatica, Genesys, Soluciones, Nosotros y Contacto (ver §6). Pendiente: revisar las páginas EN (`/en/...`) por si queda algún "single system" u otro framing a ajustar, y aplicar las reglas a nuevas secciones que se agreguen.
    - **Imagen de Genesys: hecha.** El usuario subió su captura de Agent Workspace (1920x1079) por git; Claude le quitó la etiqueta de video "Agent" (relleno plano sobre nav azul `rgb(37,61,128)` y panel `rgb(251,251,251)`) y la dejó en `public/screens/genesys-dashboard.png`. Dimensiones/alt actualizados en GenesysPage y PlatformBento. Nota de proceso: en esta sesión cloud las imágenes pegadas/adjuntadas NO llegan a disco (`/mnt/user-data/uploads/` queda vacío); para pasar un archivo, súbelo por git al repo y Claude hace `git pull`.
 2. **Blog EN: hecho.** Los 7 artículos ES ya tienen su par en inglés en `src/content/blog/en/` (mismo nombre de archivo, `lang: en`, traducción fiel sin inventar datos). Los enlaces internos usan la ruta `/en/insights/<slug>/`.
-3. **Imágenes pendientes (el usuario las genera/provee):**
-   - Fondos difuminados de los 3 tiles de rol → `public/sections/role-direccion.webp`, `role-ti.webp`, `role-operaciones.webp` (prompts entregados en el chat).
+3. **Imágenes: hecho.**
+   - Fondos de los 3 tiles de rol: hechos (ver §6).
    - **Logos de cliente (hecho, 9 de 9).** Blanco/transparente en `public/clients/` y activos en `TrustBar`: Bankaool, Bankaya, Marzam, Fimubac, IRM Leasing, JHL, LeaseMD, VanRenta, YellowShine. 8 se obtuvieron de sus sitios y se blanquearon (SVG rasterizados con Playwright; PNG recoloreados con PIL, alto 120); Bankaya la aportó el usuario por git (ya venía en blanco). HTRent y GPAutolease salieron del listado.
 4. **Prueba social real:** reemplazar los placeholders de testimonios y, si hay, agregar 1 caso de éxito con resultado real.
 5. **Carta de autorización de clientes:** el usuario tiene un prompt (en el chat) para generar la carta de uso de nombre/logo.
@@ -77,7 +79,8 @@ limpieza del blog, badges de partner, y una pasada editorial iniciada en la Home
 
 - `src/components/pages/HomePage.astro` — copy e hilo narrativo de la home.
 - `src/components/PlatformBento.astro` — bloques de marca (5 celdas).
-- `src/components/StarField.astro` — hero de estrella (2D/3D + selector).
+- `src/components/StarField.astro` — hero de estrella (2D/3D + selector) y rayos por el borde de la cinta.
+- `scripts/star-ray-route.py` — genera la ruta `MOB` de los rayos desde `star.svg` (requiere `svgpathtools`).
 - `src/components/ArticleBanner.astro` — banners de blog generativos.
 - `src/components/TrustBar.astro` — clientes (con `pending`).
 - `src/components/Testimonials.astro` — testimonios (array `items` vacío = placeholders).

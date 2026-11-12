@@ -173,9 +173,11 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg-surface); border: 1px solid var(--border);
   display: flex; flex-direction: column; gap: 12px;
 }
-/* Fondo difuminado opcional por tile (imagen on-brand generada aparte) */
-.seg-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.28; filter: blur(3px) saturate(1.05); transform: scale(1.08); }
-.seg-tile.has-bg::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(4,18,28,0.5) 0%, rgba(4,18,28,0.84) 100%); }
+/* Fondo por tile (imagen on-brand, ya oscura y difuminada de origen: se muestra casi completa).
+   El velo oscurece el lado izquierdo/inferior, donde va el texto. */
+.seg-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center right; opacity: 0.9; transition: transform var(--dur-3) var(--ease-out), opacity var(--dur-3) var(--ease-out); }
+.seg-tile.has-bg::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(100deg, rgba(4,18,28,0.72) 0%, rgba(4,18,28,0.35) 55%, rgba(4,18,28,0.05) 100%); }
+.seg-tile.has-bg:hover .seg-bg { transform: scale(1.04); opacity: 1; }
 .seg-tile > :not(.seg-bg) { position: relative; z-index: 2; }
 .seg-tile.lead { grid-row: span 2; background: var(--accent-soft); border-color: transparent; padding: 40px; justify-content: flex-end; }
 .seg-tile .ic { width: 44px; height: 44px; border-radius: var(--r-btn); display: grid; place-items: center; background: var(--bg-surface); color: var(--accent); }
@@ -402,7 +404,8 @@ a.channel:hover .val { color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
-  .btn, .bento-cell, .post-feature, .link-arrow svg { transition: none; }
+  .btn, .bento-cell, .post-feature, .link-arrow svg, .seg-bg { transition: none; }
+  .seg-tile.has-bg:hover .seg-bg { transform: none; }
 }
 
 }
