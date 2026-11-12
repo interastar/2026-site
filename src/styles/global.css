@@ -31,6 +31,10 @@ a { color: inherit; text-decoration: none; }
 :focus-visible { outline: none; box-shadow: var(--shadow-focus); border-radius: var(--r-input); }
 
 /* ---- Layout ------------------------------------------------------------- */
+/* Recorta el sangrado horizontal al ancho de la ventana (sin crear scroll-x
+   ni afectar overflow-y: clip + visible no se promueven a scroll). El nav
+   sticky vive fuera de #main, así que no se ve afectado. */
+#main { overflow-x: clip; }
 .wrap { max-width: 1200px; margin-inline: auto; padding-inline: clamp(20px, 5vw, 48px); }
 .section { padding-block: clamp(64px, 8vw, 104px); }
 .section.alt { background: var(--bg-sunken); }
@@ -230,6 +234,14 @@ a.bento-cell:hover { box-shadow: var(--shadow-3); transform: translateY(-3px); }
 .bento-cell.has-shot p, .bento-cell.has-shot h3, .bento-cell.has-shot .tag { max-width: 46%; }
 .bento-cell .logos { display: flex; gap: 22px; align-items: center; margin-bottom: 4px; }
 .bento-cell .logos img { height: 22px; width: auto; max-width: 120px; filter: none; opacity: 0.9; }
+/* Experimento: el logo de marca hace de título de la tarjeta (en lugar del
+   nombre en texto), conservando el eyebrow arriba. */
+.bento-cell h3.brand { display: flex; align-items: center; gap: 20px; margin: 4px 0 2px; line-height: 0; }
+.bento-cell h3.brand img { height: 30px; width: auto; max-width: 170px; filter: none; opacity: 0.95; display: block; }
+.bento-cell h3.brand img[alt="Infobip"] { height: 40px; }
+/* Celda angosta con dos logos (Vonage + Telnyx): más chicos para que quepan. */
+.bento-cell.span-3 h3.brand { gap: 14px; flex-wrap: wrap; }
+.bento-cell.span-3 h3.brand img { height: 20px; }
 @media (max-width: 920px) {
   .bento-cell.span-7, .bento-cell.span-5, .bento-cell.span-4, .bento-cell.span-3 { grid-column: span 12; }
   .bento-cell.has-shot { min-height: 340px; }
@@ -265,9 +277,10 @@ a.bento-cell:hover { box-shadow: var(--shadow-3); transform: translateY(-3px); }
 .split .shot img { border-radius: var(--r-card); box-shadow: var(--shadow-3); display: block; }
 @media (max-width: 920px) { .split { grid-template-columns: 1fr; } }
 
-/* Logo de marca en el hero de las páginas de solución (Acumatica/Genesys). */
-.sol-logo { display: block; height: 40px; width: auto; max-width: 240px; margin-bottom: 18px; }
-@media (max-width: 920px) { .sol-logo { height: 34px; } }
+/* Logo de marca arriba del todo en las páginas de solución (Acumatica/Genesys),
+   como lockup de marca con aire propio, separado del breadcrumb y el eyebrow. */
+.sol-logo { display: block; height: 38px; width: auto; max-width: 240px; margin-bottom: 24px; }
+@media (max-width: 920px) { .sol-logo { height: 32px; margin-bottom: 20px; } }
 
 /* ---- Checklist ----------------------------------------------------------- */
 .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }

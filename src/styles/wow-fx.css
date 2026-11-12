@@ -236,14 +236,17 @@
    con un scrim que mantiene legible el texto. En móvil fluye normal.
    ------------------------------------------------------------------------- */
 @media (min-width: 921px) {
-  .sol-hero { position: relative; display: block; min-height: 500px; overflow: hidden; }
-  .sol-hero > div:first-child { position: relative; z-index: 2; max-width: 560px; }
+  /* overflow visible: la imagen sangra hacia el margen derecho y en pantallas
+     amplias se ven sus 4 esquinas redondeadas; #main recorta al borde de la
+     ventana para no generar scroll horizontal. */
+  .sol-hero { position: relative; display: block; min-height: 500px; overflow: visible; }
+  .sol-hero > div:first-child { position: relative; z-index: 2; max-width: 520px; }
   .sol-hero::before {
     content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: linear-gradient(90deg, var(--bg-page) 34%, rgba(4, 18, 28, 0.42) 56%, transparent 80%);
+    background: linear-gradient(90deg, var(--bg-page) 42%, rgba(4, 18, 28, 0.58) 62%, transparent 88%);
   }
   .sol-hero .shot {
-    position: absolute; right: -2%; top: 50%; width: min(54vw, 760px);
+    position: absolute; right: -6%; top: 50%; width: min(52vw, 740px);
     z-index: 0; margin: 0; pointer-events: none;
   }
   .sol-hero .shot img {

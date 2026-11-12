@@ -29,10 +29,10 @@ const { lang, content: c, source } = Astro.props;
 ---
 <section class="section pb-12">
   <div class="wrap">
+    {c.logo && <img class="sol-logo" src={c.logo.src} alt={c.logo.alt} width={c.logo.width} height={c.logo.height} decoding="async" />}
     <p class="crumbs"><a href={path('solutions', lang)}>{lang === 'es' ? 'Soluciones' : 'Solutions'}</a> / {c.name}</p>
     <div class="split sol-hero">
       <div>
-        {c.logo && <img class="sol-logo" src={c.logo.src} alt={c.logo.alt} width={c.logo.width} height={c.logo.height} decoding="async" />}
         <span class="eyebrow"><span class="star-dot"></span>{c.tag}</span>
         <h1 class="h1">{c.title}</h1>
         <p class="lede max-w-[560px]">{c.lede}</p>
