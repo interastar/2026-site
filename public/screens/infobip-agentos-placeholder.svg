@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 940" width="1600" height="940" role="img" aria-label="Vista previa de Infobip AgentOS (placeholder)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b2030"/>
+      <stop offset="1" stop-color="#071622"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00a8ea"/>
+      <stop offset="1" stop-color="#67db3c"/>
+    </linearGradient>
+    <style>
+      .t{font-family:'Public Sans',system-ui,sans-serif;fill:#c7d6e0}
+      .m{font-family:'Public Sans',system-ui,sans-serif;fill:#8aa0b0}
+      .d{font-family:'Exo 2','Public Sans',system-ui,sans-serif;font-weight:800;fill:#eaf2f7}
+    </style>
+  </defs>
+
+  <rect width="1600" height="940" rx="26" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1598" height="938" rx="25" fill="none" stroke="#1c3a4c" stroke-width="2"/>
+
+  <!-- top bar -->
+  <g>
+    <circle cx="44" cy="44" r="7" fill="#2b4a5d"/>
+    <circle cx="68" cy="44" r="7" fill="#2b4a5d"/>
+    <circle cx="92" cy="44" r="7" fill="#2b4a5d"/>
+    <rect x="140" y="32" width="300" height="24" rx="12" fill="#12293a"/>
+    <text x="160" y="49" class="m" font-size="15">Infobip · AgentOS</text>
+    <rect x="1360" y="28" width="200" height="32" rx="16" fill="#102634"/>
+    <text x="1380" y="49" class="m" font-size="14">Vista previa</text>
+  </g>
+  <line x1="0" y1="80" x2="1600" y2="80" stroke="#15303f" stroke-width="2"/>
+
+  <!-- sidebar -->
+  <g transform="translate(0,80)">
+    <rect x="0" y="0" width="300" height="860" fill="#0a1d2b"/>
+    <line x1="300" y1="0" x2="300" y2="860" stroke="#15303f" stroke-width="2"/>
+    <text x="36" y="64" class="d" font-size="22">Conversaciones</text>
+    <!-- channel chips -->
+    <g font-size="15" class="t">
+      <rect x="34" y="98" width="130" height="34" rx="17" fill="#10364a"/><text x="54" y="121">WhatsApp</text>
+      <rect x="176" y="98" width="70" height="34" rx="17" fill="#10364a"/><text x="196" y="121">SMS</text>
+      <rect x="34" y="144" width="96" height="34" rx="17" fill="#10364a"/><text x="54" y="167">Correo</text>
+      <rect x="142" y="144" width="78" height="34" rx="17" fill="#10364a"/><text x="162" y="167">Chat</text>
+      <rect x="34" y="190" width="70" height="34" rx="17" fill="#10364a"/><text x="54" y="213">Voz</text>
+    </g>
+    <!-- list items -->
+    <g>
+      <rect x="20" y="250" width="260" height="70" rx="12" fill="#10283800"/>
+      <rect x="20" y="250" width="260" height="70" rx="12" fill="#0e2534"/>
+      <circle cx="54" cy="285" r="18" fill="#17425a"/>
+      <rect x="86" y="272" width="150" height="12" rx="6" fill="#2a4a5d"/>
+      <rect x="86" y="294" width="110" height="10" rx="5" fill="#1d3b4c"/>
+    </g>
+    <g opacity="0.7">
+      <circle cx="54" cy="360" r="18" fill="#17425a"/>
+      <rect x="86" y="347" width="140" height="12" rx="6" fill="#23414f"/>
+      <rect x="86" y="369" width="96" height="10" rx="5" fill="#1a3140"/>
+      <circle cx="54" cy="430" r="18" fill="#17425a"/>
+      <rect x="86" y="417" width="150" height="12" rx="6" fill="#23414f"/>
+      <rect x="86" y="439" width="80" height="10" rx="5" fill="#1a3140"/>
+    </g>
+  </g>
+
+  <!-- conversation panel -->
+  <g transform="translate(300,80)">
+    <text x="48" y="60" class="d" font-size="20">Conversación · WhatsApp</text>
+    <!-- incoming -->
+    <g>
+      <rect x="48" y="96" width="420" height="84" rx="16" fill="#132d3d"/>
+      <text x="72" y="130" class="t" font-size="17">Hola, ¿me ayudan con mi pedido?</text>
+      <text x="72" y="158" class="m" font-size="14">Cliente</text>
+    </g>
+    <!-- agent (AI) -->
+    <g>
+      <rect x="500" y="200" width="552" height="110" rx="16" fill="#0f3a2a"/>
+      <text x="524" y="236" class="t" font-size="17">Claro. Veo tu pedido en el sistema y va en</text>
+      <text x="524" y="262" class="t" font-size="17">camino. ¿Te comparto el seguimiento?</text>
+      <text x="524" y="292" class="m" font-size="14">Agente de IA · AgentOS</text>
+    </g>
+    <!-- incoming 2 -->
+    <g>
+      <rect x="48" y="330" width="300" height="72" rx="16" fill="#132d3d"/>
+      <text x="72" y="372" class="t" font-size="17">Sí, por favor</text>
+    </g>
+    <!-- handoff note -->
+    <g transform="translate(48,440)">
+      <rect x="0" y="0" width="1004" height="2" fill="#163345"/>
+      <circle cx="16" cy="40" r="6" fill="url(#accent)"/>
+      <text x="36" y="46" class="m" font-size="15">Escalado a un agente humano cuando hace falta</text>
+    </g>
+    <!-- composer -->
+    <rect x="48" y="540" width="1004" height="56" rx="28" fill="#0e2534" stroke="#1b3a4c" stroke-width="2"/>
+    <text x="78" y="575" class="m" font-size="16">Escribe un mensaje…</text>
+    <rect x="968" y="548" width="76" height="40" rx="20" fill="url(#accent)"/>
+  </g>
+</svg>

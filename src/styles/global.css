@@ -289,7 +289,10 @@ a.bento-cell:hover { box-shadow: var(--shadow-3); transform: translateY(-3px); }
 /* Logo de marca arriba del todo en las páginas de solución (Acumatica/Genesys),
    como lockup de marca con aire propio, separado del breadcrumb y el eyebrow. */
 .sol-logo { display: block; height: 52px; width: auto; max-width: 300px; margin-bottom: 26px; }
-@media (max-width: 920px) { .sol-logo { height: 42px; margin-bottom: 20px; } }
+/* Infobip trae clear-space en su arte (viewBox con aire); sube la caja para
+   que su tinta pese como la de Acumatica/Genesys. */
+.sol-logo[alt="Infobip"] { height: 92px; margin-bottom: 20px; }
+@media (max-width: 920px) { .sol-logo { height: 42px; margin-bottom: 20px; } .sol-logo[alt="Infobip"] { height: 74px; } }
 
 /* ---- Checklist ----------------------------------------------------------- */
 .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }

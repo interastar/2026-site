@@ -1,0 +1,90 @@
+---
+import SolutionDetail, { type SolutionContent } from './SolutionDetail.astro';
+import type { Lang } from '../../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// NOTA: imagen placeholder de marca. Reemplazar por una captura real de Infobip/
+// AgentOS en public/screens/ cuando el usuario la aporte (handoff §2).
+const image = { src: '/screens/infobip-agentos-placeholder.svg', alt: 'Infobip AgentOS: bandeja omnicanal con un agente de IA atendiendo una conversación', width: 1600, height: 940 };
+const logo = { src: '/partners/infobip-white.svg', alt: 'Infobip', width: 1028, height: 555 };
+const integrations = [
+  { file: 'acumatica-white.png', name: 'Acumatica' },
+  { file: 'genesys-white.png', name: 'Genesys' },
+  { file: 'numia-white.png', name: 'Numia' },
+  { file: 'vonage.png', name: 'Vonage' },
+];
+
+const content: Record<Lang, SolutionContent> = {
+  es: {
+    tag: 'Agentes de IA y mensajería',
+    name: 'Infobip AgentOS',
+    title: 'Infobip: agentes de IA omnicanal sobre tu mensajería',
+    lede: 'Con AgentOS creas y orquestas agentes de inteligencia artificial (IA) que atienden a tus clientes en todos los canales (WhatsApp, SMS, correo, chat y voz), integrados a tus sistemas. Lo implementamos e integramos por ti.',
+    logo,
+    image,
+    demoCta: 'Solicitar demo',
+    heroBullets: [
+      'Omnicanalidad real: WhatsApp, SMS, correo, chat y voz',
+      'Agentes de IA con AgentOS, con control y escalado a un humano',
+      'Integración con tu sistema de gestión empresarial (ERP), tu sistema de clientes (CRM) y tu experiencia de cliente (CX)',
+      'Implementación e integración de extremo a extremo',
+    ],
+    capTitle: 'Conversaciones y agentes de IA en una sola plataforma',
+    capabilities: [
+      { ic: 'headset', title: 'Mensajería omnicanal', text: 'Atiende en WhatsApp, SMS, correo, chat y voz desde una sola plataforma, con un historial unificado.' },
+      { ic: 'sparkles', title: 'Agentes de IA (AgentOS)', text: 'Crea y orquesta agentes de IA que resuelven solos y escalan a una persona cuando hace falta.' },
+      { ic: 'workflow', title: 'Orquestación y flujos', text: 'Enruta cada conversación con reglas y automatización, de principio a fin.' },
+      { ic: 'line-chart', title: 'Campañas y analítica', text: 'Mensajería masiva, segmentación y métricas accionables en tiempo real.' },
+      { ic: 'plug-zap', title: 'Integraciones', text: 'Conecta Infobip con tu ERP, tu CRM y tu CX para que cada conversación tenga contexto del negocio.' },
+      { ic: 'shield-check', title: 'Seguridad y cumplimiento', text: 'Canales verificados y manejo de datos con estándares empresariales.' },
+    ],
+    whoTitle: 'Valor concreto para cada área',
+    who: [
+      { role: 'Dirección general', text: 'Atención que escala sin crecer el equipo al mismo ritmo, con una experiencia consistente en todos los canales.' },
+      { role: 'Operaciones y CX', text: 'Menos tiempos de espera y respuestas automáticas con contexto, liberando a tu equipo para lo que de verdad importa.' },
+      { role: 'TI y Sistemas', text: 'APIs y conectores para integrar la mensajería a tus sistemas sin islas de datos ni reproceso.' },
+    ],
+    integrTitle: 'Infobip, conectado al resto de tu operación',
+    integrText: 'Integramos Infobip con tu ERP, tu CRM y tu experiencia de cliente para que cada conversación tenga el contexto del negocio y nada se capture dos veces.',
+    integrations,
+    formTitle: 'Solicita una demo de Infobip y AgentOS',
+  },
+  en: {
+    tag: 'AI agents & messaging',
+    name: 'Infobip AgentOS',
+    title: 'Infobip: omnichannel AI agents on top of your messaging',
+    lede: 'With AgentOS you build and orchestrate artificial intelligence (AI) agents that serve your customers across every channel (WhatsApp, SMS, email, chat and voice), integrated into your systems. We implement and integrate it for you.',
+    logo,
+    image: { ...image, alt: 'Infobip AgentOS: an omnichannel inbox with an AI agent handling a conversation' },
+    demoCta: 'Request a demo',
+    heroBullets: [
+      'True omnichannel: WhatsApp, SMS, email, chat and voice',
+      'AI agents with AgentOS, with control and handoff to a human',
+      'Integration with your ERP, CRM and customer experience (CX)',
+      'End-to-end implementation and integration',
+    ],
+    capTitle: 'Conversations and AI agents in one platform',
+    capabilities: [
+      { ic: 'headset', title: 'Omnichannel messaging', text: 'Serve customers on WhatsApp, SMS, email, chat and voice from a single platform with a unified history.' },
+      { ic: 'sparkles', title: 'AI agents (AgentOS)', text: 'Build and orchestrate AI agents that resolve on their own and escalate to a person when needed.' },
+      { ic: 'workflow', title: 'Orchestration & flows', text: 'Route every conversation with rules and automation, end to end.' },
+      { ic: 'line-chart', title: 'Campaigns & analytics', text: 'Bulk messaging, segmentation and actionable metrics in real time.' },
+      { ic: 'plug-zap', title: 'Integrations', text: 'Connect Infobip with your ERP, CRM and CX so every conversation has business context.' },
+      { ic: 'shield-check', title: 'Security & compliance', text: 'Verified channels and data handling with enterprise standards.' },
+    ],
+    whoTitle: 'Concrete value for every area',
+    who: [
+      { role: 'Executive / C-Level', text: 'Support that scales without growing the team at the same rate, with a consistent experience across channels.' },
+      { role: 'Operations & CX', text: 'Shorter wait times and automatic, context-aware answers that free your team for what matters.' },
+      { role: 'IT & Systems', text: 'APIs and connectors to integrate messaging into your systems with no data islands or rework.' },
+    ],
+    integrTitle: 'Infobip, connected to the rest of your operation',
+    integrText: 'We integrate Infobip with your ERP, CRM and customer experience so every conversation has business context and nothing is captured twice.',
+    integrations,
+    formTitle: 'Request an Infobip and AgentOS demo',
+  },
+};
+---
+<SolutionDetail lang={lang} content={content[lang]} source="solucion-infobip" />
