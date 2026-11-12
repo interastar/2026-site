@@ -30,7 +30,7 @@ const clients = [
   { file: 'jhl', name: 'JHL' },
   { file: 'leasemd', name: 'LeaseMD' },
   { file: 'vanrenta', name: 'VanRenta' },
-  { file: 'yellowshine', name: 'YellowShine' },
+  { file: 'yellowshine', name: 'YellowShine', pending: true }, // oculto a petición: quedaba solo en la última fila. Quitar `pending` cuando haya más logos.
 ];
 const shown = clients.filter((c) => !('pending' in c && c.pending));
 ---

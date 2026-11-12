@@ -393,13 +393,6 @@ a.channel:hover .val { color: var(--accent); }
 .tst-card figcaption { margin-top: auto; display: grid; gap: 2px; }
 .tst-name { font: var(--w-semibold) 15px var(--font-ui); color: var(--fg-1); }
 .tst-role { font: var(--w-regular) 13px var(--font-ui); color: var(--fg-3); }
-.tst-empty { border-style: dashed; background: transparent; }
-.tst-empty > svg { opacity: 0.3; }
-.tst-lines { display: grid; gap: 10px; }
-.tst-lines span { height: 9px; border-radius: 999px; background: rgba(255,255,255,0.07); }
-.tst-lines span:nth-child(2) { width: 92%; }
-.tst-lines span:nth-child(3) { width: 58%; }
-.tst-pend { font: var(--w-medium) 13px var(--font-ui); color: var(--fg-3); }
 @media (max-width: 820px) { .tst-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }

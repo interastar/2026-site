@@ -3,9 +3,9 @@
  * Testimonials — "Voces de clientes".
  *
  * Rellena `items` con testimonios REALES y autorizados (cita + nombre + cargo
- * + empresa + ciudad). Mientras el array esté vacío, la sección muestra un
- * estado placeholder claramente marcado: NO inventa citas ni nombres.
- * Formato recomendado de cita: máximo 3 líneas.
+ * + empresa + ciudad). Mientras el array esté vacío, la sección NO se muestra
+ * (no hay placeholders ni citas inventadas). Al agregar el primer testimonio
+ * aparece sola. Formato recomendado de cita: máximo 3 líneas.
  */
 import Icon from './Icon.astro';
 import type { Lang } from '../i18n/ui';
@@ -18,19 +18,16 @@ const { lang } = Astro.props;
 const items: Testimonial[] = [];
 
 const t = lang === 'es'
-  ? { eyebrow: 'Voces de clientes', title: 'Lo que dicen quienes ya operan con nosotros', pend: 'Testimonio por publicar' }
-  : { eyebrow: 'Client voices', title: 'What teams already running with us say', pend: 'Testimonial coming soon' };
-
-const hasItems = items.length > 0;
+  ? { eyebrow: 'Voces de clientes', title: 'Lo que dicen quienes ya operan con nosotros' }
+  : { eyebrow: 'Client voices', title: 'What teams already running with us say' };
 ---
-<section class="section">
-  <div class="wrap">
-    <div class="head">
-      <span class="eyebrow"><span class="star-dot"></span>{t.eyebrow}</span>
-      <h2 class="h2 mt-3.5">{t.title}</h2>
-    </div>
-
-    {hasItems ? (
+{items.length > 0 && (
+  <section class="section">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow"><span class="star-dot"></span>{t.eyebrow}</span>
+        <h2 class="h2 mt-3.5">{t.title}</h2>
+      </div>
       <div class="tst-grid">
         {items.map((it) => (
           <figure class="tst-card">
@@ -43,16 +40,6 @@ const hasItems = items.length > 0;
           </figure>
         ))}
       </div>
-    ) : (
-      <div class="tst-grid" aria-hidden="true">
-        {[0, 1, 2].map(() => (
-          <figure class="tst-card tst-empty">
-            <Icon name="quotes" size={26} />
-            <div class="tst-lines"><span></span><span></span><span></span></div>
-            <figcaption><span class="tst-pend">{t.pend}</span></figcaption>
-          </figure>
-        ))}
-      </div>
-    )}
-  </div>
-</section>
+    </div>
+  </section>
+)}
